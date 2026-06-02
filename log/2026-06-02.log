@@ -1,0 +1,32 @@
+[00:25:50] [INFO] UsuarioController::ver
+[17:41:18] [INFO] VikingoController::ver
+[17:41:18] [INFO] SQL: SELECT * FROM guerreros
+[17:41:19] [INFO] VikingoController::ver
+[17:41:19] [INFO] SQL: SELECT * FROM guerreros
+[17:41:19] [INFO] VikingoController::ver
+[17:41:19] [INFO] SQL: SELECT * FROM guerreros
+[17:41:19] [INFO] VikingoController::ver
+[17:41:19] [INFO] SQL: SELECT * FROM guerreros
+[17:41:21] [INFO] VikingoController::editar - id=3
+[17:41:21] [INFO] SQL: SELECT * FROM guerreros WHERE id = ? [3]
+[17:41:21] [INFO] VikingoController::ver
+[17:41:21] [INFO] SQL: SELECT * FROM guerreros
+[17:41:22] [INFO] VikingoController::ver
+[17:41:22] [INFO] SQL: SELECT * FROM guerreros
+[17:41:23] [INFO] VikingoController::alta (form)
+[17:41:23] [INFO] VikingoController::ver
+[17:41:23] [INFO] SQL: SELECT * FROM guerreros
+[17:41:24] [INFO] VikingoController::ver
+[17:41:24] [INFO] SQL: SELECT * FROM guerreros
+[17:41:26] [INFO] VikingoController::editar - id=5
+[17:41:26] [INFO] SQL: SELECT * FROM guerreros WHERE id = ? [5]
+[17:41:26] [INFO] VikingoController::ver
+[17:41:26] [INFO] SQL: SELECT * FROM guerreros
+[17:41:27] [INFO] VikingoController::ver
+[17:41:27] [INFO] SQL: SELECT * FROM guerreros
+[17:41:42] [INFO] VikingoController::editar - id=3
+[17:41:42] [INFO] SQL: SELECT * FROM guerreros WHERE id = ? [3]
+[17:41:42] [INFO] VikingoController::ver
+[17:41:42] [INFO] SQL: SELECT * FROM guerreros
+[17:41:43] [INFO] VikingoController::ver
+[17:41:43] [INFO] SQL: SELECT * FROM guerreros
