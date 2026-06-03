@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QuizMaster - Lobby</title>
+
+    <link rel="stylesheet"
+          href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+        body{
+            background: linear-gradient(135deg,#4facfe,#00f2fe);
+            min-height:100vh;
+            font-family: Arial, sans-serif;
+            margin:0;
+        }
+
+        .titulo{
+            font-size:42px;
+            font-weight:bold;
+            text-align:center;
+            color:white;
+            text-shadow: 2px 2px 5px rgba(0,0,0,.3);
+            margin-top:20px;
+        }
+
+        .subtitulo{
+            text-align:center;
+            color:white;
+            margin-bottom:20px;
+        }
+
+        .panel-juego{
+            border-radius:20px;
+            overflow:hidden;
+            animation: aparecer .4s ease;
+        }
+
+        .btn-naranja{
+            background:#ff9800 !important;
+            color:white !important;
+            border-radius:25px;
+            transition:.3s;
+        }
+
+        .btn-naranja:hover{
+            transform:scale(1.05);
+            background:#ffb74d !important;
+        }
+
+        .btn-verde{
+            background:#43a047 !important;
+            color:white !important;
+            border-radius:25px;
+            transition:.3s;
+        }
+
+        .btn-verde:hover{
+            transform:scale(1.05);
+        }
+
+        .btn-azul{
+            background:#1e88e5 !important;
+            color:white !important;
+            border-radius:25px;
+            transition:.3s;
+        }
+
+        .btn-azul:hover{
+            transform:scale(1.05);
+        }
+
+        table{
+            border-radius:10px;
+            overflow:hidden;
+        }
+
+        @keyframes aparecer{
+            from{
+                opacity:0;
+                transform:translateY(15px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="titulo">
+    QuizMaster
+</div>
+
+<div class="subtitulo">
+    Bienvenido {{nombre}} · Puntaje: {{puntaje_total}}
+</div>
+
+<div class="w3-container">
+
+    <div class="w3-row-padding w3-margin-top">
+
+        <div class="w3-third w3-margin-bottom">
+            <div class="w3-card-4 w3-white panel-juego">
+                <div class="w3-container w3-padding">
+                    <h3>🎮 Nueva Partida</h3>
+                    <p>Comenzá una nueva aventura.</p>
+                    <a href="/partida/iniciar"
+                       class="w3-button btn-naranja w3-block">
+                        Jugar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-third w3-margin-bottom">
+            <div class="w3-card-4 w3-white panel-juego">
+                <div class="w3-container w3-padding">
+                    <h3>🏆 Ranking</h3>
+                    <p>Ver clasificación global.</p>
+                    <a href="/ranking/ver"
+                       class="w3-button btn-verde w3-block">
+                        Ver Ranking
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-third w3-margin-bottom">
+            <div class="w3-card-4 w3-white panel-juego">
+                <div class="w3-container w3-padding">
+                    <h3>👤 Perfil</h3>
+                    <p>Consultar tus estadísticas.</p>
+                    <a href="/perfil/ver"
+                       class="w3-button btn-azul w3-block">
+                        Mi Perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="w3-card-4 w3-white panel-juego w3-margin-top">
+
+        <div class="w3-container">
+
+            <h2>📜 Historial de Partidas</h2>
+
+            <table class="w3-table-all">
+
+                <tr>
+                    <th>Fecha</th>
+                    <th>Puntaje</th>
+                    <th>Resultado</th>
+                </tr>
+
+                <tr>
+                    <td>18/07/2026</td>
+                    <td>12</td>
+                    <td>Derrota</td>
+                </tr>
+
+                <tr>
+                    <td>17/07/2026</td>
+                    <td>20</td>
+                    <td>Victoria</td>
+                </tr>
+
+                <tr>
+                    <td>16/07/2026</td>
+                    <td>8</td>
+                    <td>Derrota</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

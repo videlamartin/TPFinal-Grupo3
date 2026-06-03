@@ -30,3 +30,14 @@
 [17:41:42] [INFO] SQL: SELECT * FROM guerreros
 [17:41:43] [INFO] VikingoController::ver
 [17:41:43] [INFO] SQL: SELECT * FROM guerreros
+[20:53:47] [INFO] VikingoController::ver
+[20:53:47] [INFO] SQL: SELECT * FROM guerreros
+[20:53:48] [INFO] VikingoController::ver
+[20:53:48] [INFO] SQL: SELECT * FROM guerreros
+[20:53:53] [INFO] VikingoController::alta (form)
+[20:53:53] [INFO] VikingoController::ver
+[20:53:53] [INFO] SQL: SELECT * FROM guerreros
+[20:57:07] [INFO] VikingoController::ver
+[20:57:07] [INFO] SQL: SELECT * FROM guerreros
+[20:57:07] [INFO] VikingoController::ver
+[20:57:07] [INFO] SQL: SELECT * FROM guerreros
