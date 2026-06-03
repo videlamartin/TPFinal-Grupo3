@@ -31,6 +31,15 @@ class Configurator {
         );
     }
 
+    public function getPerfilController()
+    {
+        return new PerfilController(
+            $this->getUsuarioModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
+
     public function getVikingoController()
     {
         return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
