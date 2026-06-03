@@ -34,10 +34,13 @@
             token_validacion = NULL
         WHERE id = ?
     ";
-
             $this->database->execute($sql, [$idUsuario]);
         }
-
+        public function buscarPorId($id) {
+            $sql = "SELECT * FROM usuario WHERE id = ?";
+            $resultado = $this->database->query($sql, [$id]);
+            return count($resultado) > 0 ? $resultado[0] : null;
+        }
 
     }
 
