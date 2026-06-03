@@ -8,6 +8,29 @@ class Configurator {
         $this->config = parse_ini_file("config/config.ini");
     }
 
+    public function getLoginController()
+    {
+        return new LoginController(
+            $this->getUsuarioModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
+
+    public function getUsuarioModel(){
+        return new UsuarioModel(
+            $this-> getDatabase()
+        );
+    }
+
+    public function getLobbyController()
+    {
+        return new LobbyController(
+            $this->getRenderer(),
+            new Request()
+        );
+    }
+
     public function getVikingoController()
     {
         return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
@@ -35,7 +58,7 @@ class Configurator {
 
     public function getRouter()
     {
-        return new Router($this, 'vikingo', 'ver');
+        return new Router($this, 'login', 'ver');
     }
 
     public function getOrDefault($controllerName, $defaultControllerName)
