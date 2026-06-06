@@ -59,7 +59,7 @@
             exit();
         }
 
-        if ($password !== $usuario['password']) {
+        if (!password_verify($password, $usuario['password'])) {
 
             $_SESSION['error'] = 'Contraseña incorrecta';
 
