@@ -79,4 +79,13 @@ class Configurator {
         $defaultGetter = 'get' . ucfirst($defaultControllerName) . 'Controller';
         return $this->{$defaultGetter}();
     }
+
+    public function getRegistroController()
+{
+    return new RegistroController(
+        $this->getUsuarioModel(),
+        $this->getRenderer(),
+        new Request()
+    );
+}
 }

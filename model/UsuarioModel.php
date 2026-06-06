@@ -23,7 +23,8 @@
         public function buscarPorToken($token)
         {
             $sql = "SELECT * FROM usuario WHERE token_validacion = ?";
-            return $this->database->query($sql, [$token])->fetch_assoc();
+            $resultado = $this->database->query($sql, [$token]);
+            return count($resultado) > 0 ? $resultado[0] : null;
         }
 
         public function activarCuenta($idUsuario)
@@ -42,6 +43,47 @@
             return count($resultado) > 0 ? $resultado[0] : null;
         }
 
+        public function registrar($datos)
+{
+    // Verificar si el username o email ya existen
+    $sqlCheck = "SELECT id FROM usuario WHERE username = ? OR email = ?";
+    $existe = $this->database->query($sqlCheck, [$datos['username'], $datos['email']]);
+    if (count($existe) > 0) {
+        return ['error' => 'El usuario o email ya existe'];
     }
+
+    $token = bin2hex(random_bytes(32));
+    $passwordHash = password_hash($datos['password'], PASSWORD_BCRYPT);
+
+    $sql = "INSERT INTO usuario 
+                (nombre_completo, anio_nacimiento, sexo, pais, ciudad, email, password, username, foto_perfil, token_validacion)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $this->database->execute($sql, [
+        $datos['nombre_completo'],
+        $datos['anio_nacimiento'],
+        $datos['sexo'],
+        $datos['pais'],
+        $datos['ciudad'],
+        $datos['email'],
+        $passwordHash,
+        $datos['username'],
+        $datos['foto_perfil'] ?? null,
+        $token
+    ]);
+
+    return ['token' => $token, 'email' => $datos['email']];
+}
+
+public function buscarPorEmail($email)
+{
+    $sql = "SELECT * FROM usuario WHERE email = ?";
+    $resultado = $this->database->query($sql, [$email]);
+    return count($resultado) > 0 ? $resultado[0] : null;
+}
+
+    }
+
+    
 
 ?>
