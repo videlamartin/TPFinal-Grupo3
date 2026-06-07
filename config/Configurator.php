@@ -1,5 +1,6 @@
 <?php
-class Configurator {
+class Configurator
+{
 
     private $config;
 
@@ -17,9 +18,10 @@ class Configurator {
         );
     }
 
-    public function getUsuarioModel(){
+    public function getUsuarioModel()
+    {
         return new UsuarioModel(
-            $this-> getDatabase()
+            $this->getDatabase()
         );
     }
 
@@ -81,11 +83,11 @@ class Configurator {
     }
 
     public function getRegistroController()
-{
-    return new RegistroController(
-        $this->getUsuarioModel(),
-        $this->getRenderer(),
-        new Request()
-    );
-}
+    {
+        return new RegistroController(
+            $this->getUsuarioModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
 }

@@ -2,10 +2,12 @@
 class PerfilController {
     private $usuarioModel;
     private $renderer;
+    private $request;
 
-    public function __construct($usuarioModel, $renderer) {
+    public function __construct($usuarioModel, $renderer, $request) {
         $this->usuarioModel = $usuarioModel;
         $this->renderer = $renderer;
+        $this->request = $request;
     }
 
     public function ver() {

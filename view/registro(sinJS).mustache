@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Registro</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 15px 40px;
+        }
+
+        .registro-wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .titulo {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0,0,0,.3);
+            margin-bottom: 4px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: clamp(14px, 3.5vw, 17px);
+        }
+
+        .registro-card {
+            width: 100%;
+            border-radius: 25px;
+            overflow: hidden;
+            animation: aparecer .5s ease;
+            background: white;
+        }
+
+        .card-body { padding: 28px 24px; }
+
+        .campo { margin-bottom: 14px; }
+
+        .campo label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .campo input:focus,
+        .campo select:focus { border-color: #4facfe; }
+
+        .campo-fila { display: flex; gap: 10px; }
+        .campo-fila .campo { flex: 1; }
+
+        /* ── Foto ── */
+        .foto-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .foto-preview {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            overflow: hidden;
+            border: 3px solid #4facfe;
+        }
+
+        .foto-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn-foto {
+            background: #f0f8ff;
+            border: 1.5px dashed #4facfe;
+            border-radius: 20px;
+            padding: 8px 20px;
+            color: #4facfe;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        #foto_perfil { display: none; }
+
+        /* ── Mapa ── */
+        .mapa-label {
+            font-size: 13px;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        #mapa {
+            width: 100%;
+            height: 220px;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            border: 1.5px solid #ddd;
+        }
+
+        .ubicacion-info {
+            background: #f0f8ff;
+            border-radius: 15px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── Error ── */
+        .error-box {
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #c62828;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        /* ── Botón ── */
+        .btn-registrar {
+            width: 100%;
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 13px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s;
+            margin-top: 8px;
+        }
+
+        .btn-registrar:hover {
+            background: #ffb74d;
+            transform: scale(1.02);
+        }
+
+        .link-login {
+            text-align: center;
+            margin-top: 16px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .link-login a {
+            color: white;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .card-body { padding: 22px 16px; }
+            .campo-fila { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="registro-wrapper">
+
+    <div class="titulo">QuizMaster</div>
+    <div class="subtitulo">Creá tu cuenta y empezá a jugar</div>
+
+    <div class="registro-card">
+        <div class="card-body">
+
+            {{#error}}
+            <div class="error-box">⚠ {{error}}</div>
+            {{/error}}
+
+            <form action="/registro/registrar" method="POST" enctype="multipart/form-data">
+
+                <!-- Foto de perfil -->
+                <div class="foto-area">
+                    <div class="foto-preview" id="preview-foto">👤</div>
+                    <label class="btn-foto" for="foto_perfil">📷 Elegir foto de perfil</label>
+                    <input type="file" name="foto_perfil" id="foto_perfil" accept="image/jpeg,image/png,image/gif">
+                </div>
+
+                <div class="campo">
+                    <label>Nombre completo *</label>
+                    <input type="text" name="nombre_completo" placeholder="Ej: María García" required>
+                </div>
+
+                <div class="campo-fila">
+                    <div class="campo">
+                        <label>Año de nacimiento *</label>
+                        <input type="number" name="anio_nacimiento" placeholder="Ej: 1995" min="1900" max="2010" required>
+                    </div>
+                    <div class="campo">
+                        <label>Sexo *</label>
+                        <select name="sexo" required>
+                            <option value="">-- Elegir --</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Mapa -->
+                <span class="mapa-label">Ubicación * — hacé click en el mapa</span>
+                <div id="mapa"></div>
+                <div class="ubicacion-info">
+                    <span>🌍</span>
+                    <span id="texto-ubicacion">Ninguna ubicación seleccionada</span>
+                </div>
+                <input type="hidden" name="pais"      id="pais">
+                <input type="hidden" name="ciudad"    id="ciudad">
+                <input type="hidden" name="latitud"   id="latitud">
+                <input type="hidden" name="longitud"  id="longitud">
+
+                <div class="campo">
+                    <label>Nombre de usuario *</label>
+                    <input type="text" name="username" placeholder="Ej: maria_g" required>
+                </div>
+
+                <div class="campo">
+                    <label>Email *</label>
+                    <input type="email" name="email" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="campo">
+                    <label>Contraseña * (mínimo 6 caracteres)</label>
+                    <input type="password" name="password" minlength="6" placeholder="••••••" required>
+                </div>
+
+                <div class="campo">
+                    <label>Repetir contraseña *</label>
+                    <input type="password" name="repetir_password" minlength="6" placeholder="••••••" required>
+                </div>
+
+                <button type="submit" class="btn-registrar">✅ Registrarme</button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="link-login">
+        ¿Ya tenés cuenta? <a href="/login/ver">Iniciá sesión</a>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Preview foto — solo UI, no lógica de negocio
+    document.getElementById('foto_perfil').addEventListener('change', function() {
+        const archivo = this.files[0];
+        if (!archivo) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-foto').innerHTML = '<img src="' + e.target.result + '">';
+        };
+        reader.readAsDataURL(archivo);
+    });
+
+    // Mapa Leaflet — solo llena campos hidden, no valida nada
+    const mapa = L.map('mapa').setView([-34.6983, -58.5630], 13); // UNLaM
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(mapa);
+
+    let marcador = null;
+
+    mapa.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        if (marcador) {
+            marcador.setLatLng(e.latlng);
+        } else {
+            marcador = L.marker(e.latlng).addTo(mapa);
+        }
+
+        document.getElementById('latitud').value  = lat.toFixed(6);
+        document.getElementById('longitud').value = lng.toFixed(6);
+        document.getElementById('texto-ubicacion').textContent = 'Cargando...';
+
+        fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json&accept-language=es')
+            .then(r => r.json())
+            .then(data => {
+                const addr   = data.address || {};
+                const pais   = addr.country || '';
+                const ciudad = addr.city || addr.town || addr.village || addr.county || '';
+
+                document.getElementById('pais').value   = pais;
+                document.getElementById('ciudad').value = ciudad;
+
+                const texto = ciudad ? ciudad + ', ' + pais : pais || 'Ubicación seleccionada';
+                document.getElementById('texto-ubicacion').textContent = texto;
+                marcador.bindPopup(texto).openPopup();
+            })
+            .catch(() => {
+                document.getElementById('pais').value   = 'Desconocido';
+                document.getElementById('ciudad').value = 'Desconocido';
+                document.getElementById('texto-ubicacion').textContent = 'Ubicación seleccionada';
+            });
+    });
+</script>
+
+</body>
+</html>

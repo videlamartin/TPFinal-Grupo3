@@ -22,7 +22,7 @@ class RegistroController
             unset($_SESSION['error']);
         }
 
-        $this->renderer->render("registro/registro", $datos);
+        $this->renderer->render("registro", $datos);
     }
 
     public function registrar()
@@ -69,13 +69,32 @@ class RegistroController
         // Enviar mail de validación
         $this->enviarMailValidacion($resultado['email'], $resultado['token']);
 
-        header('Location: /registro/confirmacion');
+        header('Location: /confirmacion');
         exit();
     }
 
     public function confirmacion()
     {
-        $this->renderer->render("registro/confirmacion", []);
+        $this->renderer->render("confirmacion", []);
+    }
+
+    public function validarCuenta()
+    {
+        $token = $_GET['token'] ?? '';
+
+        $usuario = $this->usuarioModel->buscarPorToken($token);
+
+        if (!$usuario) {
+            $_SESSION['error'] = 'El enlace de validación es inválido o ya fue usado.';
+            header('Location: /login/ver');
+            exit();
+        }
+
+        $this->usuarioModel->activarCuenta($usuario['id']);
+
+        $_SESSION['error'] = null;
+        header('Location: /login/ver?validado=1');
+        exit();
     }
 
     // --- Métodos privados ---
@@ -132,7 +151,7 @@ class RegistroController
 
     private function enviarMailValidacion($email, $token)
     {
-        $enlace = "http://localhost/?controller=registro&method=validarCuenta&token=" . $token;
+        $enlace = "http://localhost/registro/validarCuenta?token=" . $token;
         $asunto = "Validá tu cuenta";
         $mensaje = "Hacé click en el siguiente enlace para activar tu cuenta: $enlace";
         $headers = "From: noreply@preguntados.com";
