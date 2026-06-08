@@ -15,3 +15,4 @@ class MustacheRenderer {
         echo $template->render($data);
     }
 }
+ 
