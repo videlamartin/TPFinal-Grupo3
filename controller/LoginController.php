@@ -34,8 +34,7 @@
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /login');
-            exit();
+            Redirect::to('/login/ver');
         }
 
         $username = trim($_POST['username']);
@@ -47,24 +46,21 @@
 
             $_SESSION['error'] = 'Usuario inexistente';
 
-            header('Location: /login/ver');
-            exit();
+            Redirect::to('/login/ver');
         }
 
         if (!$usuario['activo']) {
 
             $_SESSION['error'] = 'La cuenta no fue validada';
 
-            header('Location: /login/ver');
-            exit();
+            Redirect::to('/login/ver');
         }
 
         if (!password_verify($password, $usuario['password'])) {
 
             $_SESSION['error'] = 'Contraseña incorrecta';
 
-            header('Location: /login/ver');
-            exit();
+            Redirect::to('/login/ver');
         }
 
         $_SESSION['id_usuario'] = $usuario['id'];
@@ -73,16 +69,14 @@
         $_SESSION['puntaje_total'] = $usuario['puntaje_total'];
         $_SESSION['rol'] = $usuario['rol'];
 
-        header('Location: /lobby/ver');
-        exit();
+        Redirect::to('/lobby/ver');
     }
 
         public function logout()
         {
             session_destroy();
 
-            header('Location: /login');
-            exit();
+            Redirect::to('/login/ver');
         }
 
 

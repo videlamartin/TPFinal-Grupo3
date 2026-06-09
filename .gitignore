@@ -1,1 +1,3 @@
 config/config.ini
+public/uploads/*
+!public/uploads/.gitkeep

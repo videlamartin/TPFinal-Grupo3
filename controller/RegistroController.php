@@ -28,16 +28,14 @@ class RegistroController
     public function registrar()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /registro/ver');
-            exit();
+            Redirect::to('/registro/ver');
         }
 
         // Validaciones server-side
         $errores = $this->validar($_POST);
         if (!empty($errores)) {
             $_SESSION['error'] = implode(', ', $errores);
-            header('Location: /registro/ver');
-            exit();
+            Redirect::to('/registro/ver');
         }
 
         // Manejo de foto de perfil
@@ -69,8 +67,7 @@ class RegistroController
         // Enviar mail de validación
         $this->enviarMailValidacion($resultado['email'], $resultado['token']);
 
-        header('Location: /confirmacion');
-        exit();
+        Redirect::to('/registro/confirmacion');
     }
 
     public function confirmacion()
@@ -93,8 +90,7 @@ class RegistroController
         $this->usuarioModel->activarCuenta($usuario['id']);
 
         $_SESSION['error'] = null;
-        header('Location: /login/ver?validado=1');
-        exit();
+        Redirect::to('/login/ver?validado=1');
     }
 
     // --- Métodos privados ---

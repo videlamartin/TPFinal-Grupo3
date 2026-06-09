@@ -12,8 +12,7 @@ class PerfilController {
 
     public function ver() {
         if (!isset($_SESSION['id_usuario'])) {
-            header('Location: ?controller=login&method=ver');
-            exit();
+            Redirect::to('/login/ver');
         }
         $usuario = $this->usuarioModel->buscarPorId($_SESSION['id_usuario']);
         $datos = [

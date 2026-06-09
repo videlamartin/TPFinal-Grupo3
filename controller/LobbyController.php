@@ -14,8 +14,7 @@
         {
             // Verifica que el usuario haya iniciado sesión
             if (!isset($_SESSION['id_usuario'])) {
-                header('Location: /login/ver');
-                exit();
+                Redirect::to('/login/ver');
             }
 
             $datos = [
