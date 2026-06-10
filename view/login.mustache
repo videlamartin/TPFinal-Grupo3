@@ -83,6 +83,24 @@
             margin:3px;
         }
 
+        .error-box {
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #c62828;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .error-inline {
+            color: #e53935;
+            font-size: 12px;
+            margin-top: 4px;
+            margin-left: 10px;
+            display: none;
+        }
+
         /* Tablets */
         @media (max-width:768px){
 
@@ -146,12 +164,13 @@
                        type="password"
                        name="password"
                        placeholder="Contraseña">
-
                 {{#error}}
-                    <div class="w3-panel w3-red w3-round-large">
-                        <p>{{error}}</p>
+                    <div class="error-box" id="error-server">
+                        ⚠ {{error}}
                     </div>
                 {{/error}}
+
+                <div class="error-box" id="error-cliente" style="display:none;"></div>
 
                 <button class="w3-button w3-block w3-margin-top btn-login">
                     Ingresar
@@ -184,4 +203,68 @@
 </div>
 
 </body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector("form");
+        if (!form) return;
+
+        const usernameInput = form.querySelector('input[name="username"]');
+        const passwordInput = form.querySelector('input[name="password"]');
+
+        const errorCliente = document.getElementById("error-cliente");
+
+        function mostrarError(msg) {
+            errorCliente.textContent = "⚠ " + msg;
+            errorCliente.style.display = "block";
+            setTimeout(() => errorCliente.style.display = "none", 4000);
+        }
+
+
+        const errorServer = document.getElementById("error-server");
+        if (errorServer) {
+            const text = errorServer.innerText.trim();
+            if (text) mostrarError(text);
+        }
+
+        function clearError() {
+            errorCliente.style.display = "none";
+            errorCliente.textContent = "";
+        }
+
+        function validarAntesDeEnviar() {
+            const username = usernameInput.value.trim();
+            const pass = passwordInput.value;
+
+            if (!username) {
+                mostrarError("El usuario es obligatorio");
+                usernameInput.focus();
+                return false;
+            }
+            if (!pass) {
+                mostrarError("La contraseña es obligatoria");
+                passwordInput.focus();
+                return false;
+            }
+            if (pass.length < 6) {
+                mostrarError("La contraseña debe tener al menos 6 caracteres");
+                passwordInput.focus();
+                return false;
+            }
+            return true;
+        }
+
+        form.addEventListener("submit", (e) => {
+            clearError();
+            if (!validarAntesDeEnviar()) {
+                e.preventDefault();
+            }
+        });
+
+        [usernameInput, passwordInput].forEach((inp) => {
+            inp.addEventListener("input", clearError);
+        });
+    });
+</script>
+
 </html>
