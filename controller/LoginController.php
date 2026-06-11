@@ -68,6 +68,7 @@
         $_SESSION['nombre_completo'] = $usuario['nombre_completo'];
         $_SESSION['puntaje_total'] = $usuario['puntaje_total'];
         $_SESSION['rol'] = $usuario['rol'];
+        $_SESSION['sexo'] = $usuario['sexo'];
 
         Redirect::to('/lobby/ver');
     }

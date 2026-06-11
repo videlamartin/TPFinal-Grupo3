@@ -96,7 +96,15 @@
 </div>
 
 <div class="subtitulo">
-    Bienvenido {{nombre}} · Puntaje: {{puntaje_total}}
+        {{#bienvenido}}Bienvenido{{/bienvenido}}
+        {{#bienvenida}}Bienvenida{{/bienvenida}}
+        {{#bienvenidx}}Bienvenidx{{/bienvenidx}}
+        {{nombre}} · Puntaje: {{puntaje_total}}
+        <a href="/lobby/cerrarSesion"
+           class="w3-button w3-red"
+           style="margin-left:15px; border-radius:25px;">
+            Cerrar sesión
+        </a>
 </div>
 
 <div class="w3-container">

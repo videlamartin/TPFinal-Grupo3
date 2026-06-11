@@ -22,7 +22,10 @@ class MyDatabase
         $stmt->execute($params);
         return $this->conexion->affected_rows;
     }
-
+    public function lastInsertId() //guardar el partida_id en la sesion despues de crear la partida, metodo usado en partidaModel.
+    {
+        return $this->conexion->insert_id;
+    }
     public function __destruct()
     {
         $this->conexion->close();
