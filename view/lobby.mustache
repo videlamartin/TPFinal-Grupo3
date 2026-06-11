@@ -3,6 +3,8 @@
 <head>
     <title>QuizMaster - Lobby</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet"
           href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -83,6 +85,49 @@
             to{
                 opacity:1;
                 transform:translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            /* Apila las tarjetas */
+            .w3-third{
+                width: 100% !important;
+                float: none !important;
+            }
+
+            /* Ajustes generales */
+            .titulo{
+                font-size: 30px;
+                margin-top: 15px;
+            }
+
+            .subtitulo{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 0 10px;
+            }
+
+            /* Botón cerrar sesión debajo del saludo */
+            .subtitulo a{
+                margin-left: 0 !important;
+            }
+
+            /* Menos padding lateral */
+            .w3-container{
+                text-align: center;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                padding-bottom: 10px !important;
+            }
+
+            /* Evita que la tabla rompa el diseño */
+            table{
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
         }
 

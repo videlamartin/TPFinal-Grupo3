@@ -220,13 +220,6 @@
             setTimeout(() => errorCliente.style.display = "none", 4000);
         }
 
-
-        const errorServer = document.getElementById("error-server");
-        if (errorServer) {
-            const text = errorServer.innerText.trim();
-            if (text) mostrarError(text);
-        }
-
         function clearError() {
             errorCliente.style.display = "none";
             errorCliente.textContent = "";
