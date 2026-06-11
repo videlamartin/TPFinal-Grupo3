@@ -29,6 +29,13 @@ Options -Indexes
     # Si el proyecto no está en la raíz de htdocs, cambiar a /nombre-carpeta/
     RewriteBase /
 
+        # ── REGLA 0: contenido estático ──────────────────────
+        # Si la URL empieza con /public o /public/, se sirve tal cual.
+        # El guión "-" como destino significa "no reescribir la URL".
+        # [L] = parar acá, no evaluar las reglas de abajo.
+        # [NC] = case-insensitive (Public, PUBLIC, etc. también aplican).
+        RewriteRule ^(public)($|/) - [L,NC]
+
     # ── CONDICIONES ── (aplican a las dos reglas de abajo)
     # Solo reescribir si la URL NO es un archivo real en disco.
     # Ej: /css/estilo.css NO se reescribe porque el archivo existe.
