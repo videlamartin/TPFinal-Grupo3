@@ -8,17 +8,6 @@ class PreguntaModel
         $this->database = $database;
     }
 
-    public function calcularNivelDePregunta($pregunta)
-    {
-        if ($pregunta['veces_mostrada'] == 0) return 1;
-
-        $tasa = $pregunta['veces_correcta'] / $pregunta['veces_mostrada'];
-
-        if ($tasa >= 0.60) return 1;
-        if ($tasa >= 0.30) return 2;
-        return 3;
-    }
-
     public function obtenerPreguntaParaUsuario($nivelUsuario, $preguntasVistas = []) // nivel del usuario + preguntas no vistas = pregunta adecuada.
                                                                                      // en caso de no haber preguntas al nivel del usuario, da aleatorias
     {
@@ -52,6 +41,17 @@ class PreguntaModel
         return $preguntasDisponibles[array_rand($preguntasDisponibles)];
     }
 
+    public function calcularNivelDePregunta($pregunta)
+    {
+        if ($pregunta['veces_mostrada'] == 0) return 1;
+
+        $tasa = $pregunta['veces_correcta'] / $pregunta['veces_mostrada'];
+
+        if ($tasa >= 0.60) return 1;
+        if ($tasa >= 0.30) return 2;
+        return 3;
+    }
+
     public function obtenerRespuestas($preguntaId)
     {
         $sql = "SELECT * FROM respuesta WHERE pregunta_id = ?";
@@ -68,5 +68,17 @@ class PreguntaModel
     {
         $sql = "UPDATE pregunta SET veces_correcta = veces_correcta + 1 WHERE id = ?";
         $this->database->execute($sql, [$preguntaId]);
+    }
+    public function verificarRespuesta($respuestaId)
+    {
+        $sql = "SELECT * FROM respuesta WHERE id = ?";
+        $resultado = $this->database->query($sql, [$respuestaId]);
+        return count($resultado) > 0 ? $resultado[0] : null;
+    }
+    public function obtenerRespuestaCorrecta($preguntaId)
+    {
+        $sql = "SELECT * FROM respuesta WHERE pregunta_id = ? AND es_correcta = 1";
+        $resultado = $this->database->query($sql, [$preguntaId]);
+        return count($resultado) > 0 ? $resultado[0] : null;
     }
 }
