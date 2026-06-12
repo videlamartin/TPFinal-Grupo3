@@ -81,4 +81,21 @@ class PreguntaModel
         $resultado = $this->database->query($sql, [$preguntaId]);
         return count($resultado) > 0 ? $resultado[0] : null;
     }
+
+    public function obtenerPorId($id)
+    {
+        $sql = "SELECT 
+                p.id,
+                p.enunciado,
+                p.categoria_id,
+                c.nombre AS categoria_nombre,
+                c.color AS categoria_color
+            FROM pregunta p
+            INNER JOIN categoria c ON p.categoria_id = c.id
+            WHERE p.id = ?";
+
+        $result = $this->database->query($sql, [$id]);
+
+        return $result[0] ?? null;
+    }
 }

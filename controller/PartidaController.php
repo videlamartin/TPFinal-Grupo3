@@ -6,18 +6,24 @@ class PartidaController
     private $usuarioModel;
     private $renderer;
     private $request;
+    private $categoriaModel;
 
-    public function __construct($partidaModel, $preguntaModel, $usuarioModel, $renderer, $request)
+    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request)
     {
         $this->partidaModel = $partidaModel;
         $this->preguntaModel = $preguntaModel;
         $this->usuarioModel = $usuarioModel;
+        $this->categoriaModel = $categoriaModel;
         $this->renderer = $renderer;
         $this->request = $request;
+
     }
 
     public function iniciar()
     {
+
+
+
         if (!isset($_SESSION['id_usuario'])) {
             Redirect::to('/login/ver');
         }
@@ -29,6 +35,7 @@ class PartidaController
         $usuario = $this->usuarioModel->buscarPorId($_SESSION['id_usuario']);
         $nivelUsuario = $this->usuarioModel->calcularNivelUsuario($usuario);
         $partidaId = $this->partidaModel->crearPartida($_SESSION['id_usuario']);
+        $categoria = $this->categoriaModel->obtenerCategoriaRandom();
 
         $_SESSION['partida'] = [
             'partida_id'         => $partidaId,
@@ -36,7 +43,10 @@ class PartidaController
             'tiempo_inicio'      => null,
             'tiempo_limite'      => 30,
             'nivel_usuario'      => $nivelUsuario,
-            'preguntas_vistas'   => []
+            'preguntas_vistas'   => [],
+            'categoria_actual'   => $categoria['nombre'],
+            'categoria_color'    => $categoria['color'],
+            'categoria_id'       => $categoria['id']
         ];
 
         Redirect::to('/partida/pregunta');
@@ -59,6 +69,8 @@ class PartidaController
             'pregunta_id'     => $pregunta['id'],
             'categoria'       => $pregunta['categoria_nombre'],
             'categoria_color' => $pregunta['categoria_color'],
+            'categoria_actual'=> $_SESSION['partida']['categoria_actual'],
+            'categoria_color_actual' => $_SESSION['partida']['categoria_color'],
             'respuestas'      => $this->preguntaModel->obtenerRespuestas($pregunta['id']),
             'tiempo_restante' => $this->calcularTiempoRestante(),
             'puntaje_actual'  => $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id'])['puntaje']

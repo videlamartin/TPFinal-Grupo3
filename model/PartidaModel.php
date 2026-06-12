@@ -26,4 +26,15 @@ class PartidaModel
         $sql = "UPDATE partida SET estado = 'FINALIZADA', fecha_fin = NOW() WHERE id = ?";
         $this->database->execute($sql, [$partidaId]);
     }
+
+
+    public function obtenerPorId($partidaId)
+    {
+        $sql = "SELECT * FROM partida WHERE id = ?";
+        $resultado = $this->database->query($sql, [$partidaId]);
+
+        return count($resultado) > 0 ? $resultado[0] : null;
+    }
+
+
 }
