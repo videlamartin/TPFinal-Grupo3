@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>QuizMaster - Juego</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            transition: background 0.3s ease;
+            margin: 0;
+        }
+
+        .historia        { background:#e53935; }
+        .deportes        { background:#43a047; }
+        .ciencia         { background:#1e88e5; }
+        .arte            { background:#fb8c00; }
+        .entretenimiento { background:#8e24aa; }
+        .geografia       { background:#fdd835; }
+
+        /* --- TAREA 3: ancho del contenedor (mobile-first) --- */
+        .contenedor-juego {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            box-sizing: border-box;
+        }
+        @media (min-width: 768px) {
+            .contenedor-juego { padding: 32px 24px; }
+        }
+
+        .panel {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* --- TAREA 2: barra de tiempo visual --- */
+        .timer-wrap {
+            margin-bottom: 18px;
+        }
+        .timer-num {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .timer-num.warning { color: #e53935; }
+        .barra-tiempo {
+            height: 10px;
+            border-radius: 6px;
+            background: #ddd;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+        .barra-tiempo > div {
+            height: 100%;
+            width: 100%;
+            background: #43a047;
+            transition: width 1s linear, background 0.3s ease;
+        }
+
+        /* --- TAREA 4: ruleta de categoria --- */
+        #ruleta-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        #ruleta {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+        .ruleta-aguja {
+            width: 0; height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 26px solid #fff;
+            margin-bottom: -6px;
+            z-index: 1000;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+        }
+        #ruleta-texto {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-top: 22px;
+            text-align: center;
+            min-height: 1.4em;
+        }
+    </style>
+</head>
+<body class="{{categoria_actual}}">
+
+<!-- ================= TAREA 4: RULETA ================= -->
+<!-- Se muestra al cargar la pantalla, gira y se detiene en la
+     categoria de la partida ({{categoria_actual}}). Es solo UX:
+     la categoria ya viene definida desde el servidor. -->
+<div id="ruleta-overlay">
+    <div class="ruleta-aguja"></div>
+    <div id="ruleta"></div>
+    <div id="ruleta-texto">Sorteando categoría...</div>
+</div>
+
+<div class="contenedor-juego">
+
+    <h1 style="color:white; text-align:center; margin:0 0 4px;">PREGUNTADOS</h1>
+    <h2 style="color:white; text-align:center; margin:0 0 24px; font-weight:normal; font-size:1.1em;">
+        ¡Demuestra tu capacidad intelectual!
+    </h2>
+
+    <div class="panel w3-card-4 w3-white w3-round-xlarge w3-padding-32">
+
+        <!-- TAREA 2: TIMER -->
+        <div class="timer-wrap">
+            <div class="w3-row">
+                <div class="w3-col s6 w3-left-align">Tiempo</div>
+                <div class="w3-col s6 w3-right-align">
+                    <span class="timer-num" id="timer-num">{{tiempo_restante}}</span>s
+                </div>
+            </div>
+            <div class="barra-tiempo">
+                <div id="barra-tiempo-fill"></div>
+            </div>
+        </div>
+
+        <div class="w3-center w3-margin-bottom">
+            <span class="w3-badge"
+                  style="background-color: {{categoria_color}}; color: white; padding: 5px 15px;">
+                {{categoria}}
+            </span>
+        </div>
+
+        <h3 class="w3-center" style="margin-bottom: 30px; font-weight: bold;">
+            {{pregunta}}
+        </h3>
+
+        <form action="/partida/responder" method="POST">
+            {{#respuestas}}
+                <button type="submit" name="respuesta_id" value="{{id}}"
+                        class="w3-button w3-block w3-blue w3-round-xlarge w3-margin-bottom">
+                    {{texto}}
+                </button>
+            {{/respuestas}}
+        </form>
+
+        <!-- Form oculto: si el tiempo llega a 0, se envia solo para que
+             el servidor finalice la partida por tiempo. Mandamos un
+             respuesta_id invalido (0); el back ya valida el tiempo. -->
+        <form id="form-timeout" action="/partida/responder" method="POST" style="display:none;">
+            <input type="hidden" name="respuesta_id" value="0">
+        </form>
+
+        <div class="w3-row w3-margin-top w3-border-top w3-padding-top">
+            <div class="w3-col s6 w3-left-align">Puntaje: <b>{{puntaje_actual}}</b></div>
+            <div class="w3-col s6 w3-right-align">Categoría: <b>{{categoria_actual}}</b></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ====== TAREA 2: TIMER del lado del cliente ======
+    // Es un espejo visual del tiempo que ya controla el servidor.
+    // El back sigue siendo la fuente de verdad (valida en /responder).
+    var tiempoTotal   = {{tiempo_limite}};
+    var tiempoRestante = {{tiempo_restante}};
+
+    var numEl   = document.getElementById('timer-num');
+    var barraEl = document.getElementById('barra-tiempo-fill');
+
+    function pintarTimer() {
+        numEl.textContent = tiempoRestante;
+        var pct = Math.max(0, (tiempoRestante / tiempoTotal) * 100);
+        barraEl.style.width = pct + '%';
+
+        if (tiempoRestante <= 10) {
+            barraEl.style.background = '#e53935';
+            numEl.classList.add('warning');
+        } else if (tiempoRestante <= 20) {
+            barraEl.style.background = '#fb8c00';
+        }
+    }
+
+    pintarTimer();
+
+    var intervalo = setInterval(function () {
+        tiempoRestante--;
+        pintarTimer();
+        if (tiempoRestante <= 0) {
+            clearInterval(intervalo);
+            // Tiempo agotado: avisamos al servidor que finalice la partida
+            document.getElementById('form-timeout').submit();
+        }
+    }, 1000);
+
+    // ====== TAREA 4: RULETA de categoria ======
+    // Mapea el nombre de categoria a un angulo y hace girar la ruleta
+    // hasta detenerse en la categoria de esta partida.
+    var categoriaActual = "{{categoria_actual}}";
+    var colorActual     = "{{categoria_color_actual}}";
+
+    var coloresRuleta = {
+        historia:        '#e53935',
+        deportes:        '#43a047',
+        ciencia:         '#1e88e5',
+        arte:            '#fb8c00',
+        entretenimiento: '#8e24aa',
+        geografia:       '#fdd835'
+    };
+
+    // Construimos un gradiente conico con las 6 categorias (60 grados c/u)
+    var orden = ['historia','deportes','ciencia','arte','entretenimiento','geografia'];
+    var stops = [];
+    for (var i = 0; i < orden.length; i++) {
+        var c = coloresRuleta[orden[i]];
+        stops.push(c + ' ' + (i * 60) + 'deg ' + ((i + 1) * 60) + 'deg');
+    }
+    var ruleta = document.getElementById('ruleta');
+    ruleta.style.background = 'conic-gradient(' + stops.join(', ') + ')';
+
+    // Calculamos en que angulo esta la categoria de la partida.
+    // Normalizamos quitando acentos para que "Geografía" matchee con 'geografia'.
+    var categoriaNormalizada = categoriaActual
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '');
+    var idx = orden.indexOf(categoriaNormalizada);
+    if (idx < 0) idx = 0;
+    var anguloCategoria = idx * 60 + 30;          // centro del sector
+    var vueltas = 5 * 360;                          // varias vueltas para el efecto
+    var anguloFinal = vueltas + (360 - anguloCategoria);
+
+    var overlay     = document.getElementById('ruleta-overlay');
+    var ruletaTexto = document.getElementById('ruleta-texto');
+
+    // Pausamos el timer mientras gira la ruleta, para no perder tiempo gratis
+    clearInterval(intervalo);
+
+    setTimeout(function () {
+        ruleta.style.transform = 'rotate(' + anguloFinal + 'deg)';
+    }, 200);
+
+    // Cuando termina de girar: mostramos la categoria y arrancamos el timer
+    setTimeout(function () {
+        ruletaTexto.textContent = '¡' + categoriaActual.toUpperCase() + '!';
+        ruletaTexto.style.color = colorActual;
+        setTimeout(function () {
+            overlay.style.display = 'none';
+            intervalo = setInterval(function () {
+                tiempoRestante--;
+                pintarTimer();
+                if (tiempoRestante <= 0) {
+                    clearInterval(intervalo);
+                    document.getElementById('form-timeout').submit();
+                }
+            }, 1000);
+        }, 900);
+    }, 3300);
+</script>
+
+</body>
+</html>

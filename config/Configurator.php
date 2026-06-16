@@ -90,4 +90,43 @@ class Configurator
             new Request()
         );
     }
+
+
+    public function getPartidaModel()
+    {
+        return new PartidaModel(
+            $this->getDatabase()
+        );
+    }
+
+    public function getPreguntaModel()
+    {
+        return new PreguntaModel(
+            $this->getDatabase()
+        );
+    }
+
+    public function getCategoriaModel(){
+        return new CategoriaModel(
+            $this->getDatabase()
+        );
+    }
+
+
+
+    public function getPartidaController()
+    {
+        return new PartidaController(
+            $this->getPartidaModel(),
+            $this->getPreguntaModel(),
+            $this->getUsuarioModel(),
+            $this->getCategoriaModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
+
+
+
+
 }
