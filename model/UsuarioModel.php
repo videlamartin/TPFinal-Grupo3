@@ -95,6 +95,26 @@ class UsuarioModel
         if ($tasa >= 0.30) return 2;
         return 1;
     }
+
+    // Se llama al finalizar una partida: suma el puntaje obtenido al
+    // puntaje_total del perfil, y acumula cuantas preguntas respondio
+    // en total y cuantas acerto (esto alimenta calcularNivelUsuario).
+    public function sumarPuntaje($usuarioId, $puntosGanados, $preguntasRespondidas, $respuestasCorrectas)
+    {
+        $sql = "
+            UPDATE usuario
+            SET puntaje_total = puntaje_total + ?,
+                total_preguntas_respondidas = total_preguntas_respondidas + ?,
+                total_respuestas_correctas = total_respuestas_correctas + ?
+            WHERE id = ?
+        ";
+        $this->database->execute($sql, [
+            $puntosGanados,
+            $preguntasRespondidas,
+            $respuestasCorrectas,
+            $usuarioId
+        ]);
+    }
 }
 
 

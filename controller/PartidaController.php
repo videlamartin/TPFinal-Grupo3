@@ -73,6 +73,7 @@ class PartidaController
             'categoria_color_actual' => $_SESSION['partida']['categoria_color'],
             'respuestas'      => $this->preguntaModel->obtenerRespuestas($pregunta['id']),
             'tiempo_restante' => $this->calcularTiempoRestante(),
+            'tiempo_limite'   => $_SESSION['partida']['tiempo_limite'],
             'puntaje_actual'  => $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id'])['puntaje']
         ]);
     }
@@ -155,6 +156,23 @@ class PartidaController
     {
         $partida = $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id']);
         $this->partidaModel->finalizar($partida['id']);
+
+        // Sumar puntaje y estadisticas al perfil del usuario.
+        // Las correctas son las preguntas que se fueron acumulando en
+        // 'preguntas_vistas'. Si perdio por responder mal, esa ultima
+        // pregunta tambien cuenta como respondida (pero no como correcta).
+        $respuestasCorrectas  = count($_SESSION['partida']['preguntas_vistas']);
+        $preguntasRespondidas = $respuestasCorrectas + ($motivo === 'incorrecta' ? 1 : 0);
+
+        $this->usuarioModel->sumarPuntaje(
+            $_SESSION['id_usuario'],
+            $partida['puntaje'],
+            $preguntasRespondidas,
+            $respuestasCorrectas
+        );
+
+        // Mantener actualizado el puntaje que se muestra en el lobby/sesion
+        $_SESSION['puntaje_total'] += $partida['puntaje'];
 
         $datos = [
             'puntaje'            => $partida['puntaje'],
