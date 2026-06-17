@@ -21,9 +21,6 @@ class PartidaController
 
     public function iniciar()
     {
-
-
-
         if (!isset($_SESSION['id_usuario'])) {
             Redirect::to('/login/ver');
         }
@@ -31,24 +28,18 @@ class PartidaController
         if (isset($_SESSION['partida'])) {
             Redirect::to('/partida/pregunta');
         }
-
         $usuario = $this->usuarioModel->buscarPorId($_SESSION['id_usuario']);
         $nivelUsuario = $this->usuarioModel->calcularNivelUsuario($usuario);
         $partidaId = $this->partidaModel->crearPartida($_SESSION['id_usuario']);
         $categoria = $this->categoriaModel->obtenerCategoriaRandom();
-
         $_SESSION['partida'] = [
             'partida_id'         => $partidaId,
             'pregunta_actual_id' => null,
             'tiempo_inicio'      => null,
             'tiempo_limite'      => 30,
             'nivel_usuario'      => $nivelUsuario,
-            'preguntas_vistas'   => [],
-            'categoria_actual'   => $categoria['nombre'],
-            'categoria_color'    => $categoria['color'],
-            'categoria_id'       => $categoria['id']
+            'preguntas_vistas'   => []
         ];
-
         Redirect::to('/partida/pregunta');
     }
 
@@ -113,9 +104,16 @@ class PartidaController
             );
         }
 
+        // Sorteamos categoria nueva para cada pregunta
+        $categoria = $this->categoriaModel->obtenerCategoriaRandom();
+        $_SESSION['partida']['categoria_actual'] = $categoria['nombre'];
+        $_SESSION['partida']['categoria_color']  = $categoria['color'];
+        $_SESSION['partida']['categoria_id']     = $categoria['id'];
+
         $pregunta = $this->preguntaModel->obtenerPreguntaParaUsuario(
             $_SESSION['partida']['nivel_usuario'],
-            $_SESSION['partida']['preguntas_vistas']
+            $_SESSION['partida']['preguntas_vistas'],
+            $_SESSION['partida']['categoria_id']
         );
 
         if (!$pregunta) return null;
