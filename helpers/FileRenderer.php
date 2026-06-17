@@ -1,6 +1,4 @@
 <?php
-
-// Lo dejamos con fin didáctico. No se utiliza.
 class FileRenderer
 {
     public function __construct()

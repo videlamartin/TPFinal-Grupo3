@@ -8,35 +8,36 @@ class PreguntaModel
         $this->database = $database;
     }
 
-    public function obtenerPreguntaParaUsuario($nivelUsuario, $preguntasVistas = []) // nivel del usuario + preguntas no vistas = pregunta adecuada.
-                                                                                     // en caso de no haber preguntas al nivel del usuario, da aleatorias
+    public function obtenerPreguntaParaUsuario($nivelUsuario, $preguntasVistas = [], $categoriaId = null)
     {
+        $params = [];
+        $where = ["p.estado = 'APROBADA'"];
+
+        if ($categoriaId !== null) {
+            $where[] = "p.categoria_id = ?";
+            $params[] = $categoriaId;
+        }
+
         if (!empty($preguntasVistas)) {
             $placeholders = implode(',', array_fill(0, count($preguntasVistas), '?'));
-            $sql = "SELECT p.*, c.color AS categoria_color, c.nombre AS categoria_nombre
-                    FROM pregunta p
-                    JOIN categoria c ON p.categoria_id = c.id
-                    WHERE p.estado = 'APROBADA'
-                    AND p.id NOT IN ($placeholders)";
-            $preguntas = $this->database->query($sql, $preguntasVistas);
-        } else {
-            $sql = "SELECT p.*, c.color AS categoria_color, c.nombre AS categoria_nombre
-                    FROM pregunta p
-                    JOIN categoria c ON p.categoria_id = c.id
-                    WHERE p.estado = 'APROBADA'";
-            $preguntas = $this->database->query($sql, []);
+            $where[] = "p.id NOT IN ($placeholders)";
+            $params = array_merge($params, $preguntasVistas);
         }
+
+        $sql = "SELECT p.*, c.color AS categoria_color, c.nombre AS categoria_nombre
+            FROM pregunta p
+            JOIN categoria c ON p.categoria_id = c.id
+            WHERE " . implode(' AND ', $where);
+
+        $preguntas = $this->database->query($sql, $params);
 
         if (empty($preguntas)) return null;
 
-        // Filtramos por nivel en PHP
         $preguntasDelNivel = array_filter($preguntas, function($p) use ($nivelUsuario) {
             return $this->calcularNivelDePregunta($p) === $nivelUsuario;
         });
 
-        // Si no hay preguntas de ese nivel usamos cualquier aprobada
         $preguntasDisponibles = !empty($preguntasDelNivel) ? $preguntasDelNivel : $preguntas;
-
         $preguntasDisponibles = array_values($preguntasDisponibles);
         return $preguntasDisponibles[array_rand($preguntasDisponibles)];
     }
