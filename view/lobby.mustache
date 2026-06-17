@@ -2,154 +2,22 @@
 <html>
 <head>
     <title>QuizMaster - Lobby</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet"
-          href="https://www.w3schools.com/w3css/4/w3.css">
-
-    <style>
-
-        body{
-            background: linear-gradient(135deg,#4facfe,#00f2fe);
-            min-height:100vh;
-            font-family: Arial, sans-serif;
-            margin:0;
-        }
-
-        .titulo{
-            font-size:42px;
-            font-weight:bold;
-            text-align:center;
-            color:white;
-            text-shadow: 2px 2px 5px rgba(0,0,0,.3);
-            margin-top:20px;
-        }
-
-        .subtitulo{
-            text-align:center;
-            color:white;
-            margin-bottom:20px;
-        }
-
-        .panel-juego{
-            border-radius:20px;
-            overflow:hidden;
-            animation: aparecer .4s ease;
-        }
-
-        .btn-naranja{
-            background:#ff9800 !important;
-            color:white !important;
-            border-radius:25px;
-            transition:.3s;
-        }
-
-        .btn-naranja:hover{
-            transform:scale(1.05);
-            background:#ffb74d !important;
-        }
-
-        .btn-verde{
-            background:#43a047 !important;
-            color:white !important;
-            border-radius:25px;
-            transition:.3s;
-        }
-
-        .btn-verde:hover{
-            transform:scale(1.05);
-        }
-
-        .btn-azul{
-            background:#1e88e5 !important;
-            color:white !important;
-            border-radius:25px;
-            transition:.3s;
-        }
-
-        .btn-azul:hover{
-            transform:scale(1.05);
-        }
-
-        table{
-            border-radius:10px;
-            overflow:hidden;
-        }
-
-        @keyframes aparecer{
-            from{
-                opacity:0;
-                transform:translateY(15px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            /* Apila las tarjetas */
-            .w3-third{
-                width: 100% !important;
-                float: none !important;
-            }
-
-            /* Ajustes generales */
-            .titulo{
-                font-size: 30px;
-                margin-top: 15px;
-            }
-
-            .subtitulo{
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-                padding: 0 10px;
-            }
-
-            /* Botón cerrar sesión debajo del saludo */
-            .subtitulo a{
-                margin-left: 0 !important;
-            }
-
-            /* Menos padding lateral */
-            .w3-container{
-                text-align: center;
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                padding-bottom: 10px !important;
-            }
-
-            /* Evita que la tabla rompa el diseño */
-            table{
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/lobby.css">
 </head>
-
 <body>
 
-<div class="titulo">
-    QuizMaster
-</div>
+<div class="titulo">QuizMaster</div>
 
 <div class="subtitulo">
-        {{#bienvenido}}Bienvenido{{/bienvenido}}
-        {{#bienvenida}}Bienvenida{{/bienvenida}}
-        {{#bienvenidx}}Bienvenidx{{/bienvenidx}}
-        {{nombre}} · Puntaje: {{puntaje_total}}
-        <a href="/lobby/cerrarSesion"
-           class="w3-button w3-red"
-           style="margin-left:15px; border-radius:25px;">
-            Cerrar sesión
-        </a>
+    {{#bienvenido}}Bienvenido{{/bienvenido}}
+    {{#bienvenida}}Bienvenida{{/bienvenida}}
+    {{#bienvenidx}}Bienvenidx{{/bienvenidx}}
+    {{nombre}} · Puntaje: {{puntaje_total}}
+    <a href="/lobby/cerrarSesion" class="w3-button w3-red" style="margin-left:15px; border-radius:25px;">
+        Cerrar sesión
+    </a>
 </div>
 
 <div class="w3-container">
@@ -159,12 +27,9 @@
         <div class="w3-third w3-margin-bottom">
             <div class="w3-card-4 w3-white panel-juego">
                 <div class="w3-container w3-padding">
-                    <h3> Nueva Partida</h3>
+                    <h3>Nueva Partida</h3>
                     <p>Comenzá una nueva aventura.</p>
-                    <a href="/partida/iniciar"
-                       class="w3-button btn-naranja w3-block">
-                        Jugar
-                    </a>
+                    <a href="/partida/iniciar" class="w3-button btn-naranja w3-block">Jugar</a>
                 </div>
             </div>
         </div>
@@ -172,12 +37,9 @@
         <div class="w3-third w3-margin-bottom">
             <div class="w3-card-4 w3-white panel-juego">
                 <div class="w3-container w3-padding">
-                    <h3> Ranking</h3>
+                    <h3>Ranking</h3>
                     <p>Ver clasificación global.</p>
-                    <a href="/ranking/ver"
-                       class="w3-button btn-verde w3-block">
-                        Ver Ranking
-                    </a>
+                    <a href="/ranking/ver" class="w3-button btn-verde w3-block">Ver Ranking</a>
                 </div>
             </div>
         </div>
@@ -185,12 +47,9 @@
         <div class="w3-third w3-margin-bottom">
             <div class="w3-card-4 w3-white panel-juego">
                 <div class="w3-container w3-padding">
-                    <h3> Perfil</h3>
+                    <h3>Perfil</h3>
                     <p>Consultar tus estadísticas.</p>
-                    <a href="/perfil/ver"
-                       class="w3-button btn-azul w3-block">
-                        Mi Perfil
-                    </a>
+                    <a href="/perfil/ver" class="w3-button btn-azul w3-block">Mi Perfil</a>
                 </div>
             </div>
         </div>
@@ -198,41 +57,31 @@
     </div>
 
     <div class="w3-card-4 w3-white panel-juego w3-margin-top">
-
         <div class="w3-container">
-
             <h2>📜 Historial de Partidas</h2>
-
             <table class="w3-table-all">
-
                 <tr>
                     <th>Fecha</th>
                     <th>Puntaje</th>
                     <th>Resultado</th>
                 </tr>
-
                 <tr>
                     <td>18/07/2026</td>
                     <td>12</td>
                     <td>Derrota</td>
                 </tr>
-
                 <tr>
                     <td>17/07/2026</td>
                     <td>20</td>
                     <td>Victoria</td>
                 </tr>
-
                 <tr>
                     <td>16/07/2026</td>
                     <td>8</td>
                     <td>Derrota</td>
                 </tr>
-
             </table>
-
         </div>
-
     </div>
 
 </div>

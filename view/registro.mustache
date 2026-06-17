@@ -4,266 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuizMaster - Registro</title>
-
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-    <style>
-        * { box-sizing: border-box; }
-
-        body {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px 15px 40px;
-        }
-
-        .registro-wrapper { width: 100%; max-width: 480px; }
-
-        .titulo {
-            font-size: clamp(28px, 5vw, 40px);
-            font-weight: bold;
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 5px rgba(0,0,0,.3);
-            margin-bottom: 4px;
-        }
-
-        .subtitulo {
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-            font-size: clamp(14px, 3.5vw, 17px);
-        }
-
-        /* ── Stepper ── */
-        .stepper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .step-circle {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            color: white;
-            font-weight: bold;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(255,255,255,0.5);
-            transition: background .3s, border-color .3s;
-        }
-
-        .step.activo .step-circle  { background: #ff9800; border-color: #ff9800; box-shadow: 0 0 0 3px rgba(255,152,0,.3); }
-        .step.completado .step-circle { background: #43a047; border-color: #43a047; }
-
-        .step-label { font-size: 10px; color: rgba(255,255,255,0.8); white-space: nowrap; }
-        .step.activo .step-label   { color: white; font-weight: bold; }
-
-        .step-line {
-            flex: 1;
-            height: 2px;
-            background: rgba(255,255,255,0.3);
-            margin: 0 6px;
-            margin-bottom: 18px;
-            transition: background .3s;
-        }
-        .step-line.completado { background: #43a047; }
-
-        /* ── Card ── */
-        .registro-card {
-            width: 100%;
-            border-radius: 25px;
-            overflow: hidden;
-            animation: aparecer .5s ease;
-            background: white;
-        }
-
-        .card-body { padding: 28px 24px; }
-
-        .paso { display: none; }
-        .paso.activo { display: block; animation: fadeIn .3s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-
-        /* ── Inputs ── */
-        .campo { margin-bottom: 14px; }
-
-        .campo label {
-            display: block;
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        .campo input, .campo select {
-            width: 100%;
-            padding: 10px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 25px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color .2s;
-        }
-
-        .campo input:focus, .campo select:focus { border-color: #4facfe; }
-        .campo input.error-input { border-color: #e53935; }
-
-        .campo-fila { display: flex; gap: 10px; }
-        .campo-fila .campo { flex: 1; }
-
-        /* ── Foto ── */
-        .foto-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .foto-preview {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            overflow: hidden;
-            border: 3px solid #4facfe;
-        }
-
-        .foto-preview img { width: 100%; height: 100%; object-fit: cover; }
-
-        .btn-foto {
-            background: #f0f8ff;
-            border: 1.5px dashed #4facfe;
-            border-radius: 20px;
-            padding: 8px 20px;
-            color: #4facfe;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            transition: background .2s;
-        }
-        .btn-foto:hover { background: #e0f0ff; }
-        #foto_perfil { display: none; }
-
-        /* ── Mapa ── */
-        #mapa {
-            width: 100%; height: 220px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            border: 1.5px solid #ddd;
-        }
-
-        .ubicacion-info {
-            background: #f0f8ff;
-            border-radius: 15px;
-            padding: 10px 14px;
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ── Error ── */
-        .error-box {
-            background: #ffebee;
-            border-left: 4px solid #e53935;
-            border-radius: 10px;
-            padding: 10px 14px;
-            color: #c62828;
-            font-size: 13px;
-            margin-bottom: 14px;
-        }
-
-        .error-inline {
-            color: #e53935;
-            font-size: 12px;
-            margin-top: 4px;
-            margin-left: 10px;
-            display: none;
-        }
-
-        /* ── Botones ── */
-        .nav-botones { display: flex; gap: 10px; margin-top: 20px; }
-
-        .btn-siguiente {
-            flex: 1;
-            background: #ff9800;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: .3s;
-        }
-        .btn-siguiente:hover { background: #ffb74d; transform: scale(1.02); }
-
-        .btn-atras {
-            background: #eee;
-            color: #555;
-            border: none;
-            border-radius: 30px;
-            padding: 12px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: .3s;
-        }
-        .btn-atras:hover { background: #ddd; }
-
-        .btn-submit {
-            flex: 1;
-            background: #43a047;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: .3s;
-        }
-        .btn-submit:hover { background: #388e3c; transform: scale(1.02); }
-
-        .link-login { text-align: center; margin-top: 16px; color: white; font-size: 14px; }
-        .link-login a { color: white; font-weight: bold; text-decoration: underline; }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 480px) {
-            .card-body { padding: 22px 16px; }
-            .step-label { font-size: 9px; }
-        }
-    </style>
+    <link rel="stylesheet" href="/public/css/registro.css">
 </head>
-
 <body>
 
 <div class="registro-wrapper">
@@ -271,56 +15,36 @@
     <div class="titulo">QuizMaster</div>
     <div class="subtitulo">Creá tu cuenta y empezá a jugar</div>
 
-    <!-- Stepper -->
     <div class="stepper">
-        <div class="step activo" id="step-ind-1">
-            <div class="step-circle">1</div>
-            <div class="step-label">Datos</div>
-        </div>
+        <div class="step activo" id="step-ind-1"><div class="step-circle">1</div><div class="step-label">Datos</div></div>
         <div class="step-line" id="line-1"></div>
-        <div class="step" id="step-ind-2">
-            <div class="step-circle">2</div>
-            <div class="step-label">Ubicación</div>
-        </div>
+        <div class="step" id="step-ind-2"><div class="step-circle">2</div><div class="step-label">Ubicación</div></div>
         <div class="step-line" id="line-2"></div>
-        <div class="step" id="step-ind-3">
-            <div class="step-circle">3</div>
-            <div class="step-label">Cuenta</div>
-        </div>
+        <div class="step" id="step-ind-3"><div class="step-circle">3</div><div class="step-label">Cuenta</div></div>
     </div>
 
     <div class="registro-card">
         <div class="card-body">
 
-            <!-- Error server-side (solo se muestra si viene del servidor) -->
-            {{#error}}
-            <div class="error-box" id="error-server">⚠ {{error}}</div>
-            {{/error}}
-
-            <!-- Error client-side (se muestra via JS en el paso correspondiente) -->
+            {{#error}}<div class="error-box" id="error-server">⚠ {{error}}</div>{{/error}}
             <div class="error-box" id="error-cliente" style="display:none;"></div>
 
             <form action="/registro/registrar" method="POST" enctype="multipart/form-data" id="form-registro">
 
-                <!-- ══ PASO 1: Datos personales ══ -->
                 <div class="paso activo" id="paso-1">
-
                     <div class="foto-area">
                         <div class="foto-preview" id="preview-foto">👤</div>
                         <label class="btn-foto" for="foto_perfil">📷 Elegir foto de perfil</label>
-                        <input type="file" name="foto_perfil" id="foto_perfil" accept="image/jpeg,image/png,image/gif">
+                        <input type="file" name="foto_perfil" id="foto_perfil" accept="image/jpeg,image/png,image/gif" style="display:none;">
                     </div>
-
                     <div class="campo">
                         <label>Nombre completo *</label>
                         <input type="text" name="nombre_completo" id="nombre_completo" placeholder="Ej: María García">
                     </div>
-
                     <div class="campo-fila">
                         <div class="campo">
                             <label>Año de nacimiento *</label>
-                            <input type="number" name="anio_nacimiento" id="anio_nacimiento"
-                                   placeholder="Ej: 1995" min="1900" max="2010">
+                            <input type="number" name="anio_nacimiento" id="anio_nacimiento" placeholder="Ej: 1995" min="1900" max="2010">
                         </div>
                         <div class="campo">
                             <label>Sexo *</label>
@@ -332,60 +56,45 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="nav-botones">
                         <button type="button" class="btn-siguiente" onclick="irAPaso(2)">Siguiente →</button>
                     </div>
                 </div>
 
-                <!-- ══ PASO 2: Ubicación con mapa ══ -->
                 <div class="paso" id="paso-2">
-
-                    <p style="font-size:13px; color:#666; margin-bottom:10px;">
-                        📍 Hacé click en el mapa para seleccionar tu ubicación
-                    </p>
-
+                    <p style="font-size:13px; color:#666; margin-bottom:10px;">📍 Hacé click en el mapa para seleccionar tu ubicación</p>
                     <div id="mapa"></div>
-
                     <div class="ubicacion-info">
                         <span>🌍</span>
                         <span id="texto-ubicacion">Ninguna ubicación seleccionada</span>
                     </div>
-
                     <input type="hidden" name="pais"     id="pais">
                     <input type="hidden" name="ciudad"   id="ciudad">
                     <input type="hidden" name="latitud"  id="latitud">
                     <input type="hidden" name="longitud" id="longitud">
-
                     <div class="nav-botones">
-                        <button type="button" class="btn-atras"    onclick="irAPaso(1)">← Atrás</button>
+                        <button type="button" class="btn-atras"     onclick="irAPaso(1)">← Atrás</button>
                         <button type="button" class="btn-siguiente" onclick="irAPaso(3)">Siguiente →</button>
                     </div>
                 </div>
 
-                <!-- ══ PASO 3: Datos de cuenta ══ -->
                 <div class="paso" id="paso-3">
-
                     <div class="campo">
                         <label>Nombre de usuario *</label>
                         <input type="text" name="username" id="username" placeholder="Ej: maria_g">
                     </div>
-
                     <div class="campo">
                         <label>Email *</label>
                         <input type="email" name="email" id="email" placeholder="ejemplo@correo.com">
                     </div>
-
                     <div class="campo">
                         <label>Contraseña * (mínimo 6 caracteres)</label>
                         <input type="password" name="password" id="password" placeholder="••••••">
                     </div>
-
                     <div class="campo">
                         <label>Repetir contraseña *</label>
                         <input type="password" name="repetir_password" id="repetir_password" placeholder="••••••">
                     </div>
-
                     <div class="nav-botones">
                         <button type="button" class="btn-atras" onclick="irAPaso(2)">← Atrás</button>
                         <button type="submit" class="btn-submit" onclick="return validarAntesDeEnviar()">✅ Registrarme</button>
@@ -396,180 +105,11 @@
         </div>
     </div>
 
-    <div class="link-login">
-        ¿Ya tenés cuenta? <a href="/login/ver">Iniciá sesión</a>
-    </div>
+    <div class="link-login">¿Ya tenés cuenta? <a href="/login/ver">Iniciá sesión</a></div>
 
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    // ── Stepper ──────────────────────────────────────────
-    let pasoActual = 1;
-    const totalPasos = 3;
-
-    // Si el servidor devolvió un error, quedarse en paso 3
-    window.addEventListener('DOMContentLoaded', function() {
-        const errorServer = document.getElementById('error-server');
-        if (errorServer) {
-            irAPasoSilencioso(3);
-        }
-    });
-
-    function mostrarError(msg) {
-        const box = document.getElementById('error-cliente');
-        box.textContent = '⚠ ' + msg;
-        box.style.display = 'block';
-        setTimeout(() => box.style.display = 'none', 4000);
-    }
-
-    function irAPasoSilencioso(nuevoPaso) {
-        // Mueve al paso sin validar (para restaurar estado tras error server)
-        document.getElementById('paso-' + pasoActual).classList.remove('activo');
-        document.getElementById('step-ind-' + pasoActual).classList.remove('activo');
-        if (nuevoPaso > pasoActual) {
-            document.getElementById('step-ind-' + pasoActual).classList.add('completado');
-        }
-        pasoActual = nuevoPaso;
-        document.getElementById('paso-' + pasoActual).classList.add('activo');
-        document.getElementById('step-ind-' + pasoActual).classList.add('activo');
-        actualizarLineas();
-    }
-
-    function irAPaso(nuevoPaso) {
-        if (nuevoPaso > pasoActual && !validarPaso(pasoActual)) return;
-
-        document.getElementById('paso-' + pasoActual).classList.remove('activo');
-        document.getElementById('step-ind-' + pasoActual).classList.remove('activo');
-
-        if (nuevoPaso > pasoActual) {
-            document.getElementById('step-ind-' + pasoActual).classList.add('completado');
-        } else {
-            document.getElementById('step-ind-' + pasoActual).classList.remove('completado');
-        }
-
-        pasoActual = nuevoPaso;
-        document.getElementById('paso-' + pasoActual).classList.add('activo');
-        document.getElementById('step-ind-' + pasoActual).classList.remove('completado');
-        document.getElementById('step-ind-' + pasoActual).classList.add('activo');
-
-        actualizarLineas();
-
-        if (pasoActual === 2 && !mapaIniciado) {
-            iniciarMapa();
-        }
-    }
-
-    function actualizarLineas() {
-        for (let i = 1; i < totalPasos; i++) {
-            document.getElementById('line-' + i).classList.toggle('completado', i < pasoActual);
-        }
-    }
-
-    // ── Validaciones por paso ────────────────────────────
-    function validarPaso(paso) {
-        if (paso === 1) {
-            const nombre = document.getElementById('nombre_completo').value.trim();
-            const anio   = document.getElementById('anio_nacimiento').value;
-            const sexo   = document.getElementById('sexo').value;
-            if (!nombre)                          { mostrarError('Ingresá tu nombre completo'); return false; }
-            if (!anio || anio < 1900 || anio > 2010) { mostrarError('Ingresá un año de nacimiento válido'); return false; }
-            if (!sexo)                            { mostrarError('Seleccioná una opción de sexo'); return false; }
-        }
-
-        if (paso === 2) {
-            if (!document.getElementById('pais').value) {
-                mostrarError('Seleccioná tu ubicación en el mapa');
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    function validarAntesDeEnviar() {
-        const username = document.getElementById('username').value.trim();
-        const email    = document.getElementById('email').value.trim();
-        const pass     = document.getElementById('password').value;
-        const pass2    = document.getElementById('repetir_password').value;
-
-        if (!username)       { mostrarError('El nombre de usuario es obligatorio'); return false; }
-        if (!email)          { mostrarError('El email es obligatorio'); return false; }
-        if (pass.length < 6) { mostrarError('La contraseña debe tener al menos 6 caracteres'); return false; }
-        if (pass !== pass2)  {
-            mostrarError('Las contraseñas no coinciden');
-            document.getElementById('repetir_password').value = '';
-            document.getElementById('repetir_password').focus();
-            return false;
-        }
-        return true;
-    }
-
-    // ── Preview foto ─────────────────────────────────────
-    document.getElementById('foto_perfil').addEventListener('change', function() {
-        const archivo = this.files[0];
-        if (!archivo) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('preview-foto').innerHTML = '<img src="' + e.target.result + '">';
-        };
-        reader.readAsDataURL(archivo);
-    });
-
-    // ── Mapa Leaflet ─────────────────────────────────────
-    // Coordenadas de UNLaM - Universidad Nacional de La Matanza
-    const LAT_UNLAM  = -34.6983;
-    const LNG_UNLAM  = -58.5630;
-    const ZOOM_UNLAM = 13;
-
-    let mapaIniciado = false;
-    let marcador     = null;
-
-    function iniciarMapa() {
-        mapaIniciado = true;
-
-        const mapa = L.map('mapa').setView([LAT_UNLAM, LNG_UNLAM], ZOOM_UNLAM);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(mapa);
-
-        mapa.on('click', function(e) {
-            const lat = e.latlng.lat;
-            const lng = e.latlng.lng;
-
-            if (marcador) {
-                marcador.setLatLng(e.latlng);
-            } else {
-                marcador = L.marker(e.latlng).addTo(mapa);
-            }
-
-            document.getElementById('latitud').value  = lat.toFixed(6);
-            document.getElementById('longitud').value = lng.toFixed(6);
-            document.getElementById('texto-ubicacion').textContent = 'Cargando ubicación...';
-
-            fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json&accept-language=es')
-                .then(r => r.json())
-                .then(data => {
-                    const addr   = data.address || {};
-                    const pais   = addr.country || '';
-                    const ciudad = addr.city || addr.town || addr.village || addr.county || '';
-
-                    document.getElementById('pais').value   = pais;
-                    document.getElementById('ciudad').value = ciudad;
-
-                    const texto = ciudad ? ciudad + ', ' + pais : pais || 'Ubicación seleccionada';
-                    document.getElementById('texto-ubicacion').textContent = texto;
-                    marcador.bindPopup(texto).openPopup();
-                })
-                .catch(() => {
-                    document.getElementById('pais').value   = 'Desconocido';
-                    document.getElementById('ciudad').value = 'Desconocido';
-                    document.getElementById('texto-ubicacion').textContent = 'Ubicación seleccionada';
-                });
-        });
-    }
-</script>
-
+<script src="/public/js/registro.js"></script>
 </body>
 </html>
