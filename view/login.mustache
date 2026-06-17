@@ -2,179 +2,35 @@
 <html>
 <head>
     <title>QuizMaster - Login</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet"
-          href="https://www.w3schools.com/w3css/4/w3.css">
-
-    <style>
-
-        body{
-            background: linear-gradient(135deg,#4facfe,#00f2fe);
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-family: Arial, sans-serif;
-            padding:15px;
-        }
-
-        .login-wrapper{
-            width:100%;
-            max-width:420px;
-        }
-
-        .login-card{
-            width:100%;
-            border-radius:25px;
-            overflow:hidden;
-            animation: aparecer .5s ease;
-        }
-
-        .titulo{
-            font-size:clamp(28px, 5vw, 40px);
-            font-weight:bold;
-            text-align:center;
-            color:white;
-            text-shadow: 2px 2px 5px rgba(0,0,0,.3);
-        }
-
-        .subtitulo{
-            text-align:center;
-            color:white;
-            margin-bottom:20px;
-            font-size:clamp(14px, 3.5vw, 18px);
-        }
-
-        .btn-login{
-            background:#ff9800 !important;
-            color:white !important;
-            font-size:18px;
-            border-radius:30px;
-            transition:.3s;
-        }
-
-        .btn-login:hover{
-            transform:scale(1.03);
-            background:#ffb74d !important;
-        }
-
-        .input-round{
-            border-radius:25px;
-        }
-
-        @keyframes aparecer{
-            from{
-                opacity:0;
-                transform:translateY(20px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
-        }
-
-        .categoria{
-            width:18px;
-            height:18px;
-            border-radius:50%;
-            display:inline-block;
-            margin:3px;
-        }
-
-        .error-box {
-            background: #ffebee;
-            border-left: 4px solid #e53935;
-            border-radius: 10px;
-            padding: 10px 14px;
-            color: #c62828;
-            font-size: 13px;
-            margin-bottom: 14px;
-        }
-
-        .error-inline {
-            color: #e53935;
-            font-size: 12px;
-            margin-top: 4px;
-            margin-left: 10px;
-            display: none;
-        }
-
-        /* Tablets */
-        @media (max-width:768px){
-
-            .login-card{
-                border-radius:20px;
-            }
-
-        }
-
-        /* Celulares chicos */
-        @media (max-width:480px){
-
-            body{
-                padding:10px;
-            }
-
-            .w3-container{
-                padding:20px !important;
-            }
-
-            .btn-login{
-                font-size:16px;
-            }
-
-        }
-
-        .historia{background:#e53935;}
-        .deportes{background:#43a047;}
-        .ciencia{background:#1e88e5;}
-        .arte{background:#fb8c00;}
-        .entretenimiento{background:#8e24aa;}
-        .geografia{background:#fdd835;}
-
-    </style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/login.css">
 </head>
-
 <body>
 
 <div class="login-wrapper">
 
-    <div class="titulo">
-        QuizMaster
-    </div>
-
-    <div class="subtitulo">
-        ¡Demostrá cuánto sabés!
-    </div>
+    <div class="titulo">QuizMaster</div>
+    <div class="subtitulo">¡Demostrá cuánto sabés!</div>
 
     <div class="w3-card-4 w3-white login-card">
-
         <div class="w3-container w3-padding-32">
 
             <form action="/login/login" method="POST">
 
                 <input class="w3-input w3-border w3-margin-bottom input-round"
-                       type="text"
-                       name="username"
-                       placeholder="Usuario">
+                       type="text" name="username" placeholder="Usuario">
 
                 <input class="w3-input w3-border w3-margin-bottom input-round"
-                       type="password"
-                       name="password"
-                       placeholder="Contraseña">
+                       type="password" name="password" placeholder="Contraseña">
+
                 {{#error}}
-                    <div class="error-box" id="error-server">
-                        ⚠ {{error}}
-                    </div>
+                    <div class="error-box" id="error-server">⚠ {{error}}</div>
                 {{/error}}
 
                 <div class="error-box" id="error-cliente" style="display:none;"></div>
 
-                <button class="w3-button w3-block w3-margin-top btn-login">
-                    Ingresar
-                </button>
+                <button class="w3-button w3-block w3-margin-top btn-login">Ingresar</button>
 
             </form>
 
@@ -186,78 +42,19 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="w3-center w3-margin-top">
-
         <span class="categoria historia"></span>
         <span class="categoria deportes"></span>
         <span class="categoria ciencia"></span>
         <span class="categoria arte"></span>
         <span class="categoria entretenimiento"></span>
         <span class="categoria geografia"></span>
-
     </div>
 
 </div>
 
+<script src="/public/js/login.js"></script>
 </body>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.querySelector("form");
-        if (!form) return;
-
-        const usernameInput = form.querySelector('input[name="username"]');
-        const passwordInput = form.querySelector('input[name="password"]');
-
-        const errorCliente = document.getElementById("error-cliente");
-
-        function mostrarError(msg) {
-            errorCliente.textContent = "⚠ " + msg;
-            errorCliente.style.display = "block";
-            setTimeout(() => errorCliente.style.display = "none", 4000);
-        }
-
-        function clearError() {
-            errorCliente.style.display = "none";
-            errorCliente.textContent = "";
-        }
-
-        function validarAntesDeEnviar() {
-            const username = usernameInput.value.trim();
-            const pass = passwordInput.value;
-
-            if (!username) {
-                mostrarError("El usuario es obligatorio");
-                usernameInput.focus();
-                return false;
-            }
-            if (!pass) {
-                mostrarError("La contraseña es obligatoria");
-                passwordInput.focus();
-                return false;
-            }
-            if (pass.length < 6) {
-                mostrarError("La contraseña debe tener al menos 6 caracteres");
-                passwordInput.focus();
-                return false;
-            }
-            return true;
-        }
-
-        form.addEventListener("submit", (e) => {
-            clearError();
-            if (!validarAntesDeEnviar()) {
-                e.preventDefault();
-            }
-        });
-
-        [usernameInput, passwordInput].forEach((inp) => {
-            inp.addEventListener("input", clearError);
-        });
-    });
-</script>
-
 </html>
