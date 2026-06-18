@@ -1,0 +1,110 @@
+* { box-sizing: border-box; }
+
+body {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 15px 40px;
+}
+
+.registro-wrapper { width: 100%; max-width: 480px; }
+
+.titulo {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0,0,0,.3);
+    margin-bottom: 4px;
+}
+
+.subtitulo {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+    font-size: clamp(14px, 3.5vw, 17px);
+}
+
+.stepper { display:flex; justify-content:center; align-items:center; margin-bottom:20px; }
+.step { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.step-circle {
+    width:36px; height:36px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.3);
+    color:white; font-weight:bold; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    border:2px solid rgba(255,255,255,0.5);
+    transition:background .3s, border-color .3s;
+}
+.step.activo .step-circle     { background:#ff9800; border-color:#ff9800; box-shadow:0 0 0 3px rgba(255,152,0,.3); }
+.step.completado .step-circle  { background:#43a047; border-color:#43a047; }
+.step-label { font-size:10px; color:rgba(255,255,255,0.8); white-space:nowrap; }
+.step.activo .step-label       { color:white; font-weight:bold; }
+.step-line { flex:1; height:2px; background:rgba(255,255,255,0.3); margin:0 6px; margin-bottom:18px; transition:background .3s; }
+.step-line.completado          { background:#43a047; }
+
+.registro-card { width:100%; border-radius:25px; overflow:hidden; animation:aparecer .5s ease; background:white; }
+.card-body     { padding:28px 24px; }
+.paso          { display:none; }
+.paso.activo   { display:block; animation:fadeIn .3s ease; }
+
+.campo { margin-bottom:14px; }
+.campo label { display:block; font-size:13px; color:#555; margin-bottom:4px; font-weight:bold; }
+.campo input, .campo select {
+    width:100%; padding:10px 16px;
+    border:1.5px solid #ddd; border-radius:25px;
+    font-size:14px; outline:none; transition:border-color .2s;
+}
+.campo input:focus, .campo select:focus { border-color:#4facfe; }
+.campo-fila { display:flex; gap:10px; }
+.campo-fila .campo { flex:1; }
+
+.foto-area { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:14px; }
+.foto-preview {
+    width:90px; height:90px; border-radius:50%;
+    background:#f0f0f0; display:flex; align-items:center;
+    justify-content:center; font-size:36px; overflow:hidden; border:3px solid #4facfe;
+}
+.foto-preview img { width:100%; height:100%; object-fit:cover; }
+.btn-foto {
+    background:#f0f8ff; border:1.5px dashed #4facfe;
+    border-radius:20px; padding:8px 20px;
+    color:#4facfe; cursor:pointer; font-size:13px; font-weight:bold; transition:background .2s;
+}
+.btn-foto:hover { background:#e0f0ff; }
+
+#mapa { width:100%; height:220px; border-radius:15px; margin-bottom:10px; border:1.5px solid #ddd; }
+
+.ubicacion-info {
+    background:#f0f8ff; border-radius:15px;
+    padding:10px 14px; font-size:13px; color:#333;
+    margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+
+.error-box {
+    background:#ffebee; border-left:4px solid #e53935;
+    border-radius:10px; padding:10px 14px;
+    color:#c62828; font-size:13px; margin-bottom:14px;
+}
+
+.nav-botones { display:flex; gap:10px; margin-top:20px; }
+.btn-siguiente { flex:1; background:#ff9800; color:white; border:none; border-radius:30px; padding:12px; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s; }
+.btn-siguiente:hover { background:#ffb74d; transform:scale(1.02); }
+.btn-atras    { background:#eee; color:#555; border:none; border-radius:30px; padding:12px 20px; font-size:16px; cursor:pointer; transition:.3s; }
+.btn-atras:hover { background:#ddd; }
+.btn-submit   { flex:1; background:#43a047; color:white; border:none; border-radius:30px; padding:12px; font-size:16px; font-weight:bold; cursor:pointer; transition:.3s; }
+.btn-submit:hover { background:#388e3c; transform:scale(1.02); }
+
+.link-login { text-align:center; margin-top:16px; color:white; font-size:14px; }
+.link-login a { color:white; font-weight:bold; text-decoration:underline; }
+
+@keyframes aparecer { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:translateX(0); } }
+
+@media (max-width: 480px) {
+    .card-body { padding:22px 16px; }
+    .step-label { font-size:9px; }
+}

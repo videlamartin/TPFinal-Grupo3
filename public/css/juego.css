@@ -1,0 +1,85 @@
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    transition: background 0.3s ease;
+    margin: 0;
+}
+
+.historia        { background:#fdd835; }
+.deportes        { background:#fb8c00; }
+.ciencia         { background:#43a047; }
+.arte            { background:#e53935; }
+.entretenimiento { background:#8e24aa; }
+.geografia       { background:#1e88e5; }
+
+.contenedor-juego {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    box-sizing: border-box;
+}
+@media (min-width: 768px) {
+    .contenedor-juego { padding: 32px 24px; }
+}
+
+.panel {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.timer-wrap { margin-bottom: 18px; }
+.timer-num {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.timer-num.warning { color: #e53935; }
+.barra-tiempo {
+    height: 10px;
+    border-radius: 6px;
+    background: #ddd;
+    overflow: hidden;
+    margin-top: 6px;
+}
+.barra-tiempo > div {
+    height: 100%;
+    width: 100%;
+    background: #43a047;
+    transition: width 1s linear, background 0.3s ease;
+}
+
+#ruleta-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+#ruleta {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+.ruleta-aguja {
+    width: 0; height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 26px solid #fff;
+    margin-bottom: -6px;
+    z-index: 1000;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+}
+#ruleta-texto {
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-top: 22px;
+    text-align: center;
+    min-height: 1.4em;
+}

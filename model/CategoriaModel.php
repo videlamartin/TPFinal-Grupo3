@@ -23,4 +23,13 @@ $result = $this->database->query($sql, [$id]);
 
 return $result[0] ?? null;
 }
+
+
+    public function obtenerTodas()
+    {
+        $sql = "SELECT * FROM categoria ORDER BY id";
+        return $this->database->query($sql);
+    }
+
+
 }

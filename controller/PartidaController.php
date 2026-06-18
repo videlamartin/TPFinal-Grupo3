@@ -21,9 +21,6 @@ class PartidaController
 
     public function iniciar()
     {
-
-
-
         if (!isset($_SESSION['id_usuario'])) {
             Redirect::to('/login/ver');
         }
@@ -31,24 +28,18 @@ class PartidaController
         if (isset($_SESSION['partida'])) {
             Redirect::to('/partida/pregunta');
         }
-
         $usuario = $this->usuarioModel->buscarPorId($_SESSION['id_usuario']);
         $nivelUsuario = $this->usuarioModel->calcularNivelUsuario($usuario);
         $partidaId = $this->partidaModel->crearPartida($_SESSION['id_usuario']);
         $categoria = $this->categoriaModel->obtenerCategoriaRandom();
-
         $_SESSION['partida'] = [
             'partida_id'         => $partidaId,
             'pregunta_actual_id' => null,
             'tiempo_inicio'      => null,
             'tiempo_limite'      => 30,
             'nivel_usuario'      => $nivelUsuario,
-            'preguntas_vistas'   => [],
-            'categoria_actual'   => $categoria['nombre'],
-            'categoria_color'    => $categoria['color'],
-            'categoria_id'       => $categoria['id']
+            'preguntas_vistas'   => []
         ];
-
         Redirect::to('/partida/pregunta');
     }
 
@@ -73,6 +64,7 @@ class PartidaController
             'categoria_color_actual' => $_SESSION['partida']['categoria_color'],
             'respuestas'      => $this->preguntaModel->obtenerRespuestas($pregunta['id']),
             'tiempo_restante' => $this->calcularTiempoRestante(),
+            'tiempo_limite'   => $_SESSION['partida']['tiempo_limite'],
             'puntaje_actual'  => $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id'])['puntaje']
         ]);
     }
@@ -90,6 +82,11 @@ class PartidaController
 
         $respuestaId = (int) $_POST['respuesta_id'];
         $respuesta = $this->preguntaModel->verificarRespuesta($respuestaId);
+
+        if ($respuestaId === 0) {
+            $this->finalizarPartida('tiempo');
+            return;
+        }
 
         if ($respuesta['es_correcta']) {
             $this->procesarAcierto();
@@ -112,9 +109,16 @@ class PartidaController
             );
         }
 
+        // Sorteamos categoria nueva para cada pregunta
+        $categoria = $this->categoriaModel->obtenerCategoriaRandom();
+        $_SESSION['partida']['categoria_actual'] = $categoria['nombre'];
+        $_SESSION['partida']['categoria_color']  = $categoria['color'];
+        $_SESSION['partida']['categoria_id']     = $categoria['id'];
+
         $pregunta = $this->preguntaModel->obtenerPreguntaParaUsuario(
             $_SESSION['partida']['nivel_usuario'],
-            $_SESSION['partida']['preguntas_vistas']
+            $_SESSION['partida']['preguntas_vistas'],
+            $_SESSION['partida']['categoria_id']
         );
 
         if (!$pregunta) return null;
@@ -155,6 +159,23 @@ class PartidaController
     {
         $partida = $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id']);
         $this->partidaModel->finalizar($partida['id']);
+
+        // Sumar puntaje y estadisticas al perfil del usuario.
+        // Las correctas son las preguntas que se fueron acumulando en
+        // 'preguntas_vistas'. Si perdio por responder mal, esa ultima
+        // pregunta tambien cuenta como respondida (pero no como correcta).
+        $respuestasCorrectas  = count($_SESSION['partida']['preguntas_vistas']);
+        $preguntasRespondidas = $respuestasCorrectas + ($motivo === 'incorrecta' ? 1 : 0);
+
+        $this->usuarioModel->sumarPuntaje(
+            $_SESSION['id_usuario'],
+            $partida['puntaje'],
+            $preguntasRespondidas,
+            $respuestasCorrectas
+        );
+
+        // Mantener actualizado el puntaje que se muestra en el lobby/sesion
+        $_SESSION['puntaje_total'] += $partida['puntaje'];
 
         $datos = [
             'puntaje'            => $partida['puntaje'],

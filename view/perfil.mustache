@@ -4,33 +4,13 @@
     <title>QuizMaster - Mi Perfil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style>
-        body {
-            background: linear-gradient(135deg,#4facfe,#00f2fe);
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-        .avatar {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-        }
-        .avatar-placeholder {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            background: #ccc;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 40px;
-            margin: 0 auto;
-        }
-    </style>
+    <link rel="stylesheet" href="/public/css/perfil.css">
 </head>
 <body>
 
 <div class="w3-container w3-padding-32" style="max-width:600px; margin:0 auto;">
 
-    <h1 style="color:white; text-align:center;"> Mi Perfil</h1>
+    <h1 style="color:white; text-align:center;">Mi Perfil</h1>
 
     <div class="w3-card-4 w3-white w3-round-xlarge w3-padding-32">
 
@@ -39,7 +19,7 @@
                 <img src="{{foto_perfil}}" class="avatar">
             {{/foto_perfil}}
             {{^foto_perfil}}
-                <div class="avatar-placeholder"></div>
+                <div class="avatar-placeholder">👤</div>
             {{/foto_perfil}}
         </div>
 
@@ -54,8 +34,7 @@
         </table>
 
         <div class="w3-center w3-margin-top">
-            <a href="/lobby/ver"
-               class="w3-button w3-blue w3-round-xlarge">
+            <a href="/lobby/ver" class="w3-button w3-blue w3-round-xlarge">
                 ← Volver al Lobby
             </a>
         </div>
