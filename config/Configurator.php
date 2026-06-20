@@ -28,6 +28,7 @@ class Configurator
     public function getLobbyController()
     {
         return new LobbyController(
+            $this->getPartidaModel(),
             $this->getRenderer(),
             new Request()
         );
@@ -119,7 +120,6 @@ class Configurator
             new Request()
         );
     }
-
     public function getRankingController()
     {
         return new RankingController(
@@ -128,4 +128,5 @@ class Configurator
             new Request()
         );
     }
+
 }
