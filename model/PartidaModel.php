@@ -34,6 +34,14 @@ class PartidaModel
 
         return count($resultado) > 0 ? $resultado[0] : null;
     }
-
+    public function obtenerHistorialPorUsuario($usuarioId, $limite = 5)
+    {
+        $sql = "SELECT fecha_inicio, puntaje 
+            FROM partida 
+            WHERE usuario_id = ? AND estado = 'FINALIZADA'
+            ORDER BY fecha_inicio DESC
+            LIMIT ?";
+        return $this->database->query($sql, [$usuarioId, $limite]);
+    }
 
 }
