@@ -91,29 +91,23 @@ class Configurator
         );
     }
 
-
     public function getPartidaModel()
     {
         return new PartidaModel(
             $this->getDatabase()
         );
     }
-
     public function getPreguntaModel()
     {
         return new PreguntaModel(
             $this->getDatabase()
         );
     }
-
     public function getCategoriaModel(){
         return new CategoriaModel(
             $this->getDatabase()
         );
     }
-
-
-
     public function getPartidaController()
     {
         return new PartidaController(
@@ -126,7 +120,12 @@ class Configurator
         );
     }
 
-
-
-
+    public function getRankingController()
+    {
+        return new RankingController(
+            $this->getUsuarioModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
 }
