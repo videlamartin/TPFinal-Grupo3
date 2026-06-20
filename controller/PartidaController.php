@@ -1,6 +1,7 @@
 <?php
 class PartidaController
 {
+    const DURACION_RULETA_SEGUNDOS = 4;
     private $partidaModel;
     private $preguntaModel;
     private $usuarioModel;
@@ -55,6 +56,8 @@ class PartidaController
             return;
         }
 
+        $tiempoFin = $_SESSION['partida']['tiempo_inicio'] + $_SESSION['partida']['tiempo_limite'];
+
         $this->renderer->render('juego', [
             'pregunta'        => $pregunta['enunciado'],
             'pregunta_id'     => $pregunta['id'],
@@ -65,6 +68,7 @@ class PartidaController
             'respuestas'      => $this->preguntaModel->obtenerRespuestas($pregunta['id']),
             'tiempo_restante' => $this->calcularTiempoRestante(),
             'tiempo_limite'   => $_SESSION['partida']['tiempo_limite'],
+            'tiempo_fin'      => $tiempoFin * 1000, // milisegundos para JS
             'puntaje_actual'  => $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id'])['puntaje']
         ]);
     }
@@ -104,7 +108,6 @@ class PartidaController
             );
         }
 
-        // Sorteamos categoria nueva para cada pregunta
         $categoria = $this->categoriaModel->obtenerCategoriaRandom();
         $_SESSION['partida']['categoria_actual'] = $categoria['nombre'];
         $_SESSION['partida']['categoria_color']  = $categoria['color'];
@@ -119,7 +122,7 @@ class PartidaController
         if (!$pregunta) return null;
 
         $_SESSION['partida']['pregunta_actual_id'] = $pregunta['id'];
-        $_SESSION['partida']['tiempo_inicio'] = time();
+        $_SESSION['partida']['tiempo_inicio'] = time() + self::DURACION_RULETA_SEGUNDOS;;
         $this->preguntaModel->registrarMostrada($pregunta['id']);
 
         return $pregunta;
