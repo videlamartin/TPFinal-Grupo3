@@ -95,6 +95,16 @@ class UsuarioModel
         if ($tasa >= 0.30) return 2;
         return 1;
     }
+    public function obtenerRanking()
+    {
+        $sql = "SELECT id, username, puntaje_total,
+                   @posicion := @posicion + 1 AS posicion
+            FROM usuario, (SELECT @posicion := 0) AS init
+            WHERE activo = 1
+            ORDER BY puntaje_total DESC";
+
+        return $this->database->query($sql);
+    }
 
     // Se llama al finalizar una partida: suma el puntaje obtenido al
     // puntaje_total del perfil, y acumula cuantas preguntas respondio
