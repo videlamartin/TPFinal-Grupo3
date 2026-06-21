@@ -88,7 +88,9 @@ class Configurator
         return new RegistroController(
             $this->getUsuarioModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->config['mail_username'],
+            $this->config['mail_password']
         );
     }
 
@@ -104,7 +106,8 @@ class Configurator
             $this->getDatabase()
         );
     }
-    public function getCategoriaModel(){
+    public function getCategoriaModel()
+    {
         return new CategoriaModel(
             $this->getDatabase()
         );
@@ -128,5 +131,4 @@ class Configurator
             new Request()
         );
     }
-
 }
