@@ -107,7 +107,7 @@ class Configurator
             $this->getDatabase()
         );
     }
-
+    
     public function getCategoriaModel()
     {
         return new CategoriaModel(
