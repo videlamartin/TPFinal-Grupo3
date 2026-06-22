@@ -5,12 +5,16 @@ class RegistroController
     private $usuarioModel;
     private $renderer;
     private $request;
+    private $mailUsername;
+    private $mailPassword;
 
-    public function __construct($usuarioModel, $renderer, $request)
+    public function __construct($usuarioModel, $renderer, $request, $mailUsername, $mailPassword)
     {
-        $this->usuarioModel = $usuarioModel;
-        $this->renderer = $renderer;
-        $this->request = $request;
+        $this->usuarioModel  = $usuarioModel;
+        $this->renderer      = $renderer;
+        $this->request       = $request;
+        $this->mailUsername  = $mailUsername;
+        $this->mailPassword  = $mailPassword;
     }
 
     public function ver()
@@ -147,11 +151,55 @@ class RegistroController
 
     private function enviarMailValidacion($email, $token)
     {
-        $enlace = "http://localhost/registro/validarCuenta?token=" . $token;
-        $asunto = "Validá tu cuenta";
-        $mensaje = "Hacé click en el siguiente enlace para activar tu cuenta: $enlace";
-        $headers = "From: noreply@preguntados.com";
+        require_once __DIR__ . '/../vendor/phpmailer/src/PHPMailer.php';
+        require_once __DIR__ . '/../vendor/phpmailer/src/SMTP.php';
+        require_once __DIR__ . '/../vendor/phpmailer/src/Exception.php';
 
-        mail($email, $asunto, $mensaje, $headers);
+        $urlBase = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+            ? 'https://' . $_SERVER['HTTP_HOST']
+            : 'http://' . $_SERVER['HTTP_HOST'];
+
+        $enlace = $urlBase . '/registro/validarCuenta?token=' . $token;
+
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->CharSet    = 'utf-8';
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $this->mailUsername;
+            $mail->Password   = $this->mailPassword;
+            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+            $mail->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                    'allow_self_signed' => true,
+                ]
+            ];
+
+            $mail->setFrom($this->mailUsername, 'QuizMaster');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'Validá tu cuenta en QuizMaster';
+            $mail->Body    = "
+                <h2>¡Bienvenido a QuizMaster!</h2>
+                <p>Hacé click en el siguiente enlace para activar tu cuenta:</p>
+                <a href='{$enlace}' style='background:#ff9800;color:white;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;'>
+                    Activar mi cuenta
+                </a>
+                <p style='margin-top:20px;color:#888;font-size:12px;'>
+                    Si no te registraste en QuizMaster, ignorá este mail.
+                </p>
+            ";
+
+            $mail->send();
+        } catch (Exception $e) {
+            // Si el mail falla, el registro igual se completa
+            error_log('Error al enviar mail: ' . $mail->ErrorInfo);
+        }
     }
 }
