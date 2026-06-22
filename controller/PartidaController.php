@@ -87,6 +87,12 @@ class PartidaController
         $respuestaId = (int) $_POST['respuesta_id'];
         $respuesta = $this->preguntaModel->verificarRespuesta($respuestaId);
 
+
+        if (!$respuesta) {
+            $this->finalizarPartida('tiempo');
+            return;
+        }
+
         if ($respuesta['es_correcta']) {
             $this->procesarAcierto();
             Redirect::to('/partida/pregunta');

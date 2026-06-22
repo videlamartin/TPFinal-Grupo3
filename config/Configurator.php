@@ -38,6 +38,7 @@ class Configurator
     {
         return new PerfilController(
             $this->getUsuarioModel(),
+            $this->getPartidaModel(),
             $this->getRenderer(),
             new Request()
         );
@@ -106,6 +107,7 @@ class Configurator
             $this->getDatabase()
         );
     }
+    
     public function getCategoriaModel()
     {
         return new CategoriaModel(

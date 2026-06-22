@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/public/css/perfil.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -33,6 +35,50 @@
             <tr><td><b>Rol</b></td><td>{{rol}}</td></tr>
         </table>
 
+        <div class="w3-card w3-white w3-padding">
+
+            <h3>Historial de partidas</h3>
+
+            <table class="w3-table w3-bordered">
+
+                <tr>
+                    <th>Fecha</th>
+                    <th>Puntaje</th>
+                </tr>
+
+                {{#historial}}
+                    <tr>
+                        <td>{{fecha_inicio}}</td>
+                        <td>{{puntaje}} pts</td>
+                    </tr>
+                {{/historial}}
+
+                {{^historial}}
+                    <tr>
+                        <td colspan="2">No hay partidas registradas</td>
+                    </tr>
+                {{/historial}}
+
+            </table>
+
+        </div>
+
+
+        <div class="w3-card w3-white w3-padding w3-margin-top">
+
+            <h3>Ubicación</h3>
+
+            <div id="mapa-perfil"  data-ciudad="{{ciudad}}"
+                 data-pais="{{pais}}" style="height:
+                 250px; width: 100%;">
+            </div>
+
+            <div style="margin-top:10px;">
+                {{ciudad}}, {{pais}}
+            </div>
+
+        </div>
+
         <div class="w3-center w3-margin-top">
             <a href="/lobby/ver" class="w3-button w3-blue w3-round-xlarge">
                 ← Volver al Lobby
@@ -45,3 +91,4 @@
 
 </body>
 </html>
+<script src="/public/js/perfil.js"></script>
