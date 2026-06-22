@@ -13,7 +13,7 @@
 <div class="subtitulo">
     {{#bienvenido}}Bienvenido{{/bienvenido}}
     {{#bienvenida}}Bienvenida{{/bienvenida}}
-    {{#bienvenidx}}Bienvenidx{{/bienvenidx}}
+    {{#bienvenida_neutro}}Te damos la bienvenida{{/bienvenida_neutro}}
     {{nombre}} · Puntaje: {{puntaje_total}}
     <a href="/lobby/cerrarSesion" class="w3-button w3-red" style="margin-left:15px; border-radius:25px;">
         Cerrar sesión
@@ -58,29 +58,19 @@
 
     <div class="w3-card-4 w3-white panel-juego w3-margin-top">
         <div class="w3-container">
-            <h2>📜 Historial de Partidas</h2>
-            <table class="w3-table-all">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Puntaje</th>
-                    <th>Resultado</th>
-                </tr>
-                <tr>
-                    <td>18/07/2026</td>
-                    <td>12</td>
-                    <td>Derrota</td>
-                </tr>
-                <tr>
-                    <td>17/07/2026</td>
-                    <td>20</td>
-                    <td>Victoria</td>
-                </tr>
-                <tr>
-                    <td>16/07/2026</td>
-                    <td>8</td>
-                    <td>Derrota</td>
-                </tr>
-            </table>
+            <h2>Historial de Partidas</h2>
+<table class="w3-table-all">
+    <tr>
+        <th>Fecha</th>
+        <th>Resultado</th>
+    </tr>
+    {{#historial}}
+    <tr>
+        <td>{{fecha_inicio}}</td>
+        <td>{{puntaje}} puntos</td>
+    </tr>
+    {{/historial}}
+</table>
         </div>
     </div>
 

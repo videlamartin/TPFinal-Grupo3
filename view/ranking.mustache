@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QuizMaster - Ranking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/lobby.css">
+</head>
+<body>
+
+<div class="titulo">QuizMaster</div>
+
+<div class="w3-container w3-padding-32">
+    <div class="w3-card-4 w3-white panel-juego" style="max-width:700px;margin:0 auto;">
+        <div class="w3-container w3-padding">
+            <h2>Ranking Global</h2>
+            <table class="w3-table-all">
+                <tr>
+                    <th>Posición</th>
+                    <th>Usuario</th>
+                    <th>Puntaje</th>
+                </tr>
+                {{#ranking}}
+                <tr>
+                    <td>{{posicion}}</td>
+                    <td>
+                        <a href="/perfil/ver?id={{id}}">{{username}}</a>
+                    </td>
+                    <td>{{puntaje_total}}</td>
+                </tr>
+                {{/ranking}}
+            </table>
+
+            <a href="/lobby/ver" class="w3-button btn-azul w3-block w3-margin-top">Volver al lobby</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

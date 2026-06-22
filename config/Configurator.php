@@ -28,6 +28,7 @@ class Configurator
     public function getLobbyController()
     {
         return new LobbyController(
+            $this->getPartidaModel(),
             $this->getRenderer(),
             new Request()
         );
@@ -37,6 +38,7 @@ class Configurator
     {
         return new PerfilController(
             $this->getUsuarioModel(),
+            $this->getPartidaModel(),
             $this->getRenderer(),
             new Request()
         );
@@ -87,10 +89,11 @@ class Configurator
         return new RegistroController(
             $this->getUsuarioModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->config['mail_username'],
+            $this->config['mail_password']
         );
     }
-
 
     public function getPartidaModel()
     {
@@ -98,22 +101,18 @@ class Configurator
             $this->getDatabase()
         );
     }
-
     public function getPreguntaModel()
     {
         return new PreguntaModel(
             $this->getDatabase()
         );
     }
-
-    public function getCategoriaModel(){
+    public function getCategoriaModel()
+    {
         return new CategoriaModel(
             $this->getDatabase()
         );
     }
-
-
-
     public function getPartidaController()
     {
         return new PartidaController(
@@ -125,8 +124,12 @@ class Configurator
             new Request()
         );
     }
-
-
-
-
+    public function getRankingController()
+    {
+        return new RankingController(
+            $this->getUsuarioModel(),
+            $this->getRenderer(),
+            new Request()
+        );
+    }
 }

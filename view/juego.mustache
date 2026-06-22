@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/public/css/juego.css">
 </head>
-<body class="{{categoria_actual}}" data-pregunta-id="{{pregunta_id}}">
+<body class="{{categoria_actual}}">
 
 <div id="ruleta-overlay">
     <div class="ruleta-aguja"></div>
@@ -26,7 +26,7 @@
             <div class="w3-row">
                 <div class="w3-col s6 w3-left-align">Tiempo</div>
                 <div class="w3-col s6 w3-right-align">
-                    <span class="timer-num" id="timer-num">{{tiempo_restante}}</span>s
+                    <span class="timer-num" id="timer-num">{{tiempo_limite}}</span>s
                 </div>
             </div>
             <div class="barra-tiempo">
@@ -67,8 +67,8 @@
 
 <!-- Variables del servidor para el JS -->
 <script>
-    var tiempoTotal    = {{tiempo_limite}};
-    var tiempoRestante = {{tiempo_restante}};
+    var tiempoTotal     = {{tiempo_limite}};
+    var tiempoFin       = {{tiempo_fin}}; // timestamp en ms (hora real del servidor)
     var categoriaActual = "{{categoria_actual}}";
     var colorActual     = "{{categoria_color_actual}}";
 </script>

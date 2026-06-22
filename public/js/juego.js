@@ -5,23 +5,28 @@ var barraEl = document.getElementById('barra-tiempo-fill');
 var intervalo;
 
 function pintarTimer() {
-    numEl.textContent = tiempoRestante;
-    var pct = Math.max(0, (tiempoRestante / tiempoTotal) * 100);
+    var ahora = Date.now();
+    var msRestantes = tiempoFin - ahora;
+    var segundosRestantes = Math.max(0, Math.ceil(msRestantes / 1000));
+
+    numEl.textContent = segundosRestantes;
+    var pct = Math.max(0, (segundosRestantes / tiempoTotal) * 100);
     barraEl.style.width = pct + '%';
 
-    if (tiempoRestante <= 10) {
+    if (segundosRestantes <= 10) {
         barraEl.style.background = '#e53935';
         numEl.classList.add('warning');
-    } else if (tiempoRestante <= 20) {
+    } else if (segundosRestantes <= 20) {
         barraEl.style.background = '#fb8c00';
     }
+
+    return segundosRestantes;
 }
 
 function iniciarTimer() {
     intervalo = setInterval(function () {
-        tiempoRestante--;
-        pintarTimer();
-        if (tiempoRestante <= 0) {
+        var restante = pintarTimer();
+        if (restante <= 0) {
             clearInterval(intervalo);
             document.getElementById('form-timeout').submit();
         }
@@ -30,12 +35,12 @@ function iniciarTimer() {
 
 function iniciarRuleta() {
     var coloresRuleta = {
-        historia: '#e53935',
-        deportes: '#43a047',
-        ciencia: '#1e88e5',
-        arte: '#fb8c00',
+        historia:        '#fdd835',
+        deportes:        '#fb8c00',
+        ciencia:         '#43a047',
+        arte:            '#e53935',
         entretenimiento: '#8e24aa',
-        geografia: '#fdd835'
+        geografia:       '#1e88e5'
     };
 
     var orden = ['historia','deportes','ciencia','arte','entretenimiento','geografia'];
@@ -77,15 +82,18 @@ function iniciarRuleta() {
     }, 3300);
 }
 
-var preguntaId = document.body.dataset.preguntaId;
-var claveRuleta = 'ruleta_' + preguntaId + '_' + categoriaActual;
+function esRecarga() {
+    var entries = performance.getEntriesByType("navigation");
+    if (entries.length > 0) {
+        return entries[0].type === "reload";
+    }
+    return false;
+}
 
-if (sessionStorage.getItem(claveRuleta)) {
+if (esRecarga()) {
     document.getElementById('ruleta-overlay').style.display = 'none';
     pintarTimer();
     iniciarTimer();
 } else {
-    sessionStorage.setItem(claveRuleta, '1');
-    pintarTimer();
     iniciarRuleta();
 }
