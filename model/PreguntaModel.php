@@ -44,7 +44,11 @@ class PreguntaModel
 
     public function calcularNivelDePregunta($pregunta)
     {
-        if ($pregunta['veces_mostrada'] == 0) return 1;
+        $MIN_MUESTRAS = 10;
+
+        if ($pregunta['veces_mostrada'] < $MIN_MUESTRAS) {
+            return 1;
+        }
 
         $tasa = $pregunta['veces_correcta'] / $pregunta['veces_mostrada'];
 

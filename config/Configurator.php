@@ -6,7 +6,20 @@ class Configurator
 
     public function __construct()
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $this->config = parse_ini_file("config/config.ini");
+    }
+
+    public function getUsuarioSesion()
+    {
+        return [
+            'id' => $_SESSION['id_usuario'] ?? null,
+            'rol' => $_SESSION['rol'] ?? null,
+            'username' => $_SESSION['username'] ?? null
+        ];
     }
 
     public function getLoginController()
@@ -30,7 +43,8 @@ class Configurator
         return new LobbyController(
             $this->getPartidaModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->getUsuarioSesion()
         );
     }
 
@@ -40,7 +54,8 @@ class Configurator
             $this->getUsuarioModel(),
             $this->getPartidaModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->getUsuarioSesion()
         );
     }
 
@@ -107,7 +122,6 @@ class Configurator
             $this->getDatabase()
         );
     }
-    
     public function getCategoriaModel()
     {
         return new CategoriaModel(
@@ -122,7 +136,8 @@ class Configurator
             $this->getUsuarioModel(),
             $this->getCategoriaModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->getUsuarioSesion()
         );
     }
     public function getRankingController()
@@ -130,7 +145,8 @@ class Configurator
         return new RankingController(
             $this->getUsuarioModel(),
             $this->getRenderer(),
-            new Request()
+            new Request(),
+            $this->getUsuarioSesion()
         );
     }
 }

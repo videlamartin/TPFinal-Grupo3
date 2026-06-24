@@ -23,3 +23,11 @@ body {
     font-size: 40px;
     margin: 0 auto;
 }
+
+.qr-responsive {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
