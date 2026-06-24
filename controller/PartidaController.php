@@ -9,7 +9,9 @@ class PartidaController
     private $request;
     private $categoriaModel;
 
-    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request)
+    private $usuarioSesion;
+
+    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request, $usuarioSesion)
     {
         $this->partidaModel = $partidaModel;
         $this->preguntaModel = $preguntaModel;
@@ -17,21 +19,18 @@ class PartidaController
         $this->categoriaModel = $categoriaModel;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->usuarioSesion = $usuarioSesion;
 
     }
 
     public function iniciar()
     {
-        if (!isset($_SESSION['id_usuario'])) {
-            Redirect::to('/login/ver');
-        }
-
         if (isset($_SESSION['partida'])) {
             Redirect::to('/partida/pregunta');
         }
-        $usuario = $this->usuarioModel->buscarPorId($_SESSION['id_usuario']);
+        $usuario = $this->usuarioModel->buscarPorId($this->usuarioSesion['id']);
         $nivelUsuario = $this->usuarioModel->calcularNivelUsuario($usuario);
-        $partidaId = $this->partidaModel->crearPartida($_SESSION['id_usuario']);
+        $partidaId = $this->partidaModel->crearPartida($this->usuarioSesion['id']);
         $categoria = $this->categoriaModel->obtenerCategoriaRandom();
         $_SESSION['partida'] = [
             'partida_id'         => $partidaId,
@@ -46,7 +45,7 @@ class PartidaController
 
     public function pregunta()
     {
-        if (!isset($_SESSION['id_usuario'])) Redirect::to('/login/ver');
+        if (!$this->usuarioSesion['id']) Redirect::to('/login/ver');
         if (!isset($_SESSION['partida']))    Redirect::to('/lobby/ver');
 
         $pregunta = $this->obtenerOSortearPregunta();
@@ -75,7 +74,7 @@ class PartidaController
 
     public function responder()
     {
-        if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['partida'])) {
+        if (!$this->usuarioSesion['id'] || !isset($_SESSION['partida'])) {
             Redirect::to('/login/ver');
         }
 
@@ -172,7 +171,7 @@ class PartidaController
         $preguntasRespondidas = $respuestasCorrectas + ($motivo === 'incorrecta' ? 1 : 0);
 
         $this->usuarioModel->sumarPuntaje(
-            $_SESSION['id_usuario'],
+            $this->usuarioSesion['id'],
             $partida['puntaje'],
             $preguntasRespondidas,
             $respuestasCorrectas

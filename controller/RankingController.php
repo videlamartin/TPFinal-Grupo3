@@ -5,19 +5,18 @@ class RankingController
     private $renderer;
     private $request;
 
-    public function __construct($usuarioModel, $renderer, $request)
+    private $usuarioSesion;
+
+    public function __construct($usuarioModel, $renderer, $request, $usuarioSesion)
     {
         $this->usuarioModel = $usuarioModel;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->usuarioSesion = $usuarioSesion;
     }
 
     public function ver()
     {
-        if (!isset($_SESSION['id_usuario'])) {
-            Redirect::to('/login/ver');
-        }
-
         $ranking = $this->usuarioModel->obtenerRanking();
 
         $this->renderer->render('ranking', [

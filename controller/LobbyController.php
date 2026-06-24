@@ -6,23 +6,26 @@ class LobbyController
     private $request;
     private $partidaModel;
 
-    public function __construct($partidaModel,$renderer, $request)
+    private $usuarioSession;
+
+    public function __construct($partidaModel,$renderer, $request, $usuarioSession)
     {
         $this->partidaModel = $partidaModel;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->usuarioSession = $usuarioSession;
     }
 
     public function ver()
     {
-        if (!isset($_SESSION['id_usuario'])) {
-            Redirect::to('/login/ver');
-        }
+        $rol = $this->usuarioSession['rol'];
+        $idUsuario = $this->usuarioSession['id'];
+
         $historial = $this->partidaModel->obtenerHistorialPorUsuario($_SESSION['id_usuario']);
 
         $datos = [
-            'username' => $_SESSION['username'],
-            'rol' => $_SESSION['rol'],
+            'username' => $this->usuarioSession['username'],
+            'rol' => $rol,
             'nombre' => $_SESSION['nombre_completo'],
             'puntaje_total' => $_SESSION['puntaje_total'],
             'bienvenida_neutro'    => $_SESSION['sexo'] === 'Prefiero no cargarlo',

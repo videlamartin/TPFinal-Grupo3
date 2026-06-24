@@ -7,30 +7,30 @@ class PerfilController
     private $renderer;
     private $request;
 
-    public function __construct($usuarioModel, $partidaModel, $renderer, $request)
+    private $usuarioSesion;
+
+    public function __construct($usuarioModel, $partidaModel, $renderer, $request, $usuarioSesion)
     {
         $this->usuarioModel = $usuarioModel;
         $this->partidaModel = $partidaModel;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->usuarioSesion = $usuarioSesion;
     }
 
     public function ver()
     {
-        if (!isset($_SESSION['id_usuario'])) {
-            Redirect::to('/login/ver');
-        }
-
         $id = $this->request->get('id');
 
-        // si no mandan id, muestra el logueado
         if (!$id) {
-            $id = $_SESSION['id_usuario'];
+            $id = $this->usuarioSesion['id'];
         }
 
         $usuario = $this->usuarioModel->buscarPorId($id);
 
         $historial = $this->partidaModel->obtenerHistorialPorUsuario($id);
+
+        $urlPerfil = "./perfil/ver?id=" . $id;
 
         $datos = [
             'nombre_completo' => $usuario['nombre_completo'],
@@ -43,7 +43,9 @@ class PerfilController
             'foto_perfil' => $usuario['foto_perfil'],
             'historial'      => $historial,
             'pais' => $usuario['pais'],
-            'ciudad' => $usuario['ciudad']
+            'ciudad' => $usuario['ciudad'],
+            'url_perfil' => $urlPerfil,
+            'qr_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode($urlPerfil)
         ];
 
         $this->renderer->render('perfil', $datos);
