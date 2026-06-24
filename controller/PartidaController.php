@@ -25,10 +25,6 @@ class PartidaController
 
     public function iniciar()
     {
-        if (!$this->usuarioSesion['id']) {
-            Redirect::to('/login/ver');
-        }
-
         if (isset($_SESSION['partida'])) {
             Redirect::to('/partida/pregunta');
         }

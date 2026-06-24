@@ -20,13 +20,8 @@ class PerfilController
 
     public function ver()
     {
-        if (!$this->usuarioSesion['id']) {
-            Redirect::to('/login/ver');
-        }
-
         $id = $this->request->get('id');
 
-        // si no mandan id, muestra el logueado
         if (!$id) {
             $id = $this->usuarioSesion['id'];
         }

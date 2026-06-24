@@ -17,10 +17,6 @@ class RankingController
 
     public function ver()
     {
-        if (!$this->usuarioSesion['id']) {
-            Redirect::to('/login/ver');
-        }
-
         $ranking = $this->usuarioModel->obtenerRanking();
 
         $this->renderer->render('ranking', [

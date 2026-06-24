@@ -13,6 +13,10 @@ class Configurator
         $this->config = parse_ini_file("config/config.ini");
     }
 
+    public function isValidSession()
+    {
+        return isset($_SESSION['id_usuario']) && !empty($_SESSION['id_usuario']);
+    }
     public function getUsuarioSesion()
     {
         return [
