@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>QuizMaster - {{#es_modificar}}Editar{{/es_modificar}}{{^es_modificar}}Nueva{{/es_modificar}} Pregunta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/editor-form.css">
+</head>
+<body>
+
+<div class="titulo">QuizMaster</div>
+<div class="subtitulo">
+    {{#es_modificar}}Editar pregunta{{/es_modificar}}
+    {{^es_modificar}}Nueva pregunta{{/es_modificar}}
+</div>
+
+<div class="w3-container w3-padding-32">
+    <div class="w3-card-4 w3-white panel-juego" style="max-width:700px; margin:0 auto;">
+        <div class="w3-container w3-padding">
+
+            <form method="POST"
+                  action="{{#es_modificar}}/editor/modificar{{/es_modificar}}{{^es_modificar}}/editor/crear{{/es_modificar}}">
+
+                {{#es_modificar}}
+                <input type="hidden" name="id" value="{{id}}">
+                {{/es_modificar}}
+
+                <!-- Enunciado -->
+                <div class="w3-margin-bottom">
+                    <label class="w3-text-blue"><b>Enunciado</b></label>
+                    <textarea name="enunciado"
+                              class="w3-input w3-border w3-round"
+                              rows="3"
+                              required>{{enunciado}}</textarea>
+                </div>
+
+                <!-- Categoría -->
+                <div class="w3-margin-bottom">
+                    <label class="w3-text-blue"><b>Categoría</b></label>
+                    <select name="categoria_id"
+                            class="w3-select w3-border w3-round"
+                            required>
+                        {{#categorias}}
+                        <option value="{{id}}"
+                            {{#seleccionada}}selected{{/seleccionada}}>
+                            {{nombre}}
+                        </option>
+                        {{/categorias}}
+                    </select>
+                </div>
+
+                <!-- Respuestas -->
+                <div class="w3-margin-bottom">
+                    <label class="w3-text-blue"><b>Respuestas</b></label>
+                    <p class="w3-text-grey" style="margin:4px 0 12px;">
+                        Marcá con el círculo cuál es la correcta.
+                    </p>
+
+                    {{#respuestas}}
+                   <div class="respuesta-row w3-margin-bottom">
+                       <div class="respuesta-radio">
+                            <input type="radio"
+                                   name="respuesta_correcta"
+                                   value="{{indice}}"
+                                   {{#es_correcta}}checked{{/es_correcta}}
+                                   required>
+                        </div>
+                        <div class="respuesta-input">
+                            {{#es_modificar}}
+                            <input type="hidden"
+                                   name="respuesta_id[]"
+                                   value="{{id}}">
+                            {{/es_modificar}}
+                            <input type="text"
+                                   name="respuesta_texto[]"
+                                   value="{{texto}}"
+                                   class="w3-input w3-border w3-round"
+                                   placeholder="Respuesta {{indice_display}}"
+                                   required>
+                        </div>
+                    </div>
+                    {{/respuestas}}
+
+                    {{^respuestas}}
+                    <!-- Modo crear: 4 campos vacíos -->
+                    {{#campos_crear}}
+                    <div class="w3-row-padding w3-margin-bottom">
+                        <div class="w3-col s1 w3-center" style="padding-top:8px;">
+                            <input type="radio"
+                                   name="respuesta_correcta"
+                                   value="{{indice}}"
+                                   required>
+                        </div>
+                        <div class="w3-col s11">
+                            <input type="text"
+                                   name="respuesta_texto[]"
+                                   class="w3-input w3-border w3-round"
+                                   placeholder="Respuesta {{indice_display}}"
+                                   required>
+                        </div>
+                    </div>
+                    {{/campos_crear}}
+                    {{/respuestas}}
+                </div>
+
+                <button type="submit"
+                        class="w3-button w3-green w3-round-xlarge form-btn">
+                    {{#es_modificar}}Guardar cambios{{/es_modificar}}
+                    {{^es_modificar}}Crear pregunta{{/es_modificar}}
+                </button>
+
+                <a href="/editor/ver"
+                   class="w3-button w3-grey w3-round-xlarge form-btn">
+                    Cancelar
+                </a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
