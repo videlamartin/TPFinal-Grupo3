@@ -30,7 +30,7 @@ class PerfilController
 
         $historial = $this->partidaModel->obtenerHistorialPorUsuario($id);
 
-        $urlPerfil = "./perfil/ver?id=" . $id;
+        $urlPerfil = "https://tpquizmaster.free.nf/perfil/ver?id=" . $id;
 
         $datos = [
             'nombre_completo' => $usuario['nombre_completo'],
