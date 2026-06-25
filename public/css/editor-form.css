@@ -1,0 +1,37 @@
+.respuesta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.respuesta-radio {
+    flex: 0 0 30px;
+    text-align: center;
+}
+
+.respuesta-input {
+    flex: 1;
+}
+
+.form-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+
+    .respuesta-row {
+        gap: 8px;
+    }
+
+    .w3-card-4 {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+
+    textarea,
+    select,
+    input[type="text"] {
+        font-size: 16px;
+    }
+}

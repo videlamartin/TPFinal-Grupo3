@@ -103,4 +103,72 @@ class PreguntaModel
 
         return $result[0] ?? null;
     }
+    public function obtenerTodas($busqueda = null)
+    {
+        $params = [];
+        $where  = [];
+
+        if ($busqueda !== null && $busqueda !== '') {
+            $where[]  = "p.enunciado LIKE ?";
+            $params[] = '%' . $busqueda . '%';
+        }
+
+        $sql = "SELECT p.id, p.enunciado, p.estado,
+                       c.nombre AS categoria_nombre, c.color AS categoria_color
+                FROM pregunta p
+                JOIN categoria c ON p.categoria_id = c.id"
+            . (!empty($where) ? " WHERE " . implode(' AND ', $where) : "")
+            . " ORDER BY c.nombre, p.id";
+
+        return $this->database->query($sql, $params);
+    }
+
+    public function obtenerCategorias()
+    {
+        $sql = "SELECT id, nombre, color FROM categoria ORDER BY nombre";
+        return $this->database->query($sql, []);
+    }
+
+    public function crear($enunciado, $categoriaId, $creadorId, $respuestas)
+    {
+        // $respuestas es un array de ['texto' => '...', 'es_correcta' => 0|1]
+        $sql = "INSERT INTO pregunta (enunciado, categoria_id, creador_id, estado)
+                VALUES (?, ?, ?, 'APROBADA')";
+        $this->database->execute($sql, [$enunciado, $categoriaId, $creadorId]);
+        $preguntaId = $this->database->lastInsertId();
+
+        foreach ($respuestas as $respuesta) {
+            $sql = "INSERT INTO respuesta (pregunta_id, texto, es_correcta)
+                    VALUES (?, ?, ?)";
+            $this->database->execute($sql, [
+                $preguntaId,
+                $respuesta['texto'],
+                $respuesta['es_correcta']
+            ]);
+        }
+
+        return $preguntaId;
+    }
+
+    public function modificar($id, $enunciado, $categoriaId, $respuestas)
+    {
+        $sql = "UPDATE pregunta SET enunciado = ?, categoria_id = ? WHERE id = ?";
+        $this->database->execute($sql, [$enunciado, $categoriaId, $id]);
+
+        foreach ($respuestas as $respuesta) {
+            $sql = "UPDATE respuesta SET texto = ?, es_correcta = ? WHERE id = ?";
+            $this->database->execute($sql, [
+                $respuesta['texto'],
+                $respuesta['es_correcta'],
+                $respuesta['id']
+            ]);
+        }
+    }
+
+    public function eliminar($id)
+    {
+        // Baja lógica: no borramos, cambiamos estado
+        $sql = "UPDATE pregunta SET estado = 'RECHAZADA' WHERE id = ?";
+        $this->database->execute($sql, [$id]);
+    }
 }

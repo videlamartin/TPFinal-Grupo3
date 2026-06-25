@@ -153,4 +153,13 @@ class Configurator
             $this->getUsuarioSesion()
         );
     }
+    public function getEditorController()
+    {
+        return new EditorController(
+            $this->getPreguntaModel(),
+            $this->getRenderer(),
+            new Request(),
+            $this->getUsuarioSesion()
+        );
+    }
 }
