@@ -166,7 +166,8 @@ class Configurator
             $this->getPreguntaModel(),
             $this->getRenderer(),
             new Request(),
-            $this->getUsuarioSesion()
+            $this->getUsuarioSesion(),
+            $this->getReporteModel()
         );
     }
 }

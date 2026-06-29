@@ -30,7 +30,7 @@
                     <button type="button" id="btn-mostrar-reporte"
                             class="w3-button w3-red w3-block w3-round-xlarge"
                             onclick="document.getElementById('form-reporte').style.display='block'; this.style.display='none';">
-                        ⚠ Reportar esta pregunta
+                            Reportar esta pregunta
                     </button>
 
                     <form id="form-reporte" action="/partida/reportar" method="POST"
@@ -40,7 +40,7 @@
                         <input type="hidden" name="puntaje"     value="{{puntaje}}">
                         <input type="hidden" name="motivo_fin"  value="{{motivo_fin}}">
                         <input type="text" name="motivo" class="w3-input w3-border w3-margin-bottom"
-                               placeholder="Motivo (opcional)">
+                               placeholder="Motivo" required>
                         <button type="submit" class="w3-button w3-red w3-block w3-round-xlarge">
                             Enviar reporte
                         </button>

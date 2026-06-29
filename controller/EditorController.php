@@ -6,12 +6,17 @@ class EditorController
     private $request;
     private $usuarioSesion;
 
-    public function __construct($preguntaModel, $renderer, $request, $usuarioSesion)
+    private $reporteModel;
+
+
+
+    public function __construct($preguntaModel, $renderer, $request, $usuarioSesion, $reporteModel)
     {
         $this->preguntaModel  = $preguntaModel;
         $this->renderer       = $renderer;
         $this->request        = $request;
         $this->usuarioSesion  = $usuarioSesion;
+        $this->reporteModel   = $reporteModel;
     }
 
     public function ver()
@@ -136,7 +141,17 @@ class EditorController
         }
 
         $id = (int) $_POST['id'];
+
         $this->preguntaModel->eliminar($id);
+
+        // Si la pregunta venía de reportes,
+        // elimino también sus reportes
+        if (isset($_POST['desde_reportes'])) {
+            $this->reporteModel->eliminarPorPregunta($id);
+            Redirect::to('/editor/reportadas');
+            return;
+        }
+
         Redirect::to('/editor/ver');
     }
 
@@ -146,4 +161,33 @@ class EditorController
             Redirect::to('/lobby/ver');
         }
     }
+
+    public function reportadas()
+    {
+        $this->verificarAccesoEditor();
+
+        $reportes = $this->reporteModel->obtenerReportes();
+
+        $this->renderer->render('editorReportadas', [
+            'reportes' => $reportes
+        ]);
+    }
+
+    public function mantenerReporte()
+    {
+        $this->verificarAccesoEditor();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Redirect::to('/editor/reportadas');
+            return;
+        }
+
+        $reporteId = (int)$_POST['reporte_id'];
+
+        // elimina todos los reportes de esa pregunta
+        $this->reporteModel->mantenerReporte($reporteId);
+
+        Redirect::to('/editor/reportadas');
+    }
+
 }
