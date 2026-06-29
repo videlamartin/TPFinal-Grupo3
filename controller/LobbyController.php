@@ -7,10 +7,14 @@ class LobbyController
     private $partidaModel;
 
     private $usuarioSession;
+    private $preguntaModel;
+    private $categoriaModel;
 
-    public function __construct($partidaModel,$renderer, $request, $usuarioSession)
+    public function __construct($partidaModel, $preguntaModel, $categoriaModel, $renderer, $request, $usuarioSession)
     {
         $this->partidaModel = $partidaModel;
+        $this->preguntaModel = $preguntaModel;
+        $this->categoriaModel = $categoriaModel;
         $this->renderer = $renderer;
         $this->request = $request;
         $this->usuarioSession = $usuarioSession;
@@ -33,6 +37,7 @@ class LobbyController
             'bienvenida'    => $_SESSION['sexo'] === 'Femenino',
             'es_editor' => in_array($_SESSION['rol'], ['editor', 'administrador']),
             'historial' => $historial,
+            'sugerida' => isset($_GET['sugerida']),
 ];
 
         $this->renderer->render('lobby', $datos);
@@ -42,6 +47,42 @@ class LobbyController
     {
         session_destroy();
         Redirect::to('/login/ver');
+    }
+
+    public function sugerirVer()
+    {
+        $categorias = $this->categoriaModel->obtenerTodas();
+
+        $this->renderer->render('sugerirPregunta', [
+            'categorias'   => $categorias,
+            'campos_crear' => [
+                ['indice' => 0, 'indice_display' => 'A'],
+                ['indice' => 1, 'indice_display' => 'B'],
+                ['indice' => 2, 'indice_display' => 'C'],
+                ['indice' => 3, 'indice_display' => 'D'],
+            ],
+        ]);
+    }
+
+    public function sugerirGuardar()
+    {
+        $enunciado   = $this->request->post('enunciado');
+        $categoriaId = $this->request->post('categoria_id');
+        $correcta    = (int) $this->request->post('respuesta_correcta');
+        $textos      = $this->request->post('respuesta_texto');
+        $creadorId   = $this->usuarioSession['id'];
+
+        $respuestas = [];
+        foreach ($textos as $indice => $texto) {
+            $respuestas[] = [
+                'texto'       => $texto,
+                'es_correcta' => ($indice == $correcta) ? 1 : 0,
+            ];
+        }
+
+        $this->preguntaModel->sugerir($enunciado, $categoriaId, $creadorId, $respuestas);
+
+        Redirect::to('/lobby/ver?sugerida=1');
     }
 
 }

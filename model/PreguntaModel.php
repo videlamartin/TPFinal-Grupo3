@@ -171,4 +171,41 @@ class PreguntaModel
         $sql = "UPDATE pregunta SET estado = 'RECHAZADA' WHERE id = ?";
         $this->database->execute($sql, [$id]);
     }
+
+    public function sugerir($enunciado, $categoriaId, $creadorId, $respuestas)
+    {
+        $sql = "INSERT INTO pregunta (enunciado, categoria_id, creador_id, estado)
+            VALUES (?, ?, ?, 'PENDIENTE')";
+        $this->database->execute($sql, [$enunciado, $categoriaId, $creadorId]);
+        $preguntaId = $this->database->lastInsertId();
+
+        foreach ($respuestas as $respuesta) {
+            $sql = "INSERT INTO respuesta (pregunta_id, texto, es_correcta)
+                VALUES (?, ?, ?)";
+            $this->database->execute($sql, [
+                $preguntaId,
+                $respuesta['texto'],
+                $respuesta['es_correcta']
+            ]);
+        }
+
+        return $preguntaId;
+    }
+
+    public function obtenerSugeridas()
+    {
+        $sql = "SELECT p.id, p.enunciado, p.fecha_creacion,
+                   u.username AS sugerida_por
+            FROM pregunta p
+            LEFT JOIN usuario u ON u.id = p.creador_id
+            WHERE p.estado = 'PENDIENTE'
+            ORDER BY p.fecha_creacion ASC";
+        return $this->database->query($sql);
+    }
+
+    public function cambiarEstado($id, $estado)
+    {
+        $sql = "UPDATE pregunta SET estado = ? WHERE id = ?";
+        $this->database->execute($sql, [$estado, $id]);
+    }
 }

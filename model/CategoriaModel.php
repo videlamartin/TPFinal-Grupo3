@@ -8,6 +8,12 @@ public function __construct($database)
 $this->database = $database;
 }
 
+public function obtenerTodas()
+{
+    $sql = "SELECT * FROM categoria ORDER BY nombre";
+    return $this->database->query($sql);
+}
+
 public function obtenerCategoriaRandom()
 {
 $sql = "SELECT * FROM categoria ORDER BY RAND() LIMIT 1";

@@ -46,6 +46,8 @@ class Configurator
     {
         return new LobbyController(
             $this->getPartidaModel(),
+            $this->getPreguntaModel(),
+            $this->getCategoriaModel(),
             $this->getRenderer(),
             new Request(),
             $this->getUsuarioSesion()
