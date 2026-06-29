@@ -22,9 +22,19 @@
 
 <div class="w3-container">
 {{#sugerida}}
-<div class="w3-panel w3-green w3-round w3-margin-top">
+<div class="w3-panel w3-green w3-round w3-margin-top" id="msg-sugerida">
     <p>✅ ¡Gracias! Tu pregunta fue enviada y será revisada por un editor.</p>
 </div>
+<script>
+    setTimeout(function() {
+        var msg = document.getElementById('msg-sugerida');
+        if (msg) {
+            msg.style.transition = 'opacity 0.8s';
+            msg.style.opacity = '0';
+            setTimeout(function() { msg.style.display = 'none'; }, 800);
+        }
+    }, 4000);
+</script>
 {{/sugerida}}
 
     <div class="w3-row-padding w3-margin-top">
