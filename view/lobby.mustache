@@ -21,6 +21,11 @@
 </div>
 
 <div class="w3-container">
+{{#sugerida}}
+<div class="w3-panel w3-green w3-round w3-margin-top">
+    <p>✅ ¡Gracias! Tu pregunta fue enviada y será revisada por un editor.</p>
+</div>
+{{/sugerida}}
 
     <div class="w3-row-padding w3-margin-top">
 
@@ -60,6 +65,17 @@
             <h3>Editor</h3>
             <p>Administrar preguntas.</p>
             <a href="/editor/ver" class="w3-button btn-azul w3-block">Editar preguntas</a>
+        </div>
+    </div>
+</div>
+{{/es_editor}}
+{{^es_editor}}
+<div class="w3-third w3-margin-bottom">
+    <div class="w3-card-4 w3-white panel-juego">
+        <div class="w3-container w3-padding">
+            <h3>Sugerir pregunta</h3>
+            <p>¿Sabés algo que otros no? Proponé una pregunta.</p>
+            <a href="/lobby/sugerirVer" class="w3-button btn-naranja w3-block">Sugerir</a>
         </div>
     </div>
 </div>

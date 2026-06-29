@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>QuizMaster - Preguntas Sugeridas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/editor.css">
+</head>
+<body>
+
+<div class="titulo">QuizMaster</div>
+<div class="subtitulo">Preguntas sugeridas</div>
+
+<div class="w3-container w3-padding-32">
+    <div class="w3-card-4 w3-white panel-juego" style="max-width:900px; margin:0 auto;">
+        <div class="w3-container w3-padding">
+
+            <div class="w3-row w3-margin-bottom">
+                <div class="w3-col s6">
+                    <h2 style="margin:0;">Sugerencias de usuarios</h2>
+                </div>
+                <div class="w3-col s6 w3-right-align">
+                    <a href="/editor/ver" class="w3-button w3-blue w3-round-xlarge">
+                        Ver preguntas
+                    </a>
+                </div>
+            </div>
+
+            <div class="preguntas-grid">
+
+                {{#preguntas}}
+                <div class="pregunta-card">
+
+                    <div class="pregunta-header">
+                        <span class="w3-tag w3-purple w3-round">Pendiente</span>
+                        <span class="estado-pregunta">{{fecha_creacion}}</span>
+                    </div>
+
+                    <h3 class="pregunta-enunciado">{{enunciado}}</h3>
+
+                    <p><strong>Sugerida por:</strong> {{sugerida_por}}</p>
+
+                    <div class="acciones">
+
+                        <form method="POST" action="/editor/resolverSugerida">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <input type="hidden" name="accion" value="APROBADA">
+                            <button type="submit" class="w3-button w3-green w3-round-xlarge">
+                                Aprobar
+                            </button>
+                        </form>
+
+                        <form method="POST" action="/editor/resolverSugerida">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <input type="hidden" name="accion" value="RECHAZADA">
+                            <button type="submit" class="w3-button w3-red w3-round-xlarge">
+                                Rechazar
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+                {{/preguntas}}
+
+                {{^preguntas}}
+                <div class="sin-resultados">
+                    No hay preguntas sugeridas pendientes.
+                </div>
+                {{/preguntas}}
+
+            </div>
+
+            <a href="/lobby/ver" class="w3-button w3-grey w3-round-xlarge w3-margin-top">
+                ← Volver al lobby
+            </a>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

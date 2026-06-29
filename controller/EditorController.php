@@ -189,5 +189,33 @@ class EditorController
 
         Redirect::to('/editor/reportadas');
     }
+    public function sugeridas()
+    {
+        $this->verificarAccesoEditor();
 
+        $preguntas = $this->preguntaModel->obtenerSugeridas();
+
+        $this->renderer->render('editorSugeridas', [
+            'preguntas' => $preguntas,
+        ]);
+    }
+
+    public function resolverSugerida()
+    {
+        $this->verificarAccesoEditor();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Redirect::to('/editor/sugeridas');
+            return;
+        }
+
+        $id     = (int) $_POST['id'];
+        $accion = $_POST['accion']; // 'APROBADA' o 'RECHAZADA'
+
+        if (in_array($accion, ['APROBADA', 'RECHAZADA'])) {
+            $this->preguntaModel->cambiarEstado($id, $accion);
+        }
+
+        Redirect::to('/editor/sugeridas');
+    }
 }
