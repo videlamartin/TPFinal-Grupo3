@@ -306,6 +306,26 @@ ALTER TABLE `pregunta`
 --
 ALTER TABLE `respuesta`
     ADD CONSTRAINT `respuesta_ibfk_1` FOREIGN KEY (`pregunta_id`) REFERENCES `pregunta` (`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reporte`
+--
+
+CREATE TABLE `reporte` (
+    `id`            int(11)      NOT NULL AUTO_INCREMENT,
+    `pregunta_id`   int(11)      NOT NULL,
+    `usuario_id`    int(11)      NOT NULL,
+    `motivo`        varchar(255) DEFAULT NULL,
+    `fecha_reporte` datetime     DEFAULT current_timestamp(),
+    `estado`        enum('PENDIENTE','RESUELTO') DEFAULT 'PENDIENTE',
+    PRIMARY KEY (`id`),
+    KEY `pregunta_id` (`pregunta_id`),
+    KEY `usuario_id` (`usuario_id`),
+    CONSTRAINT `reporte_ibfk_1` FOREIGN KEY (`pregunta_id`) REFERENCES `pregunta` (`id`),
+    CONSTRAINT `reporte_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

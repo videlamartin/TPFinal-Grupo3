@@ -10,8 +10,9 @@ class PartidaController
     private $categoriaModel;
 
     private $usuarioSesion;
+    private $reporteModel;
 
-    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request, $usuarioSesion)
+    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request, $usuarioSesion, $reporteModel)
     {
         $this->partidaModel = $partidaModel;
         $this->preguntaModel = $preguntaModel;
@@ -20,6 +21,7 @@ class PartidaController
         $this->renderer = $renderer;
         $this->request = $request;
         $this->usuarioSesion = $usuarioSesion;
+        $this->reporteModel = $reporteModel;
 
     }
 
@@ -180,13 +182,46 @@ class PartidaController
         // Mantener actualizado el puntaje que se muestra en el lobby/sesion
         $_SESSION['puntaje_total'] += $partida['puntaje'];
 
+        // La pregunta en la que terminó la partida es la "reportable".
+        // (Si terminó por quedarse sin preguntas, no hay ninguna, queda null.)
+        $preguntaReportableId = $_SESSION['partida']['pregunta_actual_id'];
+
         $datos = [
-            'puntaje'            => $partida['puntaje'],
-            'motivo_fin'         => $motivo,
-            'respuesta_correcta' => $respuestaCorrecta
+            'puntaje'                => $partida['puntaje'],
+            'motivo_fin'             => $motivo,
+            'respuesta_correcta'     => $respuestaCorrecta,
+            'pregunta_reportable_id' => $preguntaReportableId
         ];
 
         unset($_SESSION['partida']);
         $this->renderer->render('resultado', $datos);
+    }
+
+    public function reportar()
+    {
+        if (!$this->usuarioSesion['id']) {
+            Redirect::to('/login/ver');
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Redirect::to('/lobby/ver');
+        }
+
+        $preguntaId = (int) $_POST['pregunta_id'];
+        $motivo     = trim($_POST['motivo'] ?? '');
+
+        if ($preguntaId > 0) {
+            $this->reporteModel->crear(
+                $preguntaId,
+                $this->usuarioSesion['id'],
+                $motivo !== '' ? $motivo : null
+            );
+        }
+
+        // Vuelve a mostrar la pantalla de resultado, ahora con la confirmacion.
+        $this->renderer->render('resultado', [
+            'puntaje'    => (int) ($_POST['puntaje'] ?? 0),
+            'motivo_fin' => $_POST['motivo_fin'] ?? '',
+            'reportado'  => true
+        ]);
     }
 }

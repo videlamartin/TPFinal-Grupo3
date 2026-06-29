@@ -132,6 +132,12 @@ class Configurator
             $this->getDatabase()
         );
     }
+    public function getReporteModel()
+    {
+        return new ReporteModel(
+            $this->getDatabase()
+        );
+    }
     public function getPartidaController()
     {
         return new PartidaController(
@@ -141,7 +147,8 @@ class Configurator
             $this->getCategoriaModel(),
             $this->getRenderer(),
             new Request(),
-            $this->getUsuarioSesion()
+            $this->getUsuarioSesion(),
+            $this->getReporteModel()
         );
     }
     public function getRankingController()
