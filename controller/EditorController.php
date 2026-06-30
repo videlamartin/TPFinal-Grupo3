@@ -157,7 +157,7 @@ class EditorController
 
     private function verificarAccesoEditor()
     {
-        if (!in_array($this->usuarioSesion['rol'], ['editor', 'administrador'])) {
+        if ($this->usuarioSesion['rol'] !== 'editor') {
             Redirect::to('/lobby/ver');
         }
     }
