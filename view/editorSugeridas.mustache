@@ -16,11 +16,12 @@
     <div class="w3-card-4 w3-white panel-juego" style="max-width:900px; margin:0 auto;">
         <div class="w3-container w3-padding">
 
-            <div class="w3-row w3-margin-bottom">
-                <div class="w3-col s6">
+            <div class="w3-row w3-margin-bottom encabezado-sugeridas">
+                <div class="w3-col s12 m6">
                     <h2 style="margin:0;">Sugerencias de usuarios</h2>
                 </div>
-                <div class="w3-col s6 w3-right-align">
+
+                <div class="w3-col s12 m6 w3-right-align boton-ver">
                     <a href="/editor/ver" class="w3-button w3-blue w3-round-xlarge">
                         Ver preguntas
                     </a>
@@ -37,7 +38,32 @@
                         <span class="estado-pregunta">{{fecha_creacion}}</span>
                     </div>
 
+                    <span class="categoria-badge"
+                          style="background:{{categoria_color}}; margin-bottom: 12px">
+                        {{categoria_nombre}}
+                    </span>
+
                     <h3 class="pregunta-enunciado">{{enunciado}}</h3>
+
+                    <div class="respuestas">
+                        <strong>Respuestas:</strong>
+
+                        {{#respuestas}}
+                            <div>
+                                {{#es_correcta}}
+                                    <span class="w3-text-green" style="font-weight: bold;">
+                                        • {{texto}}
+                                    </span>
+                                {{/es_correcta}}
+
+                                {{^es_correcta}}
+                                    <span>
+                                        • {{texto}}
+                                    </span>
+                                {{/es_correcta}}
+                            </div>
+                        {{/respuestas}}
+                    </div>
 
                     <p><strong>Sugerida por:</strong> {{sugerida_por}}</p>
 
@@ -72,8 +98,8 @@
 
             </div>
 
-            <a href="/lobby/ver" class="w3-button w3-grey w3-round-xlarge w3-margin-top">
-                ← Volver al lobby
+            <a href="/lobby/ver" class="w3-button w3-blue w3-round-xlarge w3-margin-top">
+                Volver al lobby
             </a>
 
         </div>

@@ -14,17 +14,20 @@ body {
 
 .contenedor-juego {
     width: 100%;
-    max-width: 640px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 24px;
     box-sizing: border-box;
 }
+
 @media (min-width: 768px) {
     .contenedor-juego { padding: 32px 24px; }
 }
 
 .panel {
     width: 100%;
+    margin: 0 auto;
+    padding: 40px !important;
     box-sizing: border-box;
 }
 

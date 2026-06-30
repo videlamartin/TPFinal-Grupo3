@@ -35,7 +35,7 @@ class LobbyController
             'bienvenida_neutro'    => $_SESSION['sexo'] === 'Prefiero no cargarlo',
             'bienvenido'    => $_SESSION['sexo'] === 'Femenino',
             'bienvenida'    => $_SESSION['sexo'] === 'Femenino',
-            'es_editor' => in_array($_SESSION['rol'], ['editor', 'administrador']),
+            'es_editor' => $_SESSION['rol'] === 'editor',
             'historial' => $historial,
             'sugerida' => isset($_GET['sugerida']),
 ];

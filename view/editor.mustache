@@ -17,11 +17,11 @@
     <div class="w3-card-4 w3-white panel-juego" style="max-width:900px; margin:0 auto;">
         <div class="w3-container w3-padding">
 
-            <div class="w3-row w3-margin-bottom">
-                <div class="w3-col s6">
-                    <h2 style="margin:0;">Preguntas</h2>
-                </div>
-                <div class="w3-col s6 w3-right-align">
+            <div class="w3-col s4">
+                <h2 style="margin:0;">Preguntas</h2>
+            </div>
+
+            <div class="w3-col s8 w3-right-align">
                     <a href="/editor/crear"
                        class="w3-button w3-green w3-round-xlarge">
                         + Nueva pregunta
@@ -39,7 +39,7 @@
             </div>
 
             <!-- Buscador -->
-            <form method="GET" action="/editor/ver" class="w3-margin-bottom">
+            <form method="GET" action="/editor/ver" class="w3-margin-bottom" style="padding: 0 15px;">
                <div class="buscador-container">
                    <input type="text"
                           name="busqueda"
@@ -55,10 +55,10 @@
                </div>
             </form>
 
-<div class="preguntas-grid">
+<div class="preguntas-grid" style="padding: 0 15px;">
 
     {{#preguntas}}
-    <div class="pregunta-card">
+    <div class="pregunta-card" >
 
         <div class="pregunta-header">
             <span class="categoria-badge"
@@ -105,10 +105,12 @@
     {{/preguntas}}
 
 </div>
+        <div style="margin-top:20px; margin-bottom:20px; margin-left:15px;">
             <a href="/lobby/ver"
-               class="w3-button w3-grey w3-round-xlarge w3-margin-top">
-                ← Volver al lobby
+               class="w3-button w3-blue w3-round-xlarge">
+                Volver al lobby
             </a>
+        </div>
 
         </div>
     </div>

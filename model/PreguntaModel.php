@@ -194,13 +194,32 @@ class PreguntaModel
 
     public function obtenerSugeridas()
     {
-        $sql = "SELECT p.id, p.enunciado, p.fecha_creacion,
-                   u.username AS sugerida_por
-            FROM pregunta p
-            LEFT JOIN usuario u ON u.id = p.creador_id
-            WHERE p.estado = 'PENDIENTE'
-            ORDER BY p.fecha_creacion ASC";
-        return $this->database->query($sql);
+        $sql = "
+    SELECT p.id,
+           p.enunciado,
+           p.fecha_creacion,
+           c.nombre AS categoria_nombre,
+           c.color AS categoria_color,
+           u.username AS sugerida_por
+    FROM pregunta p
+    LEFT JOIN usuario u ON u.id = p.creador_id
+    LEFT JOIN categoria c ON c.id = p.categoria_id
+    WHERE p.estado = 'PENDIENTE'
+    ORDER BY p.fecha_creacion ASC
+";
+
+        $preguntas = $this->database->query($sql);
+
+        foreach ($preguntas as &$pregunta) {
+            $pregunta['respuestas'] = $this->database->query(
+                "SELECT texto, es_correcta
+         FROM respuesta
+         WHERE pregunta_id = ?",
+                [$pregunta['id']]
+            );
+        }
+
+        return $preguntas;
     }
 
     public function cambiarEstado($id, $estado)
