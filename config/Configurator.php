@@ -140,6 +140,10 @@ class Configurator
             $this->getDatabase()
         );
     }
+    public function getUsuarioPreguntaModel()
+    {
+        return new UsuarioPreguntaModel($this->getDatabase());
+    }
     public function getPartidaController()
     {
         return new PartidaController(
@@ -150,7 +154,8 @@ class Configurator
             $this->getRenderer(),
             new Request(),
             $this->getUsuarioSesion(),
-            $this->getReporteModel()
+            $this->getReporteModel(),
+            $this->getUsuarioPreguntaModel()
         );
     }
     public function getRankingController()

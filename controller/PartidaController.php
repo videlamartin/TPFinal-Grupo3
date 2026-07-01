@@ -11,8 +11,9 @@ class PartidaController
 
     private $usuarioSesion;
     private $reporteModel;
+    private $usuarioPreguntaModel;
 
-    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request, $usuarioSesion, $reporteModel)
+    public function __construct($partidaModel, $preguntaModel, $usuarioModel,$categoriaModel, $renderer, $request, $usuarioSesion, $reporteModel, $usuarioPreguntaModel)
     {
         $this->partidaModel = $partidaModel;
         $this->preguntaModel = $preguntaModel;
@@ -22,6 +23,7 @@ class PartidaController
         $this->request = $request;
         $this->usuarioSesion = $usuarioSesion;
         $this->reporteModel = $reporteModel;
+        $this->usuarioPreguntaModel = $usuarioPreguntaModel;
 
     }
 
@@ -40,7 +42,7 @@ class PartidaController
             'tiempo_inicio'      => null,
             'tiempo_limite'      => 30,
             'nivel_usuario'      => $nivelUsuario,
-            'preguntas_vistas'   => []
+            'correctas_esta_partida' => 0,
         ];
         Redirect::to('/partida/pregunta');
     }
@@ -105,8 +107,6 @@ class PartidaController
         }
     }
 
-    // metodos privados: para no caer en muchos if en los metodos publicos
-
     private function obtenerOSortearPregunta()
     {
         if ($_SESSION['partida']['pregunta_actual_id'] !== null) {
@@ -115,6 +115,15 @@ class PartidaController
             );
         }
 
+        $usuarioId = $this->usuarioSesion['id'];
+
+        // Resetear
+        $totalPreguntas = $this->preguntaModel->contarAprobadas();
+        $this->usuarioPreguntaModel->resetearSiSinPreguntas($usuarioId, $totalPreguntas);
+
+        //ids ya vistos desde la base
+        $preguntasVistas = $this->usuarioPreguntaModel->obtenerIdsVistas($usuarioId);
+
         $categoria = $this->categoriaModel->obtenerCategoriaRandom();
         $_SESSION['partida']['categoria_actual'] = $categoria['nombre'];
         $_SESSION['partida']['categoria_color']  = $categoria['color'];
@@ -122,14 +131,14 @@ class PartidaController
 
         $pregunta = $this->preguntaModel->obtenerPreguntaParaUsuario(
             $_SESSION['partida']['nivel_usuario'],
-            $_SESSION['partida']['preguntas_vistas'],
+            $preguntasVistas,        // <-- antes era $_SESSION['partida']['preguntas_vistas']
             $_SESSION['partida']['categoria_id']
         );
 
         if (!$pregunta) return null;
 
         $_SESSION['partida']['pregunta_actual_id'] = $pregunta['id'];
-        $_SESSION['partida']['tiempo_inicio'] = time() + self::DURACION_RULETA_SEGUNDOS;;
+        $_SESSION['partida']['tiempo_inicio'] = time() + self::DURACION_RULETA_SEGUNDOS;
         $this->preguntaModel->registrarMostrada($pregunta['id']);
 
         return $pregunta;
@@ -155,9 +164,15 @@ class PartidaController
         $this->partidaModel->sumarPunto($partidaId);
         $this->preguntaModel->registrarCorrecta($preguntaId);
 
-        $_SESSION['partida']['preguntas_vistas'][] = $preguntaId;
+        // Guardar en base en vez de en sesión
+        $this->usuarioPreguntaModel->registrarVista(
+            $this->usuarioSesion['id'],
+            $preguntaId
+        );
+
         $_SESSION['partida']['pregunta_actual_id'] = null;
         $_SESSION['partida']['tiempo_inicio']      = null;
+        $_SESSION['partida']['correctas_esta_partida']++;
     }
 
     private function finalizarPartida($motivo, $respuestaCorrecta = null)
@@ -169,7 +184,7 @@ class PartidaController
         // Las correctas son las preguntas que se fueron acumulando en
         // 'preguntas_vistas'. Si perdio por responder mal, esa ultima
         // pregunta tambien cuenta como respondida (pero no como correcta).
-        $respuestasCorrectas  = count($_SESSION['partida']['preguntas_vistas']);
+        $respuestasCorrectas  = $_SESSION['partida']['correctas_esta_partida'];
         $preguntasRespondidas = $respuestasCorrectas + ($motivo === 'incorrecta' ? 1 : 0);
 
         $this->usuarioModel->sumarPuntaje(
@@ -192,6 +207,13 @@ class PartidaController
             'respuesta_correcta'     => $respuestaCorrecta,
             'pregunta_reportable_id' => $preguntaReportableId
         ];
+
+        if ($_SESSION['partida']['pregunta_actual_id']) {
+            $this->usuarioPreguntaModel->registrarVista(
+                $this->usuarioSesion['id'],
+                $_SESSION['partida']['pregunta_actual_id']
+            );
+        }
 
         unset($_SESSION['partida']);
         $this->renderer->render('resultado', $datos);
