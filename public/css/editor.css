@@ -1,5 +1,8 @@
 .preguntas-grid {
     display: grid;
+    /* Tantas columnas como entren (mínimo 300px cada una).
+       En pantalla ancha -> varias columnas; en celular -> una sola. */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
 }
 
