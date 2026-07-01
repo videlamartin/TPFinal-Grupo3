@@ -95,6 +95,7 @@ class UsuarioModel
         if ($tasa >= 0.30) return 2;
         return 1;
     }
+
     public function obtenerRanking()
     {
         $sql = "SELECT id, username, puntaje_total,
@@ -125,6 +126,70 @@ class UsuarioModel
             $usuarioId
         ]);
     }
+
+
+    public function obtenerCantidadUsuarios($periodo = null)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total 
+        FROM usuario
+        WHERE activo = 1";
+        $resultado = $this->database->query($sql);
+
+        return $resultado[0]['total'] ?? 0;
+    }
+
+
+    public function obtenerEvolucionUsuarios($periodo)
+    {
+        switch ($periodo) {
+
+            case 'dia':
+                $sql = "
+                SELECT DATE(fecha_creacion) AS periodo,
+                       COUNT(*) AS total
+                FROM usuario
+                GROUP BY DATE(fecha_creacion)
+                ORDER BY DATE(fecha_creacion)
+            ";
+                break;
+
+            case 'semana':
+                $sql = "
+                SELECT CONCAT(YEAR(fecha_creacion), '-Semana-', LPAD(WEEK(fecha_creacion,1),2,'0')) AS periodo,
+                       COUNT(*) AS total
+                FROM usuario
+                GROUP BY YEAR(fecha_creacion), WEEK(fecha_creacion,1)
+                ORDER BY YEAR(fecha_creacion), WEEK(fecha_creacion,1)
+            ";
+                break;
+
+            case 'mes':
+                $sql = "
+                SELECT DATE_FORMAT(fecha_creacion, '%Y-%m') AS periodo,
+                       COUNT(*) AS total
+                FROM usuario
+                GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
+                ORDER BY DATE_FORMAT(fecha_creacion, '%Y-%m')
+            ";
+                break;
+
+            case 'anio':
+                $sql = "
+                SELECT YEAR(fecha_creacion) AS periodo,
+                       COUNT(*) AS total
+                FROM usuario
+                GROUP BY YEAR(fecha_creacion)
+                ORDER BY YEAR(fecha_creacion)
+            ";
+                break;
+        }
+
+        return $this->database->query($sql);
+    }
+
+
+
 }
 
 

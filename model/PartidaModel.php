@@ -44,4 +44,53 @@ class PartidaModel
         return $this->database->query($sql, [$usuarioId, $limite]);
     }
 
+
+    public function obtenerGraficoPartidas($periodo)
+    {
+        switch ($periodo) {
+
+            case 'dia':
+                $sql = "
+                SELECT DATE(fecha_inicio) AS periodo,
+                       COUNT(*) AS total
+                FROM partida
+                GROUP BY DATE(fecha_inicio)
+                ORDER BY DATE(fecha_inicio)
+            ";
+                break;
+
+            case 'semana':
+                $sql = "
+                SELECT CONCAT(YEAR(fecha_inicio), '-Semana-', LPAD(WEEK(fecha_inicio,1),2,'0')) AS periodo,
+                       COUNT(*) AS total
+                FROM partida
+                GROUP BY YEAR(fecha_inicio), WEEK(fecha_inicio,1)
+                ORDER BY YEAR(fecha_inicio), WEEK(fecha_inicio,1)
+            ";
+                break;
+
+            case 'mes':
+                $sql = "
+                SELECT DATE_FORMAT(fecha_inicio, '%Y-%m') AS periodo,
+                       COUNT(*) AS total
+                FROM partida
+                GROUP BY DATE_FORMAT(fecha_inicio, '%Y-%m')
+                ORDER BY DATE_FORMAT(fecha_inicio, '%Y-%m')
+            ";
+                break;
+
+            case 'anio':
+                $sql = "
+                SELECT YEAR(fecha_inicio) AS periodo,
+                       COUNT(*) AS total
+                FROM partida
+                GROUP BY YEAR(fecha_inicio)
+                ORDER BY YEAR(fecha_inicio)
+            ";
+                break;
+        }
+
+        return $this->database->query($sql);
+    }
+
 }

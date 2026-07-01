@@ -177,4 +177,17 @@ class Configurator
             $this->getReporteModel()
         );
     }
+
+    public function getAdminController()
+    {
+        return new AdminController(
+            $this->getUsuarioModel(),
+            $this->getPartidaModel(),
+            $this->getRenderer(),
+            new Request(),
+            $this->getUsuarioSesion(),
+        );
+    }
+
+
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>QuizMaster - Administrador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/editor.css">
+</head>
+<body>
+
+<div class="titulo">QuizMaster</div>
+<div class="subtitulo">Panel de Administración</div>
+
+<div class="w3-container w3-padding-32">
+
+    <div class="w3-card-4 w3-white panel-juego"
+         style="max-width:1100px; margin:0 auto;">
+
+        <div class="w3-container w3-padding">
+
+            <div class="w3-row">
+                <div class="w3-col s12 m6">
+                    <h2 style="margin:0;">Estadísticas</h2>
+                </div>
+
+                <div class="w3-col s12 m6 w3-right-align">
+                    <form method="GET" action="/admin/ver">
+                        <select name="periodo"
+                                class="w3-select w3-border"
+                                style="width:auto; display:inline-block;">
+                            <option value="dia" selected>Día</option>
+                            <option value="semana">Semana</option>
+                            <option value="mes">Mes</option>
+                            <option value="anio">Año</option>
+                        </select>
+
+                        <button class="w3-button w3-blue w3-round-xlarge">
+                            Filtrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <!-- KPIs -->
+            <div class="w3-row-padding w3-margin-top">
+
+                <canvas id="usuariosChart" style="max-height:300px;"></canvas>
+                <canvas id="partidasChart" style="max-height:300px; margin-top:30px;"></canvas>
+
+
+                <!--Hay que mejorarlo
+                <button onclick="window.print()"
+                        class="w3-button w3-green w3-round-xlarge w3-margin-top">
+                    Imprimir
+                </button>-->
+            </div>
+
+            <div style="margin-top:20px;">
+                <a href="/lobby/ver"
+                   class="w3-button w3-blue w3-round-xlarge">
+                    Volver al lobby
+                </a>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    window.graficoUsuarios = '{{{grafico_usuarios}}}';
+    window.graficoPartidas = '{{{grafico_partidas}}}';
+</script>
+
+<script src="/public/js/admin.js"></script>
+
+</body>
+</html>

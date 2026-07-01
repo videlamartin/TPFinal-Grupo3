@@ -246,4 +246,8 @@ class PartidaController
             'reportado'  => true
         ]);
     }
+
+
+
+
 }

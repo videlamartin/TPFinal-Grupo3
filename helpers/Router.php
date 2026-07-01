@@ -13,6 +13,7 @@ class Router
 
     private $rutasRestringidas = [
         'editor' => ['editor'],
+        'admin' => ['administrador']
     ];
     public function __construct($config, $defaultController, $defaultMethod)
     {

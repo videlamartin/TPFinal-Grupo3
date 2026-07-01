@@ -69,7 +69,7 @@
     </div>
 </div>
 {{/es_editor}}
-{{^es_editor}}
+{{#es_jugador}}
 <div class="w3-third w3-margin-bottom">
     <div class="w3-card-4 w3-white panel-juego">
         <div class="w3-container w3-padding">
@@ -79,7 +79,24 @@
         </div>
     </div>
 </div>
-{{/es_editor}}
+{{/es_jugador}}
+
+
+        {{#es_admin}}
+            <div class="w3-third w3-margin-bottom">
+                <div class="w3-card-4 w3-white panel-juego">
+                    <div class="w3-container w3-padding">
+                        <h3>Reportes</h3>
+                        <p>Ver estadísticas y gráficos.</p>
+                        <a href="/admin/ver"
+                           class="w3-button btn-azul w3-block">
+                            Ver reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {{/es_admin}}
+
     </div>
 
     <div class="w3-card-4 w3-white panel-juego w3-margin-top">

@@ -36,9 +36,12 @@ class LobbyController
             'bienvenido'    => $_SESSION['sexo'] === 'Femenino',
             'bienvenida'    => $_SESSION['sexo'] === 'Femenino',
             'es_editor' => $_SESSION['rol'] === 'editor',
+            'es_admin' => $_SESSION['rol'] === 'administrador',
+            'es_jugador' => $_SESSION['rol'] === 'jugador',
             'historial' => $historial,
             'sugerida' => isset($_GET['sugerida']),
 ];
+
 
         $this->renderer->render('lobby', $datos);
     }
