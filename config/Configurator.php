@@ -185,7 +185,7 @@ class Configurator
             $this->getPartidaModel(),
             $this->getRenderer(),
             new Request(),
-            $this->getUsuarioSesion(),
+            $this->getUsuarioSesion()
         );
     }
 
