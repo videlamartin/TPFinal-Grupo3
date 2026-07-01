@@ -12,6 +12,19 @@
 
     <link rel="stylesheet"
           href="/public/css/editor.css">
+
+    <style>
+        /* Reglas que se aplican SOLO al imprimir (no en pantalla) */
+        @media print {
+            /* Oculta todo lo marcado como no-print (botones, acciones) */
+            .no-print { display: none !important; }
+            /* Fondo blanco y sin sombras, para no gastar tinta */
+            body { background: #fff !important; }
+            .panel-juego { box-shadow: none !important; }
+            /* Que cada reporte no se corte entre dos hojas */
+            .pregunta-card { page-break-inside: avoid; border: 1px solid #999; margin-bottom: 12px; }
+        }
+    </style>
 </head>
 <body>
 
@@ -33,7 +46,11 @@
                     </h2>
                 </div>
 
-                <div class="w3-col s6 w3-right-align">
+                <div class="w3-col s6 w3-right-align no-print">
+                    <button type="button" onclick="window.print()"
+                            class="w3-button w3-green w3-round-xlarge">
+                        🖨 Imprimir
+                    </button>
                     <a href="/editor/ver"
                        class="w3-button w3-blue w3-round-xlarge">
                         Ver preguntas
@@ -73,7 +90,7 @@
                             {{motivo}}
                         </p>
 
-                        <div class="acciones">
+                        <div class="acciones no-print">
 
                             <form method="POST" action="/editor/mantenerReporte">
                                 <input type="hidden"
@@ -118,7 +135,7 @@
             </div>
 
             <a href="/lobby/ver"
-               class="w3-button w3-blue w3-round-xlarge w3-margin-top">
+               class="w3-button w3-blue w3-round-xlarge w3-margin-top no-print">
                 Volver al lobby
             </a>
 

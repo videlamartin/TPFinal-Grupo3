@@ -326,6 +326,25 @@ CREATE TABLE `reporte` (
     CONSTRAINT `reporte_ibfk_1` FOREIGN KEY (`pregunta_id`) REFERENCES `pregunta` (`id`),
     CONSTRAINT `reporte_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuario_pregunta`
+-- (registra que preguntas ya vio cada usuario)
+--
+
+CREATE TABLE `usuario_pregunta` (
+    `id`          int(11) NOT NULL AUTO_INCREMENT,
+    `usuario_id`  int(11) NOT NULL,
+    `pregunta_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_usuario_pregunta` (`usuario_id`, `pregunta_id`),
+    KEY `usuario_id` (`usuario_id`),
+    KEY `pregunta_id` (`pregunta_id`),
+    CONSTRAINT `up_fk_usuario`  FOREIGN KEY (`usuario_id`)  REFERENCES `usuario` (`id`),
+    CONSTRAINT `up_fk_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `pregunta` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
