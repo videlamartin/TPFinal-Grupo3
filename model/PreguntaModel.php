@@ -227,4 +227,11 @@ class PreguntaModel
         $sql = "UPDATE pregunta SET estado = ? WHERE id = ?";
         $this->database->execute($sql, [$estado, $id]);
     }
+
+    public function contarAprobadas()
+    {
+        $sql = "SELECT COUNT(*) as total FROM pregunta WHERE estado = 'APROBADA'";
+        $resultado = $this->database->query($sql, []);
+        return (int) $resultado[0]['total'];
+    }
 }

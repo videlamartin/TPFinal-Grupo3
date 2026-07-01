@@ -19,9 +19,7 @@ class EditorController
         $this->reporteModel   = $reporteModel;
     }
 
-    public function ver()
-    {
-        $this->verificarAccesoEditor();
+    public function ver(){
 
         $busqueda  = $_GET['busqueda'] ?? null;
         $preguntas = $this->preguntaModel->obtenerTodas($busqueda);
@@ -32,9 +30,7 @@ class EditorController
         ]);
     }
 
-    public function crear()
-    {
-        $this->verificarAccesoEditor();
+    public function crear(){
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enunciado   = trim($_POST['enunciado']);
@@ -74,10 +70,7 @@ class EditorController
         ]);
     }
 
-    public function modificar()
-    {
-        $this->verificarAccesoEditor();
-
+    public function modificar(){
         $id       = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
         $pregunta = $this->preguntaModel->obtenerPorId($id);
 
@@ -133,7 +126,6 @@ class EditorController
 
     public function eliminar()
     {
-        $this->verificarAccesoEditor();
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Redirect::to('/editor/ver');
@@ -155,17 +147,7 @@ class EditorController
         Redirect::to('/editor/ver');
     }
 
-    private function verificarAccesoEditor()
-    {
-        if ($this->usuarioSesion['rol'] !== 'editor') {
-            Redirect::to('/lobby/ver');
-        }
-    }
-
-    public function reportadas()
-    {
-        $this->verificarAccesoEditor();
-
+    public function reportadas(){
         $reportes = $this->reporteModel->obtenerReportes();
 
         $this->renderer->render('editorReportadas', [
@@ -173,10 +155,7 @@ class EditorController
         ]);
     }
 
-    public function mantenerReporte()
-    {
-        $this->verificarAccesoEditor();
-
+    public function mantenerReporte(){
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Redirect::to('/editor/reportadas');
             return;
@@ -189,9 +168,7 @@ class EditorController
 
         Redirect::to('/editor/reportadas');
     }
-    public function sugeridas()
-    {
-        $this->verificarAccesoEditor();
+    public function sugeridas(){
 
         $preguntas = $this->preguntaModel->obtenerSugeridas();
 
@@ -200,9 +177,7 @@ class EditorController
         ]);
     }
 
-    public function resolverSugerida()
-    {
-        $this->verificarAccesoEditor();
+    public function resolverSugerida(){
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             Redirect::to('/editor/sugeridas');

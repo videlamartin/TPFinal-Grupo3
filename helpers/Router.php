@@ -11,6 +11,9 @@ class Router
         'registro' => ['ver', 'registrar', 'validar'],
     ];
 
+    private $rutasRestringidas = [
+        'editor' => ['editor'],
+    ];
     public function __construct($config, $defaultController, $defaultMethod)
     {
         $this->config            = $config;
@@ -24,11 +27,25 @@ class Router
             Redirect::to('/login/ver');
             return;
         }
+
+        if (!$this->tieneAcceso($controller)) {
+            Redirect::to('/lobby/ver');
+            return;
+        }
+
         $controller = $this->getController($controller);
         $method     = $this->getMethod($controller, $method);
         $controller->{$method}();
     }
 
+    private function tieneAcceso($controller)
+    {
+        if (!isset($this->rutasRestringidas[$controller])) {
+            return true;
+        }
+        $rol = $this->config->getUsuarioSesion()['rol'] ?? null;
+        return in_array($rol, $this->rutasRestringidas[$controller]);
+    }
     private function esRutaPublica($controller, $method)
     {
         return isset($this->rutasPublicas[$controller])
