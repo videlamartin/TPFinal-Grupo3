@@ -54,7 +54,9 @@ body {
 #ruleta-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    /* Fondo OPACO (sin transparencia) para que no se vea la pregunta atras
+       mientras gira la ruleta. Degrade oscuro, mas prolijo que negro plano. */
+    background: radial-gradient(circle at center, #2a2a4a 0%, #0d0d1a 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,3 +88,52 @@ body {
     text-align: center;
     min-height: 1.4em;
 }
+
+/* ===== Mejoras visuales de la jugabilidad ===== */
+
+/* Profundidad sutil encima del color de la categoria (menos plano) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 22%, rgba(255,255,255,0.18), rgba(0,0,0,0.15));
+    pointer-events: none;
+    z-index: 0;
+}
+.contenedor-juego { position: relative; z-index: 1; }
+
+/* El panel aparece suave y con un poco mas de relieve */
+.panel {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    animation: aparecerJuego 0.4s ease;
+}
+@keyframes aparecerJuego {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Opciones de respuesta: tipo tarjeta clara; al pasar el mouse se
+   resaltan en azul y se elevan (mas interactivo) */
+.panel button[name="respuesta_id"] {
+    background: #f5f8fc !important;
+    color: #22304a !important;
+    border: 2px solid #e4e9f2 !important;
+    font-size: 1.05em;
+    font-weight: 600;
+    padding: 14px 18px !important;
+    transition: transform .15s ease, box-shadow .15s ease,
+                background .15s ease, border-color .15s ease;
+}
+.panel button[name="respuesta_id"]:hover {
+    background: #1e88e5 !important;
+    color: #ffffff !important;
+    border-color: #1e88e5 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(30,136,229,0.35);
+}
+.panel button[name="respuesta_id"]:active {
+    transform: translateY(0);
+}
+
+/* Un poco mas de aire para la pregunta */
+.panel h3 { line-height: 1.4; }
