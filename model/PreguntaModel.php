@@ -234,4 +234,49 @@ class PreguntaModel
         $resultado = $this->database->query($sql, []);
         return (int) $resultado[0]['total'];
     }
+
+    public function obtenerGraficoPreguntas($periodo)
+    {
+        switch ($periodo) {
+            case 'dia':
+                $sql = "
+                SELECT DATE(fecha_creacion) AS periodo,
+                       COUNT(*) AS total
+                FROM pregunta
+                GROUP BY DATE(fecha_creacion)
+                ORDER BY periodo";
+                break;
+
+            case 'semana':
+                $sql = "
+                SELECT YEAR(fecha_creacion) AS anio,
+                       WEEK(fecha_creacion) AS semana,
+                       COUNT(*) AS total,
+                       CONCAT(YEAR(fecha_creacion), '-S', WEEK(fecha_creacion)) AS periodo
+                FROM pregunta
+                GROUP BY anio, semana
+                ORDER BY anio, semana";
+                break;
+
+            case 'mes':
+                $sql = "
+                SELECT DATE_FORMAT(fecha_creacion,'%Y-%m') AS periodo,
+                       COUNT(*) AS total
+                FROM pregunta
+                GROUP BY periodo
+                ORDER BY periodo";
+                break;
+
+            case 'anio':
+                $sql = "
+                SELECT YEAR(fecha_creacion) AS periodo,
+                       COUNT(*) AS total
+                FROM pregunta
+                GROUP BY periodo
+                ORDER BY periodo";
+                break;
+        }
+
+        return $this->database->query($sql);
+    }
 }
