@@ -189,7 +189,29 @@ class UsuarioModel
     }
 
 
+    public function obtenerUsuariosPorPais()
+    {
+        $sql = "
+        SELECT pais, COUNT(*) AS total
+        FROM usuario
+        GROUP BY pais
+        ORDER BY total DESC
+    ";
 
+        return $this->database->query($sql);
+    }
+
+
+    public function obtenerUsuariosPorSexo()
+    {
+        $sql = "
+        SELECT sexo, COUNT(*) AS total
+        FROM usuario
+        GROUP BY sexo
+    ";
+
+        return $this->database->query($sql);
+    }
 }
 
 

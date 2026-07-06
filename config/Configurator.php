@@ -183,6 +183,7 @@ class Configurator
         return new AdminController(
             $this->getUsuarioModel(),
             $this->getPartidaModel(),
+            $this->getPreguntaModel(),
             $this->getRenderer(),
             new Request(),
             $this->getUsuarioSesion()
