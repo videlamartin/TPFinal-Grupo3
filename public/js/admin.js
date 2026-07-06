@@ -210,6 +210,12 @@ new Chart(document.getElementById('usuariosSexoChart'), {
 
 const usuariosEdad = JSON.parse(window.usuariosPorEdad);
 
+usuariosEdad.forEach(u => {
+    u.total = Number(u.total);
+});
+
+console.log(usuariosEdad);
+
 new Chart(document.getElementById('usuariosEdadChart'), {
     type: 'bar',
     data: {
@@ -222,6 +228,8 @@ new Chart(document.getElementById('usuariosEdadChart'), {
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
