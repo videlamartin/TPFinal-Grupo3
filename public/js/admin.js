@@ -205,3 +205,50 @@ new Chart(document.getElementById('usuariosSexoChart'), {
         }
     }
 });
+
+// ===== USUARIOS POR EDAD =====
+
+const usuariosEdad = JSON.parse(window.usuariosPorEdad);
+
+new Chart(document.getElementById('usuariosEdadChart'), {
+    type: 'bar',
+    data: {
+        labels: usuariosEdad.map(u => u.grupo),
+        datasets: [{
+            label: 'Usuarios',
+            data: usuariosEdad.map(u => u.total),
+            barPercentage: 0.5,
+            categoryPercentage: 0.6
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Usuarios por grupo de edad',
+                color: 'black',
+                font: {
+                    size: 30,
+                    weight: 'bold'
+                }
+            },
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    precision: 0,
+                    color: 'black'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'black'
+                }
+            }
+        }
+    }
+});

@@ -38,6 +38,7 @@ class AdminController
         $graficoPreguntas = $this->preguntaModel->obtenerGraficoPreguntas($periodo);
         $usuariosPorPais = $this->usuarioModel->obtenerUsuariosPorPais();
         $usuariosPorSexo = $this->usuarioModel->obtenerUsuariosPorSexo();
+        $usuariosPorEdad = $this->usuarioModel->obtenerUsuariosPorEdad();
 
 
         $this->renderer->render('admin', [
@@ -46,6 +47,7 @@ class AdminController
             'grafico_preguntas' => json_encode($graficoPreguntas),
             'usuarios_por_pais' => json_encode($usuariosPorPais),
             'usuarios_por_sexo' => json_encode($usuariosPorSexo),
+            'usuarios_por_edad' => json_encode($usuariosPorEdad),
             'periodo' => $periodo
         ]);
     }

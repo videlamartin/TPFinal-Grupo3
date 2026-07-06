@@ -212,7 +212,24 @@ class UsuarioModel
 
         return $this->database->query($sql);
     }
-}
 
+
+    public function obtenerUsuariosPorEdad()
+    {
+        $sql = "
+        SELECT
+            CASE
+                WHEN YEAR(CURDATE()) - anio_nacimiento < 18 THEN 'Menores'
+                WHEN YEAR(CURDATE()) - anio_nacimiento >= 65 THEN 'Jubilados'
+                ELSE 'Adultos'
+            END AS grupo,
+            COUNT(*) AS total
+        FROM usuario
+        GROUP BY grupo
+    ";
+
+        return $this->database->query($sql);
+    }
+}
 
 ?>
