@@ -33,15 +33,15 @@ new Chart(document.getElementById('usuariosChart'), {
                     weight: 'bold',
                 }
             },
-            legend: { display: false }
+            legend: {display: false}
         },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, color: 'black' }
+                ticks: {precision: 0, color: 'black'}
             },
             x: {
-                ticks: { color: 'black' }
+                ticks: {color: 'black'}
             }
         }
     }
@@ -74,15 +74,15 @@ new Chart(document.getElementById('partidasChart'), {
                     weight: 'bold',
                 }
             },
-            legend: { display: false }
+            legend: {display: false}
         },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, color: 'black' }
+                ticks: {precision: 0, color: 'black'}
             },
             x: {
-                ticks: { color: 'black' }
+                ticks: {color: 'black'}
             }
         }
     }
@@ -113,15 +113,15 @@ new Chart(document.getElementById('graficoPreguntas'), {
                     weight: 'bold',
                 }
             },
-            legend: { display: false }
+            legend: {display: false}
         },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, color: 'black' }
+                ticks: {precision: 0, color: 'black'}
             },
             x: {
-                ticks: { color: 'black' }
+                ticks: {color: 'black'}
             }
         }
     }
@@ -153,15 +153,15 @@ new Chart(document.getElementById('usuariosPaisChart'), {
                     weight: 'bold',
                 }
             },
-            legend: { display: false }
+            legend: {display: false}
         },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, color: 'black' }
+                ticks: {precision: 0, color: 'black'}
             },
             x: {
-                ticks: { color: 'black' }
+                ticks: {color: 'black'}
             }
         }
     }
@@ -192,15 +192,15 @@ new Chart(document.getElementById('usuariosSexoChart'), {
                     weight: 'bold',
                 }
             },
-            legend: { display: false }
+            legend: {display: false}
         },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, color: 'black' }
+                ticks: {precision: 0, color: 'black'}
             },
             x: {
-                ticks: { color: 'black' }
+                ticks: {color: 'black'}
             }
         }
     }
