@@ -36,9 +36,9 @@ class AdminController
         $graficoUsuarios = json_encode($usuariosEvolucion);
         $graficoPartidas = $this->partidaModel->obtenerGraficoPartidas($periodo);
         $graficoPreguntas = $this->preguntaModel->obtenerGraficoPreguntas($periodo);
-        $usuariosPorPais = $this->usuarioModel->obtenerUsuariosPorPais();
-        $usuariosPorSexo = $this->usuarioModel->obtenerUsuariosPorSexo();
-        $usuariosPorEdad = $this->usuarioModel->obtenerUsuariosPorEdad();
+        $usuariosPorPais = $this->usuarioModel->obtenerUsuariosPorPais($periodo);
+        $usuariosPorSexo = $this->usuarioModel->obtenerUsuariosPorSexo($periodo);
+        $usuariosPorEdad = $this->usuarioModel->obtenerUsuariosPorEdad($periodo);
 
 
         $this->renderer->render('admin', [

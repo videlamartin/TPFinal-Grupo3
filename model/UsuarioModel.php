@@ -189,11 +189,14 @@ class UsuarioModel
     }
 
 
-    public function obtenerUsuariosPorPais()
+    public function obtenerUsuariosPorPais($periodo)
     {
+        $where = $this->condicionPeriodo($periodo, 'fecha_creacion');
+
         $sql = "
         SELECT pais, COUNT(*) AS total
         FROM usuario
+        WHERE $where
         GROUP BY pais
         ORDER BY total DESC
     ";
@@ -202,11 +205,14 @@ class UsuarioModel
     }
 
 
-    public function obtenerUsuariosPorSexo()
+    public function obtenerUsuariosPorSexo($periodo)
     {
+        $where = $this->condicionPeriodo($periodo, 'fecha_creacion');
+
         $sql = "
         SELECT sexo, COUNT(*) AS total
         FROM usuario
+        WHERE $where
         GROUP BY sexo
     ";
 
@@ -214,8 +220,10 @@ class UsuarioModel
     }
 
 
-    public function obtenerUsuariosPorEdad()
+    public function obtenerUsuariosPorEdad($periodo)
     {
+        $where = $this->condicionPeriodo($periodo, 'fecha_creacion');
+
         $sql = "
         SELECT
             CASE
@@ -225,10 +233,31 @@ class UsuarioModel
             END AS grupo,
             COUNT(*) AS total
         FROM usuario
+        WHERE $where
         GROUP BY grupo
     ";
 
         return $this->database->query($sql);
+    }
+
+    private function condicionPeriodo($periodo, $campoFecha)
+    {
+        switch ($periodo) {
+            case 'dia':
+                return "DATE($campoFecha) = CURDATE()";
+
+            case 'semana':
+                return "YEARWEEK($campoFecha, 1) = YEARWEEK(CURDATE(), 1)";
+
+            case 'mes':
+                return "DATE_FORMAT($campoFecha, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')";
+
+            case 'anio':
+                return "YEAR($campoFecha) = YEAR(CURDATE())";
+
+            default:
+                return "1=1";
+        }
     }
 }
 
