@@ -1,40 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>QuizMaster - Ranking</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Ranking</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
+    <link rel="stylesheet" href="/public/css/ranking.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
+{{> navbar}}
 
-<div class="w3-container w3-padding-32">
-    <div class="w3-card-4 w3-white panel-juego" style="max-width:700px;margin:0 auto;">
-        <div class="w3-container w3-padding">
-            <h2>Ranking Global</h2>
-            <table class="w3-table-all">
-                <tr>
-                    <th>Posición</th>
-                    <th>Usuario</th>
-                    <th>Puntaje</th>
-                </tr>
-                {{#ranking}}
-                <tr>
-                    <td>{{posicion}}</td>
-                    <td>
-                        <a href="/perfil/ver?id={{id}}"  class="w3-text-blue" style="text-decoration:none; font-weight: bold;" >{{username}}</a>
-                    </td>
-                    <td>{{puntaje_total}}</td>
-                </tr>
-                {{/ranking}}
-            </table>
+<main class="qm-page qm-page-narrow">
 
-            <a href="/lobby/ver" class="w3-button btn-azul w3-block w3-margin-top">Volver al lobby</a>
+    <div class="qm-page-head qm-aparecer">
+        <div class="qm-eyebrow">Clasificación</div>
+        <h1 class="qm-title">Ranking global</h1>
+        <p class="qm-subtitle">Los mejores jugadores de QuizMaster.</p>
+    </div>
+
+    <div class="rank-podio qm-aparecer">
+        {{#podio}}
+        <div class="rank-pod {{clase}} {{#es_yo}}es-yo{{/es_yo}}">
+            <div class="rank-medalla">{{medalla}}</div>
+            <div class="rank-pod-av">{{inicial}}</div>
+            <a href="/perfil/ver?id={{id}}" class="rank-pod-nombre">{{username}}</a>
+            <div class="rank-pod-pts">{{puntaje_total}}</div>
+        </div>
+        {{/podio}}
+    </div>
+
+    {{#hay_resto}}
+    <div class="qm-card qm-aparecer">
+        <div class="rank-lista">
+            {{#resto}}
+            <div class="rank-row {{#es_yo}}es-yo{{/es_yo}}">
+                <span class="rank-pos">{{posicion}}</span>
+                <a href="/perfil/ver?id={{id}}" class="rank-who">
+                    <span class="rank-av">{{inicial}}</span>
+                    {{username}}{{#es_yo}} <span class="rank-tag">vos</span>{{/es_yo}}
+                </a>
+                <span class="rank-sc">{{puntaje_total}}</span>
+            </div>
+            {{/resto}}
         </div>
     </div>
-</div>
+    {{/hay_resto}}
+
+</main>
 
 </body>
 </html>

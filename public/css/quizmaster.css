@@ -1,0 +1,407 @@
+/* ============================================================
+   QuizMaster · Sistema de diseño compartido
+   Se carga en TODAS las pantallas, encima de W3.CSS.
+   Define los colores, la tipografía y los componentes base.
+   ============================================================ */
+
+/* Tipografía de la marca (Poppins). Al estar en este archivo,
+   que se carga en todas las pantallas, aplica en toda la app. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Marca */
+    --qm-brand:      #6D3BEF;
+    --qm-brand-2:    #1FB6E8;
+
+    /* Neutros (con leve tinte violeta) */
+    --qm-ground:     #F4F3FB;
+    --qm-surface:    #FFFFFF;
+    --qm-surface-2:  #FAF9FE;
+    --qm-border:     #E6E3F2;
+    --qm-ink:        #1B1636;
+    --qm-ink-soft:   #4A4463;
+    --qm-muted:      #7A7595;
+
+    /* Semánticos */
+    --qm-ok:         #1FA971;
+    --qm-ok-bg:      #E4F7EE;
+    --qm-warn:       #E08600;
+    --qm-danger:     #E5484D;
+    --qm-danger-bg:  #FCE8E9;
+
+    /* Categorías (las que ya usa el juego) */
+    --qm-cat-historia:        #F2B90C;
+    --qm-cat-deportes:        #FB8C00;
+    --qm-cat-ciencia:         #35A65A;
+    --qm-cat-arte:            #E5393B;
+    --qm-cat-entretenimiento: #8E24AA;
+    --qm-cat-geografia:       #1E88E5;
+
+    --qm-radius:    16px;
+    --qm-radius-s:  10px;
+    --qm-shadow:    0 10px 30px rgba(27, 22, 54, .10);
+    --qm-shadow-lg: 0 20px 50px rgba(27, 22, 54, .16);
+    --qm-ring:      0 0 0 3px rgba(109, 59, 239, .35);
+
+    --qm-font: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --qm-ground:    #120F1E;
+        --qm-surface:   #1C1830;
+        --qm-surface-2: #221D3A;
+        --qm-border:    #322B4E;
+        --qm-ink:       #F3F1FB;
+        --qm-ink-soft:  #C9C4E0;
+        --qm-muted:     #9A93B8;
+        --qm-brand:     #8B6BFF;
+        --qm-ok-bg:     #123125;
+        --qm-danger-bg: #3A1B1F;
+        --qm-shadow:    0 10px 30px rgba(0, 0, 0, .45);
+        --qm-shadow-lg: 0 20px 50px rgba(0, 0, 0, .55);
+    }
+}
+:root[data-theme="light"] {
+    --qm-ground: #F4F3FB; --qm-surface: #FFFFFF; --qm-surface-2: #FAF9FE; --qm-border: #E6E3F2;
+    --qm-ink: #1B1636; --qm-ink-soft: #4A4463; --qm-muted: #7A7595; --qm-brand: #6D3BEF;
+    --qm-ok-bg: #E4F7EE; --qm-danger-bg: #FCE8E9;
+    --qm-shadow: 0 10px 30px rgba(27,22,54,.10); --qm-shadow-lg: 0 20px 50px rgba(27,22,54,.16);
+}
+:root[data-theme="dark"] {
+    --qm-ground: #120F1E; --qm-surface: #1C1830; --qm-surface-2: #221D3A; --qm-border: #322B4E;
+    --qm-ink: #F3F1FB; --qm-ink-soft: #C9C4E0; --qm-muted: #9A93B8; --qm-brand: #8B6BFF;
+    --qm-ok-bg: #123125; --qm-danger-bg: #3A1B1F;
+    --qm-shadow: 0 10px 30px rgba(0,0,0,.45); --qm-shadow-lg: 0 20px 50px rgba(0,0,0,.55);
+}
+
+/* ---------------- Base ---------------- */
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--qm-font);
+    background: var(--qm-ground);
+    color: var(--qm-ink);
+    margin: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Los controles de formulario no heredan la fuente por defecto */
+button, input, select, textarea { font-family: var(--qm-font); }
+
+.qm-cat-color { color: #fff; }
+
+/* ---------------- Barra de navegación ---------------- */
+.qm-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--qm-surface) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--qm-border);
+}
+.qm-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.qm-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -.03em;
+    color: var(--qm-ink);
+    text-decoration: none;
+    flex: none;
+}
+.qm-logo b { color: var(--qm-brand); }
+.qm-logo .qm-mark {
+    width: 30px; height: 30px; border-radius: 9px; flex: none;
+    background: conic-gradient(from 210deg,
+        var(--qm-cat-historia), var(--qm-cat-deportes), var(--qm-cat-arte),
+        var(--qm-cat-entretenimiento), var(--qm-cat-geografia), var(--qm-cat-ciencia), var(--qm-cat-historia));
+    box-shadow: inset 0 0 0 4px var(--qm-surface);
+}
+.qm-nav-links {
+    display: flex;
+    gap: 4px;
+    margin-left: 6px;
+    flex-wrap: wrap;
+}
+.qm-nav-links a {
+    text-decoration: none;
+    color: var(--qm-ink-soft);
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 8px 12px;
+    border-radius: 9px;
+    white-space: nowrap;
+}
+.qm-nav-links a:hover { background: var(--qm-surface-2); color: var(--qm-ink); }
+.qm-nav-links a.active {
+    color: var(--qm-brand);
+    background: color-mix(in srgb, var(--qm-brand) 12%, transparent);
+}
+.qm-nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.qm-userchip {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 14px 5px 5px;
+    background: var(--qm-surface-2);
+    border: 1px solid var(--qm-border);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .9rem;
+    color: var(--qm-ink);
+}
+.qm-userchip .qm-av {
+    width: 28px; height: 28px; border-radius: 50%; flex: none;
+    background: linear-gradient(135deg, var(--qm-brand), var(--qm-brand-2));
+    color: #fff; display: grid; place-items: center; font-weight: 800; font-size: .8rem;
+    text-transform: uppercase;
+}
+.qm-nav-logout {
+    border: 1px solid var(--qm-border);
+    background: var(--qm-surface);
+    color: var(--qm-ink-soft);
+    border-radius: 9px;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: .85rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+.qm-nav-logout:hover { color: var(--qm-danger); border-color: var(--qm-danger); }
+
+.qm-nav-tema {
+    flex: none;
+    width: 38px; height: 38px;
+    border: 1px solid var(--qm-border);
+    background: var(--qm-surface);
+    border-radius: 9px;
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+.qm-nav-tema:hover { border-color: var(--qm-brand); }
+
+/* Botón hamburguesa (móvil) */
+.qm-nav-toggle {
+    display: none;
+    margin-left: auto;
+    background: var(--qm-surface-2);
+    border: 1px solid var(--qm-border);
+    color: var(--qm-ink);
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 720px) {
+    .qm-nav-toggle { display: block; }
+    .qm-nav-inner { flex-wrap: wrap; }
+    .qm-nav-links,
+    .qm-nav-right {
+        display: none;
+        width: 100%;
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .qm-nav.abierto .qm-nav-links,
+    .qm-nav.abierto .qm-nav-right { display: flex; }
+    .qm-nav-right { padding-top: 6px; border-top: 1px solid var(--qm-border); }
+    .qm-userchip { justify-content: flex-start; }
+}
+
+/* ---------------- Layout ---------------- */
+.qm-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+}
+.qm-page-narrow { max-width: 720px; }
+.qm-page-head { margin-bottom: 24px; }
+.qm-title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin: 0;
+    color: var(--qm-ink);
+    text-wrap: balance;
+}
+.qm-subtitle {
+    color: var(--qm-muted);
+    margin: 6px 0 0;
+    font-size: 1.02rem;
+}
+.qm-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .72rem;
+    font-weight: 800;
+    color: var(--qm-brand);
+    margin-bottom: 8px;
+}
+
+/* ---------------- Tarjetas ---------------- */
+.qm-card {
+    background: var(--qm-surface);
+    border: 1px solid var(--qm-border);
+    border-radius: var(--qm-radius);
+    box-shadow: var(--qm-shadow);
+}
+.qm-card-pad { padding: 24px; }
+.qm-grid { display: grid; gap: 18px; }
+
+/* ---------------- Botones ---------------- */
+.qm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 22px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: .95rem;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+}
+.qm-btn:hover { transform: translateY(-1px); }
+.qm-btn:focus-visible { outline: none; box-shadow: var(--qm-ring); }
+.qm-btn-block { display: flex; width: 100%; }
+
+.qm-btn-primary { background: var(--qm-brand); color: #fff; box-shadow: 0 8px 18px color-mix(in srgb, var(--qm-brand) 40%, transparent); }
+.qm-btn-primary:hover { filter: brightness(1.07); }
+.qm-btn-2 { background: var(--qm-brand-2); color: #06222b; }
+.qm-btn-soft { background: color-mix(in srgb, var(--qm-brand) 12%, transparent); color: var(--qm-brand); }
+.qm-btn-outline { background: transparent; border: 1.5px solid var(--qm-border); color: var(--qm-ink); }
+.qm-btn-outline:hover { border-color: var(--qm-muted); }
+.qm-btn-ok { background: var(--qm-ok); color: #fff; }
+.qm-btn-danger { background: var(--qm-danger); color: #fff; }
+
+/* ---------------- Formularios ---------------- */
+.qm-field { margin-bottom: 18px; }
+.qm-field label {
+    display: block;
+    font-weight: 700;
+    font-size: .85rem;
+    color: var(--qm-ink-soft);
+    margin-bottom: 6px;
+}
+.qm-input,
+.qm-textarea,
+.qm-select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--qm-surface-2);
+    border: 1.5px solid var(--qm-border);
+    border-radius: 12px;
+    color: var(--qm-ink);
+    font-family: inherit;
+    font-size: 1rem;
+}
+.qm-input::placeholder,
+.qm-textarea::placeholder { color: var(--qm-muted); }
+.qm-input:focus,
+.qm-textarea:focus,
+.qm-select:focus { outline: none; border-color: var(--qm-brand); box-shadow: var(--qm-ring); }
+
+/* ---------------- Tablas ---------------- */
+.qm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .95rem;
+}
+.qm-table th {
+    text-align: left;
+    font-weight: 700;
+    color: var(--qm-muted);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-size: .74rem;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--qm-border);
+}
+.qm-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--qm-border);
+    color: var(--qm-ink);
+}
+.qm-table tr:last-child td { border-bottom: 0; }
+.qm-table tbody tr:hover { background: var(--qm-surface-2); }
+
+/* ---------------- Insignias / estados ---------------- */
+.qm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 800;
+    font-size: .78rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+    color: #fff;
+}
+.qm-pill {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--qm-surface-2);
+    border: 1px solid var(--qm-border);
+    color: var(--qm-ink-soft);
+}
+.qm-note {
+    background: color-mix(in srgb, var(--qm-brand) 8%, var(--qm-surface));
+    border: 1px solid color-mix(in srgb, var(--qm-brand) 25%, var(--qm-border));
+    border-radius: var(--qm-radius-s);
+    padding: 14px 18px;
+    font-size: .92rem;
+    color: var(--qm-ink-soft);
+}
+.qm-alert-ok {
+    background: var(--qm-ok-bg);
+    border: 1px solid color-mix(in srgb, var(--qm-ok) 40%, transparent);
+    color: var(--qm-ok);
+    border-radius: var(--qm-radius-s);
+    padding: 12px 16px;
+    font-weight: 600;
+}
+.qm-alert-error {
+    background: var(--qm-danger-bg);
+    border-left: 4px solid var(--qm-danger);
+    color: var(--qm-danger);
+    border-radius: var(--qm-radius-s);
+    padding: 12px 16px;
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+/* ---------------- Animaciones ---------------- */
+@keyframes qm-aparecer {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.qm-aparecer { animation: qm-aparecer .4s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}

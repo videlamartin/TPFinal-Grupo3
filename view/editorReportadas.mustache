@@ -1,149 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>QuizMaster - Preguntas Reportadas</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Preguntas reportadas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet"
-          href="https://www.w3schools.com/w3css/4/w3.css">
-
-    <link rel="stylesheet"
-          href="/public/css/lobby.css">
-
-    <link rel="stylesheet"
-          href="/public/css/editor.css">
-
-    <style>
-        /* Reglas que se aplican SOLO al imprimir (no en pantalla) */
-        @media print {
-            /* Oculta todo lo marcado como no-print (botones, acciones) */
-            .no-print { display: none !important; }
-            /* Fondo blanco y sin sombras, para no gastar tinta */
-            body { background: #fff !important; }
-            .panel-juego { box-shadow: none !important; }
-            /* Que cada reporte no se corte entre dos hojas */
-            .pregunta-card { page-break-inside: avoid; border: 1px solid #999; margin-bottom: 12px; }
-        }
-    </style>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
+    <link rel="stylesheet" href="/public/css/editor.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
-<div class="subtitulo">Preguntas reportadas</div>
+{{> navbar}}
 
-<div class="w3-container w3-padding-32">
+<main class="qm-page">
 
-    <div class="w3-card-4 w3-white panel-juego"
-         style="max-width:900px; margin:0 auto;">
-
-        <div class="w3-container w3-padding">
-
-            <div class="w3-row w3-margin-bottom">
-
-                <div class="w3-col s6">
-                    <h2 style="margin:0;">
-                        Reportes de usuarios
-                    </h2>
-                </div>
-
-                <div class="w3-col s6 w3-right-align no-print">
-                    <button type="button" onclick="window.print()"
-                            class="w3-button w3-green w3-round-xlarge">
-                        🖨 Imprimir
-                    </button>
-                    <a href="/editor/ver"
-                       class="w3-button w3-blue w3-round-xlarge">
-                        Ver preguntas
-                    </a>
-                </div>
-
-            </div>
-
-            <div class="preguntas-grid">
-
-                {{#reportes}}
-                    <div class="pregunta-card">
-
-                        <div class="pregunta-header">
-
-                        <span class="w3-tag w3-red w3-round">
-                            Reportada
-                        </span>
-
-                            <span class="estado-pregunta">
-                                {{fecha_reporte}}
-                            </span>
-
-                        </div>
-
-                        <h3 class="pregunta-enunciado">
-                            {{enunciado}}
-                        </h3>
-
-                        <p>
-                            <strong>Usuario:</strong>
-                            {{username}}
-                        </p>
-
-                        <p>
-                            <strong>Motivo:</strong>
-                            {{motivo}}
-                        </p>
-
-                        <div class="acciones no-print">
-
-                            <form method="POST" action="/editor/mantenerReporte">
-                                <input type="hidden"
-                                       name="reporte_id"
-                                       value="{{reporte_id}}">
-
-                                <button type="submit"
-                                        class="w3-button w3-green w3-round-xlarge">
-                                    Mantener
-                                </button>
-                            </form>
-
-                            <form method="POST"
-                                  action="/editor/eliminar"
-                                  onsubmit="return confirm('¿Dar de baja esta pregunta?')">
-
-                                <input type="hidden"
-                                       name="id"
-                                       value="{{pregunta_id}}">
-
-                                <input type="hidden"
-                                       name="desde_reportes"
-                                       value="1">
-
-                                <button type="submit"
-                                        class="w3-button w3-red w3-round-xlarge">
-                                    Dar de baja
-                                </button>
-                            </form>
-
-                        </div>
-
-                    </div>
-                {{/reportes}}
-
-                {{^reportes}}
-                    <div class="sin-resultados">
-                        No hay preguntas reportadas.
-                    </div>
-                {{/reportes}}
-
-            </div>
-
-            <a href="/lobby/ver"
-               class="w3-button w3-blue w3-round-xlarge w3-margin-top no-print">
-                Volver al lobby
-            </a>
-
+    <div class="editor-barra qm-aparecer">
+        <div>
+            <div class="qm-eyebrow">Panel de editor</div>
+            <h1 class="qm-title">Preguntas reportadas</h1>
         </div>
-
+        <div class="acciones-editor no-print">
+            <button type="button" onclick="window.print()" class="qm-btn qm-btn-outline">🖨 Imprimir</button>
+            <a href="/editor/ver" class="qm-btn qm-btn-primary">Ver preguntas</a>
+        </div>
     </div>
 
-</div>
+    <div class="preguntas-grid qm-aparecer">
+        {{#reportes}}
+        <div class="pregunta-card">
+            <div class="pregunta-header">
+                <span class="categoria-badge" style="background:var(--qm-danger); margin:0;">Reportada</span>
+                <span class="estado-pregunta">{{fecha_reporte}}</span>
+            </div>
+            <h3 class="pregunta-enunciado">{{enunciado}}</h3>
+            <p><strong>Usuario:</strong> {{username}}</p>
+            <p><strong>Motivo:</strong> {{motivo}}</p>
+            <div class="acciones no-print">
+                <form method="POST" action="/editor/mantenerReporte">
+                    <input type="hidden" name="reporte_id" value="{{reporte_id}}">
+                    <button type="submit" class="qm-btn qm-btn-ok">Mantener</button>
+                </form>
+                <form method="POST" action="/editor/eliminar" onsubmit="return confirm('¿Dar de baja esta pregunta?')">
+                    <input type="hidden" name="id" value="{{pregunta_id}}">
+                    <input type="hidden" name="desde_reportes" value="1">
+                    <button type="submit" class="qm-btn qm-btn-danger">Dar de baja</button>
+                </form>
+            </div>
+        </div>
+        {{/reportes}}
+
+        {{^reportes}}
+        <div class="sin-resultados">No hay preguntas reportadas.</div>
+        {{/reportes}}
+    </div>
+
+</main>
 
 </body>
 </html>

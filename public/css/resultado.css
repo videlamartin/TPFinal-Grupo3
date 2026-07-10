@@ -1,43 +1,48 @@
-body {
-    background: linear-gradient(135deg,#4facfe,#00f2fe);
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    margin: 0;
-}
-.w3-container { text-align: center; }
-.titulo {
-    font-size: 42px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    text-shadow: 2px 2px 5px rgba(0,0,0,.3);
-    margin-top: 20px;
-}
-.subtitulo {
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
-}
-.panel-juego {
-    border-radius: 20px;
-    overflow: hidden;
-    animation: aparecer .4s ease;
-}
-.btn-naranja { background:#ff9800 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-naranja:hover { transform:scale(1.05); background:#ffb74d !important; }
-.btn-verde   { background:#43a047 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-verde:hover   { transform:scale(1.05); }
-.btn-azul    { background:#1e88e5 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-azul:hover    { transform:scale(1.05); }
-.btn-rojo    { background:#e53935 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-rojo:hover    { transform:scale(1.05); }
+/* Resultado de la partida · usa los tokens de quizmaster.css */
 
-@keyframes aparecer {
-    from { opacity:0; transform:translateY(15px); }
-    to   { opacity:1; transform:translateY(0); }
+.resultado-card { overflow: hidden; }
+
+.resultado-top {
+    background: linear-gradient(135deg, var(--qm-brand), var(--qm-brand-2));
+    color: #fff;
+    text-align: center;
+    padding: 32px 24px 26px;
 }
-@media (max-width: 600px) {
-    .titulo { font-size: 30px; margin-top: 15px; }
-    .w3-container { padding-left: 10px !important; padding-right: 10px !important; padding-bottom: 10px !important; }
-    .panel-juego { margin: 10px; }
+.resultado-icono { font-size: 52px; line-height: 1; }
+.resultado-label { margin: 10px 0 0; font-weight: 700; opacity: .9; letter-spacing: .04em; text-transform: uppercase; font-size: .8rem; }
+.resultado-puntaje { font-size: 3.4rem; font-weight: 900; line-height: 1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.resultado-pts { margin: 2px 0 0; opacity: .9; font-weight: 700; }
+
+.resultado-motivo,
+.resultado-correcta {
+    margin: 0 0 10px;
+    padding: 12px 16px;
+    border-radius: var(--qm-radius-s);
+    background: var(--qm-surface-2);
+    border: 1px solid var(--qm-border);
+    color: var(--qm-ink);
+    font-weight: 600;
 }
+.resultado-motivo span,
+.resultado-correcta span {
+    display: block;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--qm-muted);
+    font-weight: 800;
+    margin-bottom: 3px;
+}
+.resultado-correcta {
+    background: var(--qm-ok-bg);
+    border-color: color-mix(in srgb, var(--qm-ok) 35%, transparent);
+}
+
+.resultado-reporte {
+    padding: 16px;
+    border-radius: var(--qm-radius-s);
+    background: var(--qm-surface-2);
+    border: 1px solid var(--qm-border);
+}
+
+.resultado-acciones { display: grid; gap: 10px; margin-top: 22px; }

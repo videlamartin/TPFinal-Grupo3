@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>QuizMaster - Juego</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Partida</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/juego.css">
 </head>
 <body class="{{categoria_actual}}">
@@ -15,41 +19,34 @@
 </div>
 
 <div class="contenedor-juego">
-    <h1 style="color:white; text-align:center; margin:0 0 4px;">PREGUNTADOS</h1>
-    <h2 style="color:white; text-align:center; margin:0 0 24px; font-weight:normal; font-size:1.1em;">
-        ¡Demuestra tu capacidad intelectual!
-    </h2>
 
-    <div class="panel w3-card-4 w3-white w3-round-xlarge w3-padding-32">
+    <div class="juego-brand">
+        <span class="qm-mark juego-mark"></span>
+        <span>Quiz<b>Master</b></span>
+    </div>
+
+    <div class="qm-card game-card">
 
         <div class="timer-wrap">
-            <div class="w3-row">
-                <div class="w3-col s6 w3-left-align">Tiempo</div>
-                <div class="w3-col s6 w3-right-align">
-                    <span class="timer-num" id="timer-num">{{tiempo_limite}}</span>s
-                </div>
+            <div class="timer-row">
+                <span>Tiempo</span>
+                <span><span class="timer-num" id="timer-num">{{tiempo_limite}}</span> s</span>
             </div>
             <div class="barra-tiempo">
                 <div id="barra-tiempo-fill"></div>
             </div>
         </div>
 
-        <div class="w3-center w3-margin-bottom">
-            <span class="w3-badge"
-                  style="background-color: {{categoria_color}}; color: white; padding: 5px 15px;">
-                {{categoria}}
-            </span>
+        <div class="game-cat">
+            <span class="qm-badge" style="background: {{categoria_color}};">{{categoria}}</span>
         </div>
 
-        <h3 class="w3-center" style="margin-bottom: 30px; font-weight: bold;">
-            {{pregunta}}
-        </h3>
+        <h1 class="game-question">{{pregunta}}</h1>
 
-        <form action="/partida/responder" method="POST">
+        <form action="/partida/responder" method="POST" class="game-answers">
             {{#respuestas}}
-                <button type="submit" name="respuesta_id" value="{{id}}"
-                        class="w3-button w3-block w3-blue w3-round-xlarge w3-margin-bottom">
-                    {{texto}}
+                <button type="submit" name="respuesta_id" value="{{id}}" class="game-answer">
+                    <span class="game-answer-txt">{{texto}}</span>
                 </button>
             {{/respuestas}}
         </form>
@@ -58,8 +55,8 @@
             <input type="hidden" name="respuesta_id" value="0">
         </form>
 
-        <div class="w3-row w3-margin-top w3-border-top w3-padding-top">
-            <div class="w3-col s6 w3-left-align">Puntaje: <b>{{puntaje_actual}}</b></div>
+        <div class="game-foot">
+            <span>Puntaje: <b>{{puntaje_actual}}</b></span>
         </div>
 
     </div>

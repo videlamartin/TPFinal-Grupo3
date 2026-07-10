@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Partida</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
+    <link rel="stylesheet" href="/public/css/juego.css">
+</head>
+<body class="{{categoria_actual}}">
+
+<div class="contenedor-juego">
+
+    <div class="juego-brand">
+        <span class="qm-mark juego-mark"></span>
+        <span>Quiz<b>Master</b></span>
+    </div>
+
+    <div class="qm-card game-card">
+
+        <div class="reveal-banner {{#es_correcta}}ok{{/es_correcta}}{{^es_correcta}}bad{{/es_correcta}}">
+            {{#es_correcta}}✓ ¡Correcto!{{/es_correcta}}
+            {{^es_correcta}}✗ ¡Incorrecto!{{/es_correcta}}
+        </div>
+
+        <div class="game-cat">
+            <span class="qm-badge" style="background: {{categoria_color}};">{{categoria}}</span>
+        </div>
+
+        <h1 class="game-question">{{pregunta}}</h1>
+
+        <div class="game-answers reveal-answers">
+            {{#respuestas}}
+            <div class="game-answer reveal {{#marca_correcta}}is-ok{{/marca_correcta}}{{#marca_incorrecta}}is-bad{{/marca_incorrecta}}">
+                <span class="game-answer-txt">{{texto}}</span>
+                {{#marca_correcta}}<span class="reveal-ico">✓</span>{{/marca_correcta}}
+                {{#marca_incorrecta}}<span class="reveal-ico">✗</span>{{/marca_incorrecta}}
+            </div>
+            {{/respuestas}}
+        </div>
+
+        <form action="/partida/continuar" method="POST" class="reveal-cont">
+            <button class="qm-btn qm-btn-block {{#es_correcta}}qm-btn-primary{{/es_correcta}}{{^es_correcta}}qm-btn-danger{{/es_correcta}}">
+                {{#es_correcta}}Siguiente pregunta →{{/es_correcta}}{{^es_correcta}}Ver resultado →{{/es_correcta}}
+            </button>
+        </form>
+
+        <div class="game-foot">
+            <span>Puntaje: <b>{{puntaje_actual}}</b></span>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

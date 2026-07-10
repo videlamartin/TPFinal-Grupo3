@@ -1,97 +1,35 @@
-body {
-    background: linear-gradient(135deg,#4facfe,#00f2fe);
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    margin: 0;
-}
+/* Lobby · usa los tokens de quizmaster.css */
 
-.titulo {
-    font-size: 42px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    text-shadow: 2px 2px 5px rgba(0,0,0,.3);
-    margin-top: 20px;
-}
+.lobby-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
 
-.subtitulo {
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
-}
-
-.panel-juego {
-    border-radius: 20px;
-    overflow: hidden;
-    animation: aparecer .4s ease;
-}
-
-.w3-row-padding {
+.lobby-tile {
+    padding: 22px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 }
-
-.w3-row-padding > div {
-    flex: 1;
-    min-width: 250px;
+.lobby-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--qm-shadow-lg);
+    border-color: color-mix(in srgb, var(--qm-brand) 40%, var(--qm-border));
 }
+.lobby-tile h3 { font-size: 1.15rem; font-weight: 800; margin: 4px 0 0; color: var(--qm-ink); }
+.lobby-tile p { color: var(--qm-muted); font-size: .9rem; margin: 0; }
+.lobby-go { margin-top: 8px; font-weight: 800; color: var(--qm-brand); font-size: .9rem; }
 
-.btn-naranja  { background:#ff9800 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-naranja:hover  { transform:scale(1.05); background:#ffb74d !important; }
-
-.btn-amarillo { background:#fdd835 !important; color:#333 !important; border-radius:25px; transition:.3s; }
-.btn-amarillo:hover { transform:scale(1.05); background:#ffee58 !important; }
-
-.btn-verde    { background:#43a047 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-verde:hover    { transform:scale(1.05); }
-
-.btn-azul     { background:#1e88e5 !important; color:white !important; border-radius:25px; transition:.3s; }
-.btn-azul:hover     { transform:scale(1.05); }
-
-table { border-radius:10px; overflow:hidden; }
-
-
-@keyframes aparecer {
-    from { opacity:0; transform:translateY(15px); }
-    to   { opacity:1; transform:translateY(0); }
+.lobby-ic {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
 }
-
-@media (max-width: 600px) {
-    .titulo { font-size:30px; margin-top:15px; }
-    .subtitulo { display:flex; flex-direction:column; align-items:center; gap:10px; padding:0 10px; }
-    .subtitulo a { margin-left:0 !important; }
-    .w3-container { text-align:center; padding-left:10px !important; padding-right:10px !important; padding-bottom:10px !important; }
-    table { display:block; overflow-x:auto; white-space:nowrap; }
-}
-@media print {
-    body {
-        background: white !important;
-    }
-
-    .titulo,
-    .subtitulo,
-    .botones-admin,
-    form[method="GET"] {
-        display: none !important;
-    }
-
-    .panel-juego {
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        animation: none !important;
-        max-width: 100% !important;
-    }
-
-    canvas {
-        page-break-inside: avoid;
-        break-inside: avoid;
-        max-width: 100% !important;
-        max-height: 250px !important;
-        margin-bottom: 20px;
-    }
-
-    @page {
-        size: A4 portrait;
-        margin: 1.5cm;
-    }
-}
+.i-play  { background: color-mix(in srgb, var(--qm-brand) 14%, transparent); }
+.i-rank  { background: color-mix(in srgb, var(--qm-cat-historia) 22%, transparent); }
+.i-prof  { background: color-mix(in srgb, var(--qm-cat-ciencia) 18%, transparent); }
+.i-sug   { background: color-mix(in srgb, var(--qm-cat-entretenimiento) 18%, transparent); }
+.i-edit  { background: color-mix(in srgb, var(--qm-cat-geografia) 18%, transparent); }
+.i-admin { background: color-mix(in srgb, var(--qm-cat-deportes) 18%, transparent); }

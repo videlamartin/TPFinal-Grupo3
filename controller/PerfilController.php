@@ -42,6 +42,7 @@ class PerfilController
             'rol' => $usuario['rol'],
             'foto_perfil' => $usuario['foto_perfil'],
             'historial'      => $historial,
+            'partidas_jugadas' => is_array($historial) ? count($historial) : 0,
             'pais' => $usuario['pais'],
             'ciudad' => $usuario['ciudad'],
             'url_perfil' => $urlPerfil,
