@@ -1,110 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>QuizMaster - Preguntas Sugeridas</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Preguntas sugeridas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/editor.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
-<div class="subtitulo">Preguntas sugeridas</div>
+{{> navbar}}
 
-<div class="w3-container w3-padding-32">
-    <div class="w3-card-4 w3-white panel-juego" style="max-width:900px; margin:0 auto;">
-        <div class="w3-container w3-padding">
+<main class="qm-page">
 
-            <div class="w3-row w3-margin-bottom encabezado-sugeridas">
-                <div class="w3-col s12 m6">
-                    <h2 style="margin:0;">Sugerencias de usuarios</h2>
-                </div>
-
-                <div class="w3-col s12 m6 w3-right-align boton-ver">
-                    <a href="/editor/ver" class="w3-button w3-blue w3-round-xlarge">
-                        Ver preguntas
-                    </a>
-                </div>
-            </div>
-
-            <div class="preguntas-grid">
-
-                {{#preguntas}}
-                <div class="pregunta-card">
-
-                    <div class="pregunta-header">
-                        <span class="w3-tag w3-purple w3-round">Pendiente</span>
-                        <span class="estado-pregunta">{{fecha_creacion}}</span>
-                    </div>
-
-                    <span class="categoria-badge"
-                          style="background:{{categoria_color}}; margin-bottom: 12px">
-                        {{categoria_nombre}}
-                    </span>
-
-                    <h3 class="pregunta-enunciado">{{enunciado}}</h3>
-
-                    <div class="respuestas">
-                        <strong>Respuestas:</strong>
-
-                        {{#respuestas}}
-                            <div>
-                                {{#es_correcta}}
-                                    <span class="w3-text-green" style="font-weight: bold;">
-                                        • {{texto}}
-                                    </span>
-                                {{/es_correcta}}
-
-                                {{^es_correcta}}
-                                    <span>
-                                        • {{texto}}
-                                    </span>
-                                {{/es_correcta}}
-                            </div>
-                        {{/respuestas}}
-                    </div>
-
-                    <p><strong>Sugerida por:</strong> {{sugerida_por}}</p>
-
-                    <div class="acciones">
-
-                        <form method="POST" action="/editor/resolverSugerida">
-                            <input type="hidden" name="id" value="{{id}}">
-                            <input type="hidden" name="accion" value="APROBADA">
-                            <button type="submit" class="w3-button w3-green w3-round-xlarge">
-                                Aprobar
-                            </button>
-                        </form>
-
-                        <form method="POST" action="/editor/resolverSugerida">
-                            <input type="hidden" name="id" value="{{id}}">
-                            <input type="hidden" name="accion" value="RECHAZADA">
-                            <button type="submit" class="w3-button w3-red w3-round-xlarge">
-                                Rechazar
-                            </button>
-                        </form>
-
-                    </div>
-
-                </div>
-                {{/preguntas}}
-
-                {{^preguntas}}
-                <div class="sin-resultados">
-                    No hay preguntas sugeridas pendientes.
-                </div>
-                {{/preguntas}}
-
-            </div>
-
-            <a href="/lobby/ver" class="w3-button w3-blue w3-round-xlarge w3-margin-top">
-                Volver al lobby
-            </a>
-
+    <div class="editor-barra qm-aparecer">
+        <div>
+            <div class="qm-eyebrow">Panel de editor</div>
+            <h1 class="qm-title">Preguntas sugeridas</h1>
+        </div>
+        <div class="acciones-editor">
+            <a href="/editor/ver" class="qm-btn qm-btn-primary">Ver preguntas</a>
         </div>
     </div>
-</div>
+
+    <div class="preguntas-grid qm-aparecer">
+        {{#preguntas}}
+        <div class="pregunta-card">
+            <div class="pregunta-header">
+                <span class="qm-pill" style="color:var(--qm-cat-entretenimiento);">Pendiente</span>
+                <span class="estado-pregunta">{{fecha_creacion}}</span>
+            </div>
+
+            <span class="categoria-badge" style="background:{{categoria_color}};">{{categoria_nombre}}</span>
+
+            <h3 class="pregunta-enunciado">{{enunciado}}</h3>
+
+            <div class="respuestas">
+                <strong>Respuestas:</strong>
+                {{#respuestas}}
+                    <div>
+                        {{#es_correcta}}<span class="correcta">✓ {{texto}}</span>{{/es_correcta}}
+                        {{^es_correcta}}<span>• {{texto}}</span>{{/es_correcta}}
+                    </div>
+                {{/respuestas}}
+            </div>
+
+            <p><strong>Sugerida por:</strong> {{sugerida_por}}</p>
+
+            <div class="acciones">
+                <form method="POST" action="/editor/resolverSugerida">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <input type="hidden" name="accion" value="APROBADA">
+                    <button type="submit" class="qm-btn qm-btn-ok">Aprobar</button>
+                </form>
+                <form method="POST" action="/editor/resolverSugerida">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <input type="hidden" name="accion" value="RECHAZADA">
+                    <button type="submit" class="qm-btn qm-btn-danger">Rechazar</button>
+                </form>
+            </div>
+        </div>
+        {{/preguntas}}
+
+        {{^preguntas}}
+        <div class="sin-resultados">No hay preguntas sugeridas pendientes.</div>
+        {{/preguntas}}
+    </div>
+
+</main>
 
 </body>
 </html>

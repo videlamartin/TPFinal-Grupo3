@@ -96,7 +96,68 @@ class PartidaController
             return;
         }
 
-        if ($respuesta['es_correcta']) {
+        // En vez de avanzar o terminar de una, guardamos la eleccion y
+        // redirigimos a una pantalla de revelacion (por GET, para que se
+        // pueda recargar sin re-enviar la respuesta ni cortar por tiempo).
+        $_SESSION['partida']['revelacion'] = [
+            'elegida_id'  => $respuestaId,
+            'es_correcta' => (bool) $respuesta['es_correcta'],
+        ];
+
+        Redirect::to('/partida/revelacion');
+    }
+
+    // Pantalla intermedia: muestra la pregunta con la respuesta correcta
+    // resaltada. No corre el tiempo. El boton "Siguiente" llama a continuar().
+    public function revelacion()
+    {
+        if (!$this->usuarioSesion['id'] || !isset($_SESSION['partida'])) {
+            Redirect::to('/login/ver');
+        }
+        if (!isset($_SESSION['partida']['revelacion'])) {
+            Redirect::to('/partida/pregunta');
+        }
+
+        $rev        = $_SESSION['partida']['revelacion'];
+        $preguntaId = $_SESSION['partida']['pregunta_actual_id'];
+        $pregunta   = $this->preguntaModel->obtenerPorId($preguntaId);
+        $respuestas = $this->preguntaModel->obtenerRespuestas($preguntaId);
+
+        foreach ($respuestas as &$r) {
+            $correcta = (bool) $r['es_correcta'];
+            $elegida  = ($r['id'] == $rev['elegida_id']);
+            $r['marca_correcta']   = $correcta;
+            $r['marca_incorrecta'] = $elegida && !$correcta;
+        }
+        unset($r);
+
+        $this->renderer->render('revelacion', [
+            'pregunta'         => $pregunta['enunciado'],
+            'categoria'        => $pregunta['categoria_nombre'],
+            'categoria_color'  => $pregunta['categoria_color'],
+            'categoria_actual' => $_SESSION['partida']['categoria_actual'],
+            'respuestas'       => $respuestas,
+            'es_correcta'      => $rev['es_correcta'],
+            'puntaje_actual'   => $this->partidaModel->obtenerPorId($_SESSION['partida']['partida_id'])['puntaje'],
+        ]);
+    }
+
+    // Se llama desde el boton "Siguiente" de la pantalla de revelacion.
+    // Si acerto, suma el punto y va a la proxima pregunta.
+    // Si erro, termina la partida (mostrando la respuesta correcta).
+    public function continuar()
+    {
+        if (!$this->usuarioSesion['id'] || !isset($_SESSION['partida'])) {
+            Redirect::to('/login/ver');
+        }
+        if (!isset($_SESSION['partida']['revelacion'])) {
+            Redirect::to('/partida/pregunta');
+        }
+
+        $esCorrecta = $_SESSION['partida']['revelacion']['es_correcta'];
+        unset($_SESSION['partida']['revelacion']);
+
+        if ($esCorrecta) {
             $this->procesarAcierto();
             Redirect::to('/partida/pregunta');
         } else {

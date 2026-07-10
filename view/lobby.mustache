@@ -1,123 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>QuizMaster - Lobby</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/lobby.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
+{{> navbar}}
 
-<div class="subtitulo">
-    {{#bienvenido}}Bienvenido{{/bienvenido}}
-    {{#bienvenida}}Bienvenida{{/bienvenida}}
-    {{#bienvenida_neutro}}Te damos la bienvenida{{/bienvenida_neutro}}
-    {{nombre}} · Puntaje: {{puntaje_total}}
-    <a href="/lobby/cerrarSesion" class="w3-button w3-red" style="margin-left:15px; border-radius:25px;">
-        Cerrar sesión
-    </a>
-</div>
+<main class="qm-page">
 
-<div class="w3-container">
-{{#sugerida}}
-<div class="w3-panel w3-green w3-round w3-margin-top">
-    <p>✅ ¡Gracias! Tu pregunta fue enviada y será revisada por un editor.</p>
-</div>
-{{/sugerida}}
-
-    <div class="w3-row-padding w3-margin-top">
-
-        <div class="w3-third w3-margin-bottom">
-            <div class="w3-card-4 w3-white panel-juego">
-                <div class="w3-container w3-padding">
-                    <h3>Nueva Partida</h3>
-                    <p>Comenzá una nueva aventura.</p>
-                    <a href="/partida/iniciar" class="w3-button btn-naranja w3-block">Jugar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="w3-third w3-margin-bottom">
-            <div class="w3-card-4 w3-white panel-juego">
-                <div class="w3-container w3-padding">
-                    <h3>Ranking</h3>
-                    <p>Ver clasificación global.</p>
-                    <a href="/ranking/ver" class="w3-button btn-amarillo w3-block">Ver Ranking</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="w3-third w3-margin-bottom">
-            <div class="w3-card-4 w3-white panel-juego">
-                <div class="w3-container w3-padding">
-                    <h3>Perfil</h3>
-                    <p>Consultar tus estadísticas.</p>
-                    <a href="/perfil/ver" class="w3-button btn-verde w3-block">Mi Perfil</a>
-                </div>
-            </div>
-        </div>
-{{#es_editor}}
-<div class="w3-third w3-margin-bottom">
-    <div class="w3-card-4 w3-white panel-juego">
-        <div class="w3-container w3-padding">
-            <h3>Editor</h3>
-            <p>Administrar preguntas.</p>
-            <a href="/editor/ver" class="w3-button btn-azul w3-block">Editar preguntas</a>
-        </div>
+    <div class="qm-page-head qm-aparecer">
+        <div class="qm-eyebrow">Lobby</div>
+        <h1 class="qm-title">¡Hola, {{nombre}}!</h1>
+        <p class="qm-subtitle">Tenés <b>{{puntaje_total}}</b> puntos acumulados. ¿Listo para sumar más?</p>
     </div>
-</div>
-{{/es_editor}}
-{{#es_jugador}}
-<div class="w3-third w3-margin-bottom">
-    <div class="w3-card-4 w3-white panel-juego">
-        <div class="w3-container w3-padding">
+
+    {{#sugerida}}
+    <div class="qm-alert-ok qm-aparecer" style="margin-bottom:20px;">
+        ✅ ¡Gracias! Tu pregunta fue enviada y será revisada por un editor.
+    </div>
+    {{/sugerida}}
+
+    <div class="qm-grid lobby-grid qm-aparecer">
+
+        <a class="qm-card lobby-tile" href="/partida/iniciar">
+            <div class="lobby-ic i-play">🎯</div>
+            <h3>Nueva partida</h3>
+            <p>Empezá una nueva aventura de trivia.</p>
+            <span class="lobby-go">Jugar →</span>
+        </a>
+
+        <a class="qm-card lobby-tile" href="/ranking/ver">
+            <div class="lobby-ic i-rank">🏆</div>
+            <h3>Ranking</h3>
+            <p>Mirá la clasificación global de jugadores.</p>
+            <span class="lobby-go">Ver ranking →</span>
+        </a>
+
+        <a class="qm-card lobby-tile" href="/perfil/ver">
+            <div class="lobby-ic i-prof">👤</div>
+            <h3>Mi perfil</h3>
+            <p>Consultá tus estadísticas y datos.</p>
+            <span class="lobby-go">Ver perfil →</span>
+        </a>
+
+        {{#es_jugador}}
+        <a class="qm-card lobby-tile" href="/lobby/sugerirVer">
+            <div class="lobby-ic i-sug">💡</div>
             <h3>Sugerir pregunta</h3>
-            <p>Proponé una pregunta.</p>
-            <a href="/lobby/sugerirVer" class="w3-button btn-azul w3-block">Sugerir</a>
-        </div>
-    </div>
-</div>
-{{/es_jugador}}
+            <p>Proponé una pregunta para el juego.</p>
+            <span class="lobby-go">Sugerir →</span>
+        </a>
+        {{/es_jugador}}
 
+        {{#es_editor}}
+        <a class="qm-card lobby-tile" href="/editor/ver">
+            <div class="lobby-ic i-edit">✏️</div>
+            <h3>Editor</h3>
+            <p>Administrá las preguntas del juego.</p>
+            <span class="lobby-go">Editar preguntas →</span>
+        </a>
+        {{/es_editor}}
 
         {{#es_admin}}
-            <div class="w3-third w3-margin-bottom">
-                <div class="w3-card-4 w3-white panel-juego">
-                    <div class="w3-container w3-padding">
-                        <h3>Reportes</h3>
-                        <p>Ver estadísticas y gráficos.</p>
-                        <a href="/admin/ver"
-                           class="w3-button btn-azul w3-block">
-                            Ver reportes
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <a class="qm-card lobby-tile" href="/admin/ver">
+            <div class="lobby-ic i-admin">📊</div>
+            <h3>Reportes</h3>
+            <p>Estadísticas y gráficos de la plataforma.</p>
+            <span class="lobby-go">Ver reportes →</span>
+        </a>
         {{/es_admin}}
 
     </div>
 
-    <div class="w3-card-4 w3-white panel-juego w3-margin-top">
-        <div class="w3-container">
-            <h2>Historial de Partidas</h2>
-<table class="w3-table-all">
-    <tr>
-        <th>Fecha</th>
-        <th>Resultado</th>
-    </tr>
-    {{#historial}}
-    <tr>
-        <td>{{fecha_inicio}}</td>
-        <td>{{puntaje}} puntos</td>
-    </tr>
-    {{/historial}}
-</table>
+    <div class="qm-card qm-card-pad qm-aparecer" style="margin-top:22px;">
+        <h2 class="qm-title" style="font-size:1.3rem;">Historial de partidas</h2>
+        <div style="overflow-x:auto; margin-top:14px;">
+            <table class="qm-table">
+                <thead>
+                    <tr><th>Fecha</th><th>Resultado</th></tr>
+                </thead>
+                <tbody>
+                    {{#historial}}
+                    <tr>
+                        <td>{{fecha_inicio}}</td>
+                        <td><b>{{puntaje}}</b> puntos</td>
+                    </tr>
+                    {{/historial}}
+                    {{^historial}}
+                    <tr><td colspan="2" style="color:var(--qm-muted);">Todavía no jugaste ninguna partida.</td></tr>
+                    {{/historial}}
+                </tbody>
+            </table>
         </div>
     </div>
 
-</div>
+</main>
 
 </body>
 </html>

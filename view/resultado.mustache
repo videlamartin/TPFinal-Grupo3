@@ -1,71 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>QuizMaster - Resultado</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Resultado</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/resultado.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
-<div class="subtitulo">Resultado de la partida</div>
+{{> navbar}}
 
-<div class="w3-container">
-    <div class="w3-card-4 w3-white panel-juego w3-margin-top">
-        <div class="w3-container w3-padding">
+<main class="qm-page qm-page-narrow">
 
-            <h2>Partida finalizada</h2>
-            <hr>
-            <h3>Puntaje final: <b>{{puntaje}}</b></h3>
+    <div class="qm-card resultado-card qm-aparecer">
 
-            <p><b>Motivo de finalización:</b> {{motivo_fin}}</p>
+        <div class="resultado-top">
+            <div class="resultado-icono">🏁</div>
+            <p class="resultado-label">Partida finalizada</p>
+            <div class="resultado-puntaje">{{puntaje}}</div>
+            <p class="resultado-pts">puntos</p>
+        </div>
+
+        <div class="qm-card-pad">
+
+            <p class="resultado-motivo"><span>Motivo</span> {{motivo_fin}}</p>
 
             {{#respuesta_correcta}}
-                <p><b>Respuesta correcta:</b> {{respuesta_correcta}}</p>
+                <p class="resultado-correcta"><span>Respuesta correcta</span> {{respuesta_correcta}}</p>
             {{/respuesta_correcta}}
 
             {{#pregunta_reportable_id}}
-                <div class="w3-margin-top">
-                    <button type="button" id="btn-mostrar-reporte"
-                            class="w3-button w3-red w3-block w3-round-xlarge"
-                            onclick="document.getElementById('form-reporte').style.display='block'; this.style.display='none';">
-                            Reportar esta pregunta
-                    </button>
+                <button type="button" id="btn-mostrar-reporte"
+                        class="qm-btn qm-btn-outline qm-btn-block" style="margin-top:16px;"
+                        onclick="document.getElementById('form-reporte').style.display='block'; this.style.display='none';">
+                    ⚑ Reportar esta pregunta
+                </button>
 
-                    <form id="form-reporte" action="/partida/reportar" method="POST"
-                          style="display:none;" class="w3-padding w3-light-grey w3-round">
-                        <p style="margin:0 0 8px;">¿Por qué querés reportar esta pregunta?</p>
-                        <input type="hidden" name="pregunta_id" value="{{pregunta_reportable_id}}">
-                        <input type="hidden" name="puntaje"     value="{{puntaje}}">
-                        <input type="hidden" name="motivo_fin"  value="{{motivo_fin}}">
-                        <input type="text" name="motivo" class="w3-input w3-border w3-margin-bottom"
-                               placeholder="Motivo" required>
-                        <button type="submit" class="w3-button w3-red w3-block w3-round-xlarge">
-                            Enviar reporte
-                        </button>
-                    </form>
-                </div>
+                <form id="form-reporte" action="/partida/reportar" method="POST"
+                      style="display:none; margin-top:14px;" class="resultado-reporte">
+                    <p style="margin:0 0 10px; font-weight:700;">¿Por qué querés reportar esta pregunta?</p>
+                    <input type="hidden" name="pregunta_id" value="{{pregunta_reportable_id}}">
+                    <input type="hidden" name="puntaje"     value="{{puntaje}}">
+                    <input type="hidden" name="motivo_fin"  value="{{motivo_fin}}">
+                    <input type="text" name="motivo" class="qm-input" style="margin-bottom:10px;"
+                           placeholder="Contanos el motivo" required>
+                    <button type="submit" class="qm-btn qm-btn-danger qm-btn-block">Enviar reporte</button>
+                </form>
             {{/pregunta_reportable_id}}
 
             {{#reportado}}
-                <div class="w3-panel w3-green w3-round w3-margin-top">
-                    <p>✓ ¡Gracias! Tu reporte fue enviado y será revisado por un editor.</p>
+                <div class="qm-alert-ok" style="margin-top:16px;">
+                    ✓ ¡Gracias! Tu reporte fue enviado y será revisado por un editor.
                 </div>
             {{/reportado}}
 
-            <div class="w3-margin-top">
-                <a href="/partida/iniciar" class="w3-button btn-naranja w3-block w3-margin-bottom">
-                    Jugar de nuevo
-                </a>
-                <a href="/lobby/ver" class="w3-button btn-azul w3-block">
-                    Volver al lobby
-                </a>
+            <div class="resultado-acciones">
+                <a href="/partida/iniciar" class="qm-btn qm-btn-primary qm-btn-block">🎯 Jugar de nuevo</a>
+                <a href="/lobby/ver" class="qm-btn qm-btn-outline qm-btn-block">Volver al inicio</a>
             </div>
 
         </div>
     </div>
-</div>
+
+</main>
 
 </body>
 </html>

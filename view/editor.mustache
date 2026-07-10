@@ -1,120 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>QuizMaster - Editor</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/public/css/lobby.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/editor.css">
 </head>
 <body>
 
-<div class="titulo">QuizMaster</div>
-<div class="subtitulo">Panel de Editor</div>
+{{> navbar}}
 
-<div class="w3-container w3-padding-32">
+<main class="qm-page">
 
-    <div class="w3-card-4 w3-white panel-juego" style="max-width:900px; margin:0 auto;">
-        <div class="w3-container w3-padding">
+    <div class="qm-page-head qm-aparecer">
+        <div class="qm-eyebrow">Panel de editor</div>
+        <h1 class="qm-title">Preguntas del juego</h1>
+    </div>
 
-            <div class="w3-col s4">
-                <h2 style="margin:0;">Preguntas</h2>
+    <div class="editor-barra qm-aparecer">
+        <div class="acciones-editor">
+            <a href="/editor/crear" class="qm-btn qm-btn-ok">+ Nueva pregunta</a>
+            <a href="/editor/reportadas" class="qm-btn qm-btn-outline">⚑ Reportadas</a>
+            <a href="/editor/sugeridas" class="qm-btn qm-btn-outline">💡 Sugeridas</a>
+        </div>
+    </div>
+
+    <form method="GET" action="/editor/ver" class="buscador-container qm-aparecer">
+        <input type="text" name="busqueda" value="{{busqueda}}"
+               placeholder="Buscar por enunciado..." class="qm-input">
+        <button type="submit" class="qm-btn qm-btn-primary">Buscar</button>
+    </form>
+
+    <div class="preguntas-grid qm-aparecer">
+        {{#preguntas}}
+        <div class="pregunta-card">
+            <div class="pregunta-header">
+                <span class="categoria-badge" style="background:{{categoria_color}}; margin:0;">{{categoria_nombre}}</span>
+                <span class="estado-pregunta">{{estado}}</span>
             </div>
-
-            <div class="w3-col s8 w3-right-align">
-                    <a href="/editor/crear"
-                       class="w3-button w3-green w3-round-xlarge">
-                        + Nueva pregunta
-                    </a>
-
-                    <a href="/editor/reportadas"
-                       class="w3-button w3-orange w3-round-xlarge w3-text-white">
-                        Preguntas reportadas
-                    </a>
-                    <a href="/editor/sugeridas"
-                       class="w3-button w3-purple w3-round-xlarge w3-text-white">
-                        Preguntas sugeridas
-                    </a>
-                </div>
+            <h3 class="pregunta-enunciado">{{enunciado}}</h3>
+            <div class="acciones">
+                <a href="/editor/modificar?id={{id}}" class="qm-btn qm-btn-primary">Editar</a>
+                <form method="POST" action="/editor/eliminar" onsubmit="return confirm('¿Rechazar esta pregunta?')">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button type="submit" class="qm-btn qm-btn-danger">Rechazar</button>
+                </form>
             </div>
-
-            <!-- Buscador -->
-            <form method="GET" action="/editor/ver" class="w3-margin-bottom" style="padding: 0 15px;">
-               <div class="buscador-container">
-                   <input type="text"
-                          name="busqueda"
-                          value="{{busqueda}}"
-                          placeholder="Buscar por enunciado..."
-                          class="w3-input w3-border w3-round-xlarge">
-
-                   <button type="submit"
-                           class="w3-button w3-blue w3-round-xlarge">
-                       Buscar
-                   </button>
-
-               </div>
-            </form>
-
-<div class="preguntas-grid" style="padding: 0 15px;">
-
-    {{#preguntas}}
-    <div class="pregunta-card" >
-
-        <div class="pregunta-header">
-            <span class="categoria-badge"
-                  style="background:{{categoria_color}};">
-                {{categoria_nombre}}
-            </span>
-
-            <span class="estado-pregunta">
-                {{estado}}
-            </span>
         </div>
+        {{/preguntas}}
 
-        <h3 class="pregunta-enunciado">
-            {{enunciado}}
-        </h3>
-
-        <div class="acciones">
-            <a href="/editor/modificar?id={{id}}"
-               class="w3-button w3-blue w3-round-xlarge">
-                Editar
-            </a>
-
-            <form method="POST"
-                  action="/editor/eliminar"
-                  class="accion-form"
-                  onsubmit="return confirm('¿Rechazar esta pregunta?')">
-
-                <input type="hidden" name="id" value="{{id}}">
-
-                <button type="submit"
-                        class="w3-button w3-red w3-round-xlarge">
-                    Rechazar
-                </button>
-            </form>
-        </div>
-
+        {{^preguntas}}
+        <div class="sin-resultados">No hay preguntas que coincidan con la búsqueda.</div>
+        {{/preguntas}}
     </div>
-    {{/preguntas}}
 
-    {{^preguntas}}
-    <div class="sin-resultados">
-        No hay preguntas que coincidan con la búsqueda.
-    </div>
-    {{/preguntas}}
-
-</div>
-        <div style="margin-top:20px; margin-bottom:20px; margin-left:15px;">
-            <a href="/lobby/ver"
-               class="w3-button w3-blue w3-round-xlarge">
-                Volver al lobby
-            </a>
-        </div>
-
-        </div>
-    </div>
-</div>
+</main>
 
 </body>
 </html>

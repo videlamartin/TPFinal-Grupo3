@@ -18,9 +18,30 @@ class RankingController
     public function ver()
     {
         $ranking = $this->usuarioModel->obtenerRanking();
+        $miId    = $this->usuarioSesion['id'] ?? null;
+
+        $podio = [];
+        $resto = [];
+        $medallas = ['🥇', '🥈', '🥉'];
+
+        foreach ($ranking as $i => $fila) {
+            $fila['es_yo']   = ($miId !== null && $fila['id'] == $miId);
+            $fila['inicial'] = mb_strtoupper(mb_substr($fila['username'], 0, 1));
+
+            if ($i < 3) {
+                $fila['medalla'] = $medallas[$i];
+                $fila['clase']   = 'p' . ($i + 1);
+                $podio[] = $fila;
+            } else {
+                $resto[] = $fila;
+            }
+        }
 
         $this->renderer->render('ranking', [
-            'ranking' => $ranking
+            'ranking'    => $ranking,
+            'podio'      => $podio,
+            'resto'      => $resto,
+            'hay_resto'  => !empty($resto),
         ]);
     }
 }

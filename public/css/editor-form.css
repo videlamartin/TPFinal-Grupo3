@@ -1,37 +1,26 @@
+/* Formularios de pregunta (crear/editar/sugerir) · tokens de quizmaster.css */
+
+.form-hint { color: var(--qm-muted); font-size: .85rem; margin: -6px 0 12px; }
+
 .respuesta-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    margin-bottom: 12px;
 }
-
 .respuesta-radio {
-    flex: 0 0 30px;
-    text-align: center;
+    flex: 0 0 34px;
+    display: flex;
+    justify-content: center;
 }
-
-.respuesta-input {
-    flex: 1;
+.respuesta-radio input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--qm-brand);
+    cursor: pointer;
 }
-
-.form-btn {
-    width: 100%;
-    margin-top: 10px;
-}
+.respuesta-input { flex: 1; }
 
 @media (max-width: 600px) {
-
-    .respuesta-row {
-        gap: 8px;
-    }
-
-    .w3-card-4 {
-        margin-left: 10px !important;
-        margin-right: 10px !important;
-    }
-
-    textarea,
-    select,
-    input[type="text"] {
-        font-size: 16px;
-    }
+    input[type="text"], textarea, select { font-size: 16px; }
 }

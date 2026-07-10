@@ -1,0 +1,78 @@
+/* Ranking · usa los tokens de quizmaster.css */
+
+/* ---- Podio ---- */
+.rank-podio {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+.rank-pod {
+    flex: 1;
+    max-width: 200px;
+    background: var(--qm-surface);
+    border: 1px solid var(--qm-border);
+    border-radius: var(--qm-radius);
+    box-shadow: var(--qm-shadow);
+    padding: 18px 12px;
+    text-align: center;
+}
+/* Orden visual: 2° a la izquierda, 1° al centro y más alto, 3° a la derecha */
+.rank-pod.p1 { order: 2; transform: translateY(-16px); border-color: var(--qm-cat-historia); box-shadow: 0 14px 34px color-mix(in srgb, var(--qm-cat-historia) 35%, transparent); }
+.rank-pod.p2 { order: 1; }
+.rank-pod.p3 { order: 3; }
+
+.rank-medalla { font-size: 1.6rem; line-height: 1; }
+.rank-pod-av {
+    width: 54px; height: 54px; border-radius: 50%;
+    margin: 8px auto 8px;
+    display: grid; place-items: center;
+    font-weight: 800; color: #fff; font-size: 1.15rem;
+    text-transform: uppercase;
+    background: var(--qm-brand);
+}
+.rank-pod.p1 .rank-pod-av { background: var(--qm-cat-historia); }
+.rank-pod.p2 .rank-pod-av { background: #9aa0b3; }
+.rank-pod.p3 .rank-pod-av { background: #c98b52; }
+.rank-pod-nombre { display: block; font-weight: 800; color: var(--qm-ink); text-decoration: none; }
+.rank-pod-nombre:hover { color: var(--qm-brand); }
+.rank-pod-pts { color: var(--qm-muted); font-weight: 800; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.rank-pod.es-yo { outline: 2px solid var(--qm-brand); }
+
+/* ---- Lista del resto ---- */
+.rank-lista { padding: 8px; }
+.rank-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border-bottom: 1px solid var(--qm-border);
+}
+.rank-row:last-child { border-bottom: 0; }
+.rank-pos { font-weight: 800; color: var(--qm-muted); text-align: center; font-variant-numeric: tabular-nums; }
+.rank-who { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--qm-ink); text-decoration: none; }
+.rank-who:hover { color: var(--qm-brand); }
+.rank-av {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--qm-surface-2); border: 1px solid var(--qm-border);
+    display: grid; place-items: center;
+    font-size: .8rem; font-weight: 800; color: var(--qm-muted);
+    text-transform: uppercase;
+}
+.rank-sc { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--qm-ink); }
+.rank-tag {
+    font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+    background: color-mix(in srgb, var(--qm-brand) 15%, transparent); color: var(--qm-brand);
+    padding: 2px 8px; border-radius: 999px;
+}
+.rank-row.es-yo { background: color-mix(in srgb, var(--qm-brand) 10%, transparent); }
+.rank-row.es-yo .rank-pos, .rank-row.es-yo .rank-sc { color: var(--qm-brand); }
+
+@media (max-width: 520px) {
+    .rank-medalla { font-size: 1.3rem; }
+    .rank-pod-av { width: 44px; height: 44px; font-size: 1rem; }
+    .rank-pod-nombre { font-size: .9rem; }
+}

@@ -1,0 +1,40 @@
+<nav class="qm-nav" id="qm-nav">
+    <div class="qm-nav-inner">
+        <a href="/lobby/ver" class="qm-logo">
+            <span class="qm-mark"></span>Quiz<b>Master</b>
+        </a>
+
+        <button type="button" class="qm-nav-toggle" onclick="document.getElementById('qm-nav').classList.toggle('abierto')" aria-label="Menú">☰</button>
+
+        <div class="qm-nav-links" id="qm-nav-links">
+            <a href="/lobby/ver">Inicio</a>
+            <a href="/partida/iniciar">Jugar</a>
+            <a href="/ranking/ver">Ranking</a>
+            <a href="/perfil/ver">Perfil</a>
+            {{#nav_es_jugador}}<a href="/lobby/sugerirVer">Sugerir</a>{{/nav_es_jugador}}
+            {{#nav_es_editor}}<a href="/editor/ver">Editor</a>{{/nav_es_editor}}
+            {{#nav_es_admin}}<a href="/admin/ver">Reportes</a>{{/nav_es_admin}}
+        </div>
+
+        <div class="qm-nav-right">
+            <button type="button" id="qm-tema-btn" class="qm-nav-tema" onclick="qmCambiarTema()" aria-label="Cambiar tema">🌙</button>
+            <span class="qm-userchip">
+                <span class="qm-av">{{nav_inicial}}</span>
+                {{nav_nombre}}
+            </span>
+            <a href="/login/logout" class="qm-nav-logout">Salir</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    (function () {
+        var path = window.location.pathname;
+        document.querySelectorAll('#qm-nav-links a').forEach(function (a) {
+            var href = a.getAttribute('href').split('?')[0];
+            if (href === path || (href !== '/lobby/ver' && path.indexOf(href) === 0)) {
+                a.classList.add('active');
+            }
+        });
+    })();
+</script>

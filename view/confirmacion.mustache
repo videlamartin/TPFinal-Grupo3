@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuizMaster - ¡Registro exitoso!</title>
+    <title>QuizMaster · ¡Registro exitoso!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/confirmacion.css">
 </head>
-<body>
+<body class="auth-body">
 
-<div class="wrapper">
-    <div class="icono">🎉</div>
-    <div class="titulo">¡Registro exitoso!</div>
-    <div class="subtitulo">Ya casi estás listo para jugar</div>
-    <div class="card">
+<div class="conf-wrapper qm-aparecer">
+    <div class="conf-icono">🎉</div>
+    <h1 class="conf-titulo">¡Registro exitoso!</h1>
+    <p class="conf-subtitulo">Ya casi estás listo para jugar</p>
+
+    <div class="qm-card qm-card-pad conf-card">
         <p>Tu cuenta fue creada correctamente.</p>
-        <div class="alerta-mail">
+        <div class="conf-mail">
             📧 <strong>Revisá tu correo</strong> — te enviamos un link para activar tu cuenta. Sin ese paso no vas a poder ingresar.
         </div>
-        <p style="font-size:13px; color:#888;">¿No llegó el mail? Revisá la carpeta de spam o contactá al soporte.</p>
-        <a href="/login/ver" class="btn-login">Ir al inicio de sesión</a>
+        <p class="conf-help">¿No llegó el mail? Revisá la carpeta de spam o contactá al soporte.</p>
+        <a href="/login/ver" class="qm-btn qm-btn-primary qm-btn-block">Ir al inicio de sesión</a>
     </div>
 </div>
 

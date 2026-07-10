@@ -1,104 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>QuizMaster - Mi Perfil</title>
+    <meta charset="UTF-8">
+    <title>QuizMaster · Perfil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/public/css/quizmaster.css">
+    <script src="/public/js/tema.js"></script>
     <link rel="stylesheet" href="/public/css/perfil.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
-<div class="w3-container w3-padding-32" style="max-width:600px; margin:0 auto;">
+{{> navbar}}
 
-    <h1 style="color:white; text-align:center;">Mi Perfil</h1>
+<main class="qm-page qm-page-narrow">
 
-    <div class="w3-card-4 w3-white w3-round-xlarge w3-padding-32">
-
-        <div class="w3-center w3-margin-bottom">
+    <div class="qm-card perfil-card qm-aparecer">
+        <div class="perfil-top">
             {{#foto_perfil}}
-                <img src="{{foto_perfil}}" class="avatar">
+                <img src="{{foto_perfil}}" class="perfil-avatar" alt="Foto de perfil">
             {{/foto_perfil}}
             {{^foto_perfil}}
-                <div class="avatar-placeholder">👤</div>
+                <div class="perfil-avatar perfil-avatar-ph">👤</div>
             {{/foto_perfil}}
+            <div class="perfil-id">
+                <h1>{{nombre_completo}}</h1>
+                <p class="perfil-user">@{{username}}</p>
+                <span class="perfil-rol">{{rol}}</span>
+            </div>
         </div>
 
-        <table class="w3-table">
-            <tr><td><b>Nombre</b></td><td>{{nombre_completo}}</td></tr>
-            <tr><td><b>Usuario</b></td><td>@{{username}}</td></tr>
-            <tr><td><b>Email</b></td><td>{{email}}</td></tr>
-            <tr><td><b>País</b></td><td>{{pais}}</td></tr>
-            <tr><td><b>Ciudad</b></td><td>{{ciudad}}</td></tr>
-            <tr><td><b>Puntaje</b></td><td>{{puntaje_total}} pts</td></tr>
-            <tr><td><b>Rol</b></td><td>{{rol}}</td></tr>
-        </table>
+        <div class="perfil-stats">
+            <div class="perfil-stat">
+                <div class="n">{{puntaje_total}}</div>
+                <div class="l">Puntaje</div>
+            </div>
+            <div class="perfil-stat">
+                <div class="n">{{partidas_jugadas}}</div>
+                <div class="l">Partidas</div>
+            </div>
+        </div>
 
-        <div class="w3-card w3-white w3-padding">
-
-            <h3>Historial de partidas</h3>
-
-            <table class="w3-table w3-bordered">
-
-                <tr>
-                    <th>Fecha</th>
-                    <th>Puntaje</th>
-                </tr>
-
-                {{#historial}}
-                    <tr>
-                        <td>{{fecha_inicio}}</td>
-                        <td>{{puntaje}} pts</td>
-                    </tr>
-                {{/historial}}
-
-                {{^historial}}
-                    <tr>
-                        <td colspan="2">No hay partidas registradas</td>
-                    </tr>
-                {{/historial}}
-
+        <div class="qm-card-pad">
+            <table class="qm-table perfil-datos">
+                <tbody>
+                    <tr><td class="k">Email</td><td>{{email}}</td></tr>
+                    <tr><td class="k">País</td><td>{{pais}}</td></tr>
+                    <tr><td class="k">Ciudad</td><td>{{ciudad}}</td></tr>
+                </tbody>
             </table>
-
         </div>
-
-
-        <div class="w3-card w3-white w3-padding w3-margin-top">
-
-            <h3>Ubicación</h3>
-
-            <div id="mapa-perfil"  data-ciudad="{{ciudad}}"
-                 data-pais="{{pais}}" style="height:
-                 250px; width: 100%;">
-            </div>
-
-            <div style="margin-top:10px;">
-                {{ciudad}}, {{pais}}
-            </div>
-
-        </div>
-
-
-        <div class="w3-card w3-white w3-padding w3-margin-top w3-center">
-
-            <h3>Mi Código QR</h3>
-
-            <img src="{{qr_url}}" alt="QR Perfil" class="qr-responsive">
-
-        </div>
-
-
-        <div class="w3-center w3-margin-top">
-            <a href="/lobby/ver" class="w3-button w3-blue w3-round-xlarge">
-                Volver al Lobby
-            </a>
-        </div>
-
     </div>
 
-</div>
+    <div class="qm-card qm-card-pad qm-aparecer" style="margin-top:18px;">
+        <h2 class="qm-title" style="font-size:1.2rem; margin-bottom:14px;">Historial de partidas</h2>
+        <div style="overflow-x:auto;">
+            <table class="qm-table">
+                <thead><tr><th>Fecha</th><th>Puntaje</th></tr></thead>
+                <tbody>
+                    {{#historial}}
+                    <tr><td>{{fecha_inicio}}</td><td><b>{{puntaje}}</b> pts</td></tr>
+                    {{/historial}}
+                    {{^historial}}
+                    <tr><td colspan="2" style="color:var(--qm-muted);">No hay partidas registradas.</td></tr>
+                    {{/historial}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <div class="qm-grid perfil-abajo qm-aparecer" style="margin-top:18px;">
+        <div class="qm-card qm-card-pad">
+            <h2 class="qm-title" style="font-size:1.2rem; margin-bottom:14px;">Ubicación</h2>
+            <div id="mapa-perfil" data-ciudad="{{ciudad}}" data-pais="{{pais}}" class="perfil-mapa"></div>
+            <p class="perfil-ubic">📍 {{ciudad}}, {{pais}}</p>
+        </div>
+
+        <div class="qm-card qm-card-pad" style="text-align:center;">
+            <h2 class="qm-title" style="font-size:1.2rem; margin-bottom:14px;">Mi código QR</h2>
+            <img src="{{qr_url}}" alt="QR del perfil" class="perfil-qr">
+            <p class="perfil-qr-help">Compartí tu perfil escaneando este código.</p>
+        </div>
+    </div>
+
+</main>
+
+<script src="/public/js/perfil.js"></script>
 </body>
 </html>
-<script src="/public/js/perfil.js"></script>
