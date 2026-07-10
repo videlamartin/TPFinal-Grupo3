@@ -65,11 +65,6 @@ class Configurator
         );
     }
 
-    public function getVikingoController()
-    {
-        return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
-    }
-
     private function getDatabase()
     {
         return new MyDatabase(
@@ -83,11 +78,6 @@ class Configurator
     private function getRenderer()
     {
         return new MustacheRenderer(__DIR__ . '/../view');
-    }
-
-    private function getVikingoModel()
-    {
-        return new VikingoModel($this->getDatabase());
     }
 
     public function getRouter()
