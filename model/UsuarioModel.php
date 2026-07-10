@@ -240,6 +240,21 @@ class UsuarioModel
         return $this->database->query($sql);
     }
 
+    // Total de respuestas correctas e incorrectas de todos los usuarios.
+    // Alimenta el gráfico de torta "% de respuestas correctas (general)".
+    public function obtenerPorcentajeCorrectasGeneral()
+    {
+        $sql = "
+        SELECT
+            COALESCE(SUM(total_respuestas_correctas), 0) AS correctas,
+            COALESCE(SUM(total_preguntas_respondidas - total_respuestas_correctas), 0) AS incorrectas
+        FROM usuario
+    ";
+
+        $resultado = $this->database->query($sql);
+        return $resultado[0] ?? ['correctas' => 0, 'incorrectas' => 0];
+    }
+
     private function condicionPeriodo($periodo, $campoFecha)
     {
         switch ($periodo) {
