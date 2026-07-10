@@ -104,6 +104,24 @@ function graficoTorta(canvasId, labels, valores, colores) {
     });
 }
 
+function graficoBarras(canvasId, datos, campoLabel, campoValor) {
+    const el = document.getElementById(canvasId);
+    if (!el) return;
+    new Chart(el, {
+        type: 'bar',
+        data: {
+            labels: datos.map(d => d[campoLabel]),
+            datasets: [{
+                data: datos.map(d => Number(d[campoValor])),
+                backgroundColor: datos.map((_, i) => PALETA_CATEGORIAS[i % PALETA_CATEGORIAS.length]),
+                borderRadius: 6,
+                maxBarThickness: 60
+            }]
+        },
+        options: opcionesBase()
+    });
+}
+
 // ----- Creación de los gráficos -----
 // Evolución por período (líneas)
 graficoLinea('usuariosChart',           JSON.parse(window.graficoUsuarios),    'periodo', 'total');
@@ -111,10 +129,10 @@ graficoLinea('usuariosAcumuladosChart', JSON.parse(window.usuariosAcumulados), '
 graficoLinea('partidasChart',           JSON.parse(window.graficoPartidas),    'periodo', 'total');
 graficoLinea('graficoPreguntas',        JSON.parse(window.graficoPreguntas),   'periodo', 'total');
 
-// Distribuciones de usuarios (líneas)
-graficoLinea('usuariosPaisChart', JSON.parse(window.usuariosPorPais), 'pais',  'total');
-graficoLinea('usuariosSexoChart', JSON.parse(window.usuariosPorSexo), 'sexo',  'total');
-graficoLinea('usuariosEdadChart', JSON.parse(window.usuariosPorEdad), 'grupo', 'total');
+// Distribuciones de usuarios (barras, con filtro por período)
+graficoBarras('usuariosPaisChart', JSON.parse(window.usuariosPorPais), 'pais',  'total');
+graficoBarras('usuariosSexoChart', JSON.parse(window.usuariosPorSexo), 'sexo',  'total');
+graficoBarras('usuariosEdadChart', JSON.parse(window.usuariosPorEdad), 'grupo', 'total');
 
 // Gráficos de torta
 const correctas = JSON.parse(window.porcentajeCorrectas);
