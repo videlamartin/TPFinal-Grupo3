@@ -44,6 +44,12 @@
         </div>
 
         <div class="qm-card qm-card-pad admin-chart-card">
+            <h2>Usuarios acumulados</h2>
+            <p class="admin-desc">Total de usuarios acumulados hasta el corte de cada período.</p>
+            <div class="admin-chart"><canvas id="usuariosAcumuladosChart"></canvas></div>
+        </div>
+
+        <div class="qm-card qm-card-pad admin-chart-card">
             <h2>Partidas jugadas</h2>
             <p class="admin-desc">Total de partidas completadas por período. Mide qué tan activa está la app.</p>
             <div class="admin-chart"><canvas id="partidasChart"></canvas></div>
@@ -73,6 +79,18 @@
             <div class="admin-chart"><canvas id="usuariosEdadChart"></canvas></div>
         </div>
 
+        <div class="qm-card qm-card-pad admin-chart-card">
+            <h2>Respuestas correctas (general)</h2>
+            <p class="admin-desc">Porcentaje de respuestas correctas vs incorrectas de todos los usuarios.</p>
+            <div class="admin-chart"><canvas id="correctasChart"></canvas></div>
+        </div>
+
+        <div class="qm-card qm-card-pad admin-chart-card">
+            <h2>Preguntas creadas por rol</h2>
+            <p class="admin-desc">Preguntas aprobadas creadas por jugadores y por editores.</p>
+            <div class="admin-chart"><canvas id="preguntasRolChart"></canvas></div>
+        </div>
+
     </div>
 
 </main>
@@ -80,12 +98,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    window.graficoUsuarios  = '{{{grafico_usuarios}}}';
-    window.graficoPartidas  = '{{{grafico_partidas}}}';
-    window.graficoPreguntas = '{{{grafico_preguntas}}}';
-    window.usuariosPorPais  = '{{{usuarios_por_pais}}}';
-    window.usuariosPorSexo  = '{{{usuarios_por_sexo}}}';
-    window.usuariosPorEdad  = '{{{usuarios_por_edad}}}';
+    window.graficoUsuarios     = '{{{grafico_usuarios}}}';
+    window.usuariosAcumulados  = '{{{usuarios_acumulados}}}';
+    window.graficoPartidas     = '{{{grafico_partidas}}}';
+    window.graficoPreguntas    = '{{{grafico_preguntas}}}';
+    window.usuariosPorPais     = '{{{usuarios_por_pais}}}';
+    window.usuariosPorSexo     = '{{{usuarios_por_sexo}}}';
+    window.usuariosPorEdad     = '{{{usuarios_por_edad}}}';
+    window.porcentajeCorrectas = '{{{porcentaje_correctas}}}';
+    window.preguntasPorRol     = '{{{preguntas_por_rol}}}';
 </script>
 
 <script>

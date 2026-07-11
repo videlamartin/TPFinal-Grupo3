@@ -235,6 +235,21 @@ class PreguntaModel
         return (int) $resultado[0]['total'];
     }
 
+    // Cantidad de preguntas APROBADAS creadas, agrupadas por el rol del
+    // usuario que las creó (jugador / editor). Alimenta el gráfico del admin.
+    public function obtenerPreguntasCreadasPorRol()
+    {
+        $sql = "
+            SELECT u.rol AS rol, COUNT(*) AS total
+            FROM pregunta p
+            JOIN usuario u ON u.id = p.creador_id
+            WHERE p.estado = 'APROBADA'
+            GROUP BY u.rol
+            ORDER BY total DESC";
+
+        return $this->database->query($sql);
+    }
+
     public function obtenerGraficoPreguntas($periodo)
     {
         switch ($periodo) {
