@@ -237,13 +237,16 @@ class PreguntaModel
 
     // Cantidad de preguntas APROBADAS creadas, agrupadas por el rol del
     // usuario que las creó (jugador / editor). Alimenta el gráfico del admin.
-    public function obtenerPreguntasCreadasPorRol()
+    public function obtenerPreguntasCreadasPorRol($periodo)
     {
+        $where = $this->condicionPeriodo($periodo, 'p.fecha_creacion');
         $sql = "
             SELECT u.rol AS rol, COUNT(*) AS total
             FROM pregunta p
             JOIN usuario u ON u.id = p.creador_id
             WHERE p.estado = 'APROBADA'
+            AND u.rol IN ('editor', 'jugador')
+            AND $where
             GROUP BY u.rol
             ORDER BY total DESC";
 
@@ -293,5 +296,20 @@ class PreguntaModel
         }
 
         return $this->database->query($sql);
+    }
+    private function condicionPeriodo($periodo, $campoFecha)
+    {
+        switch ($periodo) {
+            case 'dia':
+                return "DATE($campoFecha) = CURDATE()";
+            case 'semana':
+                return "YEARWEEK($campoFecha, 1) = YEARWEEK(CURDATE(), 1)";
+            case 'mes':
+                return "DATE_FORMAT($campoFecha, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')";
+            case 'anio':
+                return "YEAR($campoFecha) = YEAR(CURDATE())";
+            default:
+                return "1=1";
+        }
     }
 }
