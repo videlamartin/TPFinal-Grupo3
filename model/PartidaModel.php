@@ -93,4 +93,40 @@ class PartidaModel
         return $this->database->query($sql);
     }
 
+    public function obtenerPorcentajeCorrectasGeneral($periodo)
+    {
+        $where = $this->condicionPeriodo($periodo, 'fecha_fin');
+
+        $sql = "
+        SELECT
+            COALESCE(SUM(puntaje), 0) AS correctas,
+            COALESCE(COUNT(*), 0) AS incorrectas
+        FROM partida
+        WHERE estado = 'FINALIZADA'
+        AND $where
+    ";
+
+        $resultado = $this->database->query($sql);
+        return $resultado[0] ?? ['correctas' => 0, 'incorrectas' => 0];
+    }
+
+    private function condicionPeriodo($periodo, $campoFecha)
+    {
+        switch ($periodo) {
+            case 'dia':
+                return "DATE($campoFecha) = CURDATE()";
+
+            case 'semana':
+                return "YEARWEEK($campoFecha, 1) = YEARWEEK(CURDATE(), 1)";
+
+            case 'mes':
+                return "DATE_FORMAT($campoFecha, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')";
+
+            case 'anio':
+                return "YEAR($campoFecha) = YEAR(CURDATE())";
+
+            default:
+                return "1=1";
+        }
+    }
 }

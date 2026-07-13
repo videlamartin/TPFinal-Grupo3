@@ -97,8 +97,6 @@ class RegistroController
         Redirect::to('/login/ver?validado=1');
     }
 
-    // --- Métodos privados ---
-
     private function validar($post)
     {
         $errores = [];

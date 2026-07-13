@@ -48,8 +48,8 @@ class AdminController
         $usuariosPorPais = $this->usuarioModel->obtenerUsuariosPorPais($periodo);
         $usuariosPorSexo = $this->usuarioModel->obtenerUsuariosPorSexo($periodo);
         $usuariosPorEdad = $this->usuarioModel->obtenerUsuariosPorEdad($periodo);
-        $porcentajeCorrectas = $this->usuarioModel->obtenerPorcentajeCorrectasGeneral();
-        $preguntasPorRol = $this->preguntaModel->obtenerPreguntasCreadasPorRol();
+        $porcentajeCorrectas = $this->partidaModel->obtenerPorcentajeCorrectasGeneral($periodo);
+        $preguntasPorRol = $this->preguntaModel->obtenerPreguntasCreadasPorRol($periodo);
 
 
         $this->renderer->render('admin', [
