@@ -32,6 +32,7 @@ class PartidaController
         if (isset($_SESSION['partida'])) {
             Redirect::to('/partida/pregunta');
         }
+        
         $usuario = $this->usuarioModel->buscarPorId($this->usuarioSesion['id']);
         $nivelUsuario = $this->usuarioModel->calcularNivelUsuario($usuario);
         $partidaId = $this->partidaModel->crearPartida($this->usuarioSesion['id']);
